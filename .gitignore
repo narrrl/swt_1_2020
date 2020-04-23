@@ -34,7 +34,7 @@ bin/
 target/
 
 # IntelliJ IDE
-.idea/*
+.idea
 *.iws
 *.iml
 *.eml
