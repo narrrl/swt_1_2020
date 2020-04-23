@@ -168,8 +168,6 @@ public class LayoutGalerie {
 	        {
 	          e.printStackTrace();
 	        }
-	
-	        int j = 0;
 	        int count = 0;
 	        int page = 0;
 	        String index = "index." + layout.getPrefix();
@@ -201,8 +199,6 @@ public class LayoutGalerie {
 	          {
 	            System.out.print(m.mes.getString("Generator.10") + images[i].getName() + "\t . . . ");
 	          }
-	
-	          j++;
 	          count++;
 	
 	          // generate small image
