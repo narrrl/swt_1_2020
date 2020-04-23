@@ -7,6 +7,17 @@
     <groupId>swt1</groupId>
     <artifactId>iMage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <parent>
+        <groupId>edu.kit.ipd.swt1.ss2020</groupId>
+        <artifactId>uebungsparent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
+    <repositories>
+        <repository>
+            <id>ipdNexus</id>
+            <url>http://bob.ipd.kit.edu/nexus/repository/maven-public-all/</url>
+        </repository>
+    </repositories>
 
 </project>
