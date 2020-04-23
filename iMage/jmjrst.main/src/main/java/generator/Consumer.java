@@ -22,8 +22,6 @@ import java.util.Vector;
 import org.jis.Main;
 import org.jis.options.Options;
 
-import com.sun.image.codec.jpeg.ImageFormatException;
-
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
@@ -59,10 +57,6 @@ public class Consumer implements Runnable {
         {
           process(obj);
         }
-        catch (ImageFormatException e)
-        {
-          e.printStackTrace();
-        }
         catch (IOException e)
         {
           e.printStackTrace();
@@ -75,7 +69,7 @@ public class Consumer implements Runnable {
     }
   }
 
-  void process(Element obj) throws ImageFormatException, IOException
+  void process(Element obj) throws IOException
   {
     m.p_monitor.setNote("Aktuelles Bild: " + obj.file.getName());
     try
