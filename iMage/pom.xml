@@ -6,6 +6,7 @@
 
     <groupId>swt1</groupId>
     <artifactId>iMage</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <parent>
         <groupId>edu.kit.ipd.swt1.ss2020</groupId>
