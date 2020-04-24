@@ -11,14 +11,6 @@
     <groupId>swt1.ub1.a1</groupId>
     <artifactId>2301588</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
