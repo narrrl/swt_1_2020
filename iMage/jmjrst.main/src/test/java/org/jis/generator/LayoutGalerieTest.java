@@ -13,21 +13,26 @@ import java.nio.file.Path;
 import java.util.Random;
 
 import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
 
 public class LayoutGalerieTest {
 	
 	private LayoutGalerie galerieUnderTest;
 	
 	private File fromFile;
-	private File toFile; 
+	private File toFile;
+
+	@Before
+	public final void createGalerie() {
+		galerieUnderTest = new LayoutGalerie(null, null);
+	}
 		
 	/**
 	 * Test method for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)}.
 	 */
 	@Test
 	public final void testCopyFile() throws URISyntaxException {
-		
-		galerieUnderTest = new LayoutGalerie(null, null);
 		
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
@@ -54,6 +59,11 @@ public class LayoutGalerieTest {
 			fail();
 		 }
 		
+	}
+
+	@After
+	public final void cleanUp() {
+		galerieUnderTest = null;
 	}
 
 }
