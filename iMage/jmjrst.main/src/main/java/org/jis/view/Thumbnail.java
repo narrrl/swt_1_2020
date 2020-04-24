@@ -44,7 +44,7 @@ public class Thumbnail extends JPanel {
     super();
     this.maxWidth = maxWidth;
     this.maxHeight = maxHeight;
-    if (filename == null) throw new IllegalArgumentException("Argument filename is null.");
+    if (filename == null) { throw new IllegalArgumentException("Argument filename is null.") };
     file = new File(filename);
     this.previewImage = ImageIO.read(file);
     initialize();
