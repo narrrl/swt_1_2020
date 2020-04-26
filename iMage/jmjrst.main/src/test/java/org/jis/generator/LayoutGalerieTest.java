@@ -63,7 +63,11 @@ public class LayoutGalerieTest {
 
 	@After
 	public final void cleanUp() {
+		boolean fromDeleted = fromFile.delete();
+		boolean toDeleted = toFile.delete();
 		galerieUnderTest = null;
+		if (!fromDeleted) { System.out.println("Couldn't delete file created for the test!"); }
+		if (!toDeleted) { System.out.println("Couldn't delete the copied file!"); }
 	}
 
 }
