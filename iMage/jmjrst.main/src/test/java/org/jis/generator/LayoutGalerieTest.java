@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
@@ -64,19 +65,45 @@ public class LayoutGalerieTest {
 
 	}
 
+	@Test(expected = FileNotFoundException.class)
+	public final void testCopyFileOfDirectories() throws URISyntaxException, FileNotFoundException, IOException {
+		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+		fromFile = new File(resourceFolder, "from");
+		toFile = new File(resourceFolder, "to");
+		fromFile.mkdir();
+		toFile.mkdir();
+		assertTrue(toFile.exists());
+		assertTrue(fromFile.exists());
+		galerieUnderTest.copyFile(fromFile, toFile);
+	}
+
+	@Test(expected = FileNotFoundException.class) 
+	public final void testCopyFileOfNotExistingFiles() throws URISyntaxException, FileNotFoundException, IOException {
+		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+		fromFile = new File(resourceFolder, "from");
+		toFile = new File(resourceFolder, "to");
+		assertTrue(!toFile.exists());
+		assertTrue(!fromFile.exists());
+		galerieUnderTest.copyFile(fromFile, toFile);
+	}
+
 	@After
 	public final void cleanUp() {
-		boolean fromDeleted = fromFile.delete();
-		boolean toDeleted = toFile.delete();
+		if (fromFile.exists() && fromFile != null) {
+			if (!fromFile.delete()) {
+				System.out.println("[" + LayoutGalerieTest.RED + "ERROR" + LayoutGalerieTest.DEFAULT
+						+ "] Couldn't delete fromFile for test!");
+			}
+			fromFile = null;
+		}
+		if (toFile != null) {
+			if (toFile.exists() && !toFile.delete()) {
+				System.out.println("[" + LayoutGalerieTest.RED + "ERROR" + LayoutGalerieTest.DEFAULT
+						+ "] Couldn't delete toFile for test!");
+			}
+			toFile = null;
+		}
 		galerieUnderTest = null;
-		if (!fromDeleted) {
-			System.out.println("[" + LayoutGalerieTest.RED + "ERROR" + LayoutGalerieTest.DEFAULT
-					+ "] Couldn't delete file created for the test!");
-		}
-		if (!toDeleted) {
-			System.out.println("[" + LayoutGalerieTest.RED + "ERROR" + LayoutGalerieTest.DEFAULT
-					+ "] Couldn't delete the copied file!");
-		}
 	}
 
 }
