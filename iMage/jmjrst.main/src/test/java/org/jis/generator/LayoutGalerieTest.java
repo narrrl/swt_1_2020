@@ -87,6 +87,35 @@ public class LayoutGalerieTest {
 		galerieUnderTest.copyFile(fromFile, toFile);
 	}
 
+	@Test
+	public final void testCopyFileToExistingFile() {
+		try {
+			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+			fromFile = new File(resourceFolder, "from");
+			toFile = new File(resourceFolder, "to");
+			byte[] array = new byte[10];
+			new Random().nextBytes(array);
+			String randomString = new String(array);
+			fromFile.createNewFile();
+			toFile.createNewFile();
+			Path fromPath = FileSystems.getDefault().getPath(fromFile.getPath());
+			Path toPath = FileSystems.getDefault().getPath(toFile.getPath());
+			Files.writeString(fromPath, randomString);
+			Files.writeString(toPath, randomString);
+
+			galerieUnderTest.copyFile(fromFile, toFile);
+
+			assertTrue(toFile.exists());
+
+			toPath = FileSystems.getDefault().getPath(toFile.getPath());
+			String contents = Files.readString(toPath);
+
+			assertEquals(randomString, contents);
+		} catch (IOException | URISyntaxException e) {
+			fail();
+		}
+	}
+
 	@After
 	public final void cleanUp() {
 		if (fromFile.exists() && fromFile != null) {

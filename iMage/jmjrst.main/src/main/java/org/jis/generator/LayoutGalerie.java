@@ -17,12 +17,15 @@ package org.jis.generator;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -542,10 +545,14 @@ public class LayoutGalerie {
     }
   }
 
-  public void copyFile(File file, File ziel) throws FileNotFoundException, IOException
-  {
+  public void copyFile(File file, File ziel) throws FileNotFoundException, IOException {
+	if (ziel.exists() && ziel.isFile()) {
+		BufferedWriter writer = Files.newBufferedWriter(Paths.get(ziel.getPath()));
+		writer.write("");
+		writer.flush();
+	}
     in = new BufferedInputStream(new FileInputStream(file));
-    out = new BufferedOutputStream(new FileOutputStream(ziel, true));
+	out = new BufferedOutputStream(new FileOutputStream(ziel, true));
     int bytes = 0;
     while ((bytes = in.read()) != -1)
     {
