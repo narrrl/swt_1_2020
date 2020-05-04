@@ -546,6 +546,8 @@ public class LayoutGalerie {
   }
 
   public void copyFile(File file, File ziel) throws FileNotFoundException, IOException {
+	if (file.exists() && !file.canRead()) throw new IOException("Locked source file!");
+	if (ziel.exists() && !ziel.canWrite()) throw new IOException("Locked destination file!");
 	if (ziel.exists() && ziel.isFile()) {
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(ziel.getPath()));
 		writer.write("");

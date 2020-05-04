@@ -1,6 +1,7 @@
 package org.jis.generator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,7 +38,6 @@ public class LayoutGalerieTest {
 	 */
 	@Test
 	public final void testCopyFile() throws URISyntaxException {
-
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
 			fromFile = new File(resourceFolder, "from");
@@ -77,7 +77,7 @@ public class LayoutGalerieTest {
 		galerieUnderTest.copyFile(fromFile, toFile);
 	}
 
-	@Test(expected = FileNotFoundException.class) 
+	@Test(expected = FileNotFoundException.class)
 	public final void testCopyFileOfNotExistingFiles() throws URISyntaxException, FileNotFoundException, IOException {
 		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
 		fromFile = new File(resourceFolder, "from");
@@ -116,10 +116,32 @@ public class LayoutGalerieTest {
 		}
 	}
 
+	@Test(expected = IOException.class)
+	public final void copyFileLockedSourceFile() throws URISyntaxException, FileNotFoundException, IOException {
+		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+		fromFile = new File(resourceFolder, "from");
+		toFile = new File(resourceFolder, "to");
+		try {
+			fromFile.createNewFile();
+			toFile.createNewFile();
+			assertTrue(fromFile.setReadable(false));
+		} catch (IOException e) {
+			fail();
+		}
+		assertTrue(fromFile.exists());
+		assertFalse(fromFile.canRead());
+		assertTrue(toFile.exists());
+		galerieUnderTest.copyFile(fromFile, toFile);
+	}
+
 	@After
 	public final void cleanUp() {
-		if (fromFile.exists() && fromFile != null) {
-			if (!fromFile.delete()) {
+		fromFile.setReadable(true);
+		toFile.setReadable(true);
+		fromFile.setWritable(true);
+		toFile.setWritable(true);
+		if (fromFile != null) {
+			if (fromFile.exists() && !fromFile.delete()) {
 				System.out.println("[" + LayoutGalerieTest.RED + "ERROR" + LayoutGalerieTest.DEFAULT
 						+ "] Couldn't delete fromFile for test!");
 			}
