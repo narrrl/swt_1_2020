@@ -28,6 +28,11 @@ public class LayoutGalerieTest {
 	private File fromFile;
 	private File toFile;
 
+	/**
+	 * Creates a new
+	 * {@link org.jis.generator.LayoutGalerie#LayoutGalerie(org.jis.Main, org.jis.view.dialog.Layout)}
+	 * before ever test
+	 */
 	@Before
 	public final void createGalerie() {
 		galerieUnderTest = new LayoutGalerie(null, null);
@@ -65,28 +70,48 @@ public class LayoutGalerieTest {
 
 	}
 
+	/**
+	 * Test for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} when
+	 * the files are directories.
+	 */
 	@Test(expected = FileNotFoundException.class)
-	public final void testCopyFileOfDirectories() throws URISyntaxException, FileNotFoundException, IOException {
-		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
-		fromFile = new File(resourceFolder, "from");
-		toFile = new File(resourceFolder, "to");
-		fromFile.mkdir();
-		toFile.mkdir();
-		assertTrue(toFile.exists());
-		assertTrue(fromFile.exists());
-		galerieUnderTest.copyFile(fromFile, toFile);
+	public final void testCopyFileOfDirectories() {
+		try {
+			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+			fromFile = new File(resourceFolder, "from");
+			toFile = new File(resourceFolder, "to");
+			fromFile.mkdir();
+			toFile.mkdir();
+			assertTrue(toFile.exists());
+			assertTrue(fromFile.exists());
+			galerieUnderTest.copyFile(fromFile, toFile);
+		} catch (URISyntaxException | IOException e) {
+			fail();
+		}
 	}
 
+	/**
+	 * Test for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} when
+	 * the source file doesn't exist.
+	 */
 	@Test(expected = FileNotFoundException.class)
-	public final void testCopyFileOfNotExistingFiles() throws URISyntaxException, FileNotFoundException, IOException {
-		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
-		fromFile = new File(resourceFolder, "from");
-		toFile = new File(resourceFolder, "to");
-		assertTrue(!toFile.exists());
-		assertTrue(!fromFile.exists());
-		galerieUnderTest.copyFile(fromFile, toFile);
+	public final void testCopyFileOfNotExistingFiles() {
+		try {
+			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+			fromFile = new File(resourceFolder, "from");
+			toFile = new File(resourceFolder, "to");
+			assertTrue(!toFile.exists());
+			assertTrue(!fromFile.exists());
+			galerieUnderTest.copyFile(fromFile, toFile);
+		} catch (URISyntaxException | IOException e) {
+			fail();
+		}
 	}
 
+	/**
+	 * Test for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} when
+	 * the destination file already exists.
+	 */
 	@Test
 	public final void testCopyFileToExistingFile() {
 		try {
@@ -116,16 +141,26 @@ public class LayoutGalerieTest {
 		}
 	}
 
+	/**
+	 * Test for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} when
+	 * the source file is not readable
+	 * 
+	 * @throws IOException when the test is successful
+	 */
 	@Test(expected = IOException.class)
-	public final void copyFileLockedSourceFile() throws URISyntaxException, FileNotFoundException, IOException {
-		final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
-		fromFile = new File(resourceFolder, "from");
-		toFile = new File(resourceFolder, "to");
+	public final void copyFileLockedSourceFile() throws IOException {
 		try {
-			fromFile.createNewFile();
-			toFile.createNewFile();
-			assertTrue(fromFile.setReadable(false));
-		} catch (IOException e) {
+			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+			fromFile = new File(resourceFolder, "from");
+			toFile = new File(resourceFolder, "to");
+			try {
+				fromFile.createNewFile();
+				toFile.createNewFile();
+				assertTrue(fromFile.setReadable(false));
+			} catch (IOException e) {
+				fail();
+			}
+		} catch (URISyntaxException e) {
 			fail();
 		}
 		assertTrue(fromFile.exists());
@@ -134,6 +169,37 @@ public class LayoutGalerieTest {
 		galerieUnderTest.copyFile(fromFile, toFile);
 	}
 
+	/**
+	 * Test for {@link org.jis.generator.LayoutGalerie#copyFile(File, File)} when
+	 * the destination is not writeable
+	 * 
+	 * @throws IOException when the test is successful
+	 */
+	@Test(expected = IOException.class)
+	public final void copyFileLockedDestinationFile() throws IOException {
+		try {
+			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+			fromFile = new File(resourceFolder, "from");
+			toFile = new File(resourceFolder, "to");
+			try {
+				fromFile.createNewFile();
+				toFile.createNewFile();
+				assertTrue(toFile.setWritable(false));
+			} catch (IOException e) {
+				fail();
+			}
+		} catch (URISyntaxException e) {
+			fail();
+		}
+		assertTrue(fromFile.exists());
+		assertFalse(toFile.canWrite());
+		assertTrue(toFile.exists());
+		galerieUnderTest.copyFile(fromFile, toFile);
+	}
+
+	/**
+	 * Deletes all files after every tests and sets the layout galiere to null
+	 */
 	@After
 	public final void cleanUp() {
 		fromFile.setReadable(true);
