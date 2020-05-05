@@ -75,7 +75,7 @@ public class LayoutGalerieTest {
 	 * the files are directories.
 	 */
 	@Test(expected = FileNotFoundException.class)
-	public final void testCopyFileOfDirectories() {
+	public final void testCopyFileOfDirectories() throws FileNotFoundException, IOException {
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
 			fromFile = new File(resourceFolder, "from");
@@ -85,7 +85,7 @@ public class LayoutGalerieTest {
 			assertTrue(toFile.exists());
 			assertTrue(fromFile.exists());
 			galerieUnderTest.copyFile(fromFile, toFile);
-		} catch (URISyntaxException | IOException e) {
+		} catch (URISyntaxException e) {
 			fail();
 		}
 	}
@@ -95,7 +95,7 @@ public class LayoutGalerieTest {
 	 * the source file doesn't exist.
 	 */
 	@Test(expected = FileNotFoundException.class)
-	public final void testCopyFileOfNotExistingFiles() {
+	public final void testCopyFileOfNotExistingFiles() throws FileNotFoundException, IOException {
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
 			fromFile = new File(resourceFolder, "from");
@@ -103,7 +103,7 @@ public class LayoutGalerieTest {
 			assertTrue(!toFile.exists());
 			assertTrue(!fromFile.exists());
 			galerieUnderTest.copyFile(fromFile, toFile);
-		} catch (URISyntaxException | IOException e) {
+		} catch (URISyntaxException e) {
 			fail();
 		}
 	}
