@@ -275,6 +275,27 @@ public class GeneratorTest {
   }
 
   /**
+   * Test for
+   * {@link org.jis.generator.Generator#generateImage(File, File, boolean, int, int, String)}.
+   * Copies a file with swapped height and width.
+   */
+  @Test
+  public void testGenerateImageSwappedHeightAndWidth() throws IOException, URISyntaxException {
+    final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
+    File image = new File(resourceFolder, "imageCopy.jpg");
+    image.createNewFile();
+    ImageIO.write(this.testImage, "jpg", image);
+    File imageDest = new File(resourceFolder, "imageResized.jpg");
+    imageDest.createNewFile();
+    this.generator.generateImage(image, imageDest, false, this.testImage.getHeight(), this.testImage.getWidth(),
+        "");
+    int diff = Math.abs(this.testImage.getHeight() - this.testImage.getWidth());
+    assertEquals(this.testImage.getHeight() - diff, ImageIO.read(new FileInputStream(imageDest)).getHeight());
+
+    assertEquals(this.testImage.getWidth() - diff, ImageIO.read(new FileInputStream(imageDest)).getWidth());
+  }
+
+  /**
    * Check if two images are identical - pixel wise.
    * 
    * @param expected the expected image
