@@ -232,7 +232,9 @@ public class GeneratorTest {
    * !!! {@link org.jis.generator.Generator#rotateImage(BufferedImage, double)} is
    * used in this method and fails every time. Thats because it wants the angle as
    * radian, which is not the case in rotate(file, int). As result rotate(file,
-   * int) always fails.
+   * int) always fails. Also iwparam.setCompressionQuality(0.92f) always throws nullpointer.
+   * 
+   * Patch for generator is in jmjrst.main/sry/test
    */
   @Test
   @Ignore
