@@ -3,142 +3,88 @@
 \usepackage[T1]{fontenc}    % avoid garbled Unicode text in pdf
 \usepackage[german]{babel}  % german hyphenation, quotes, etc
 \usepackage{hyperref}       % detailed hyperlink/pdf configuration
-\hypersetup{                % ‘texdoc hyperref‘ for options
-pdftitle={SWT1: Lastenheftvorlage},%
-bookmarks=true,%
-}
 \usepackage{graphicx}       % provides commands for including figures
 \usepackage{csquotes}       % provides \enquote{} macro for "quotes"
 \usepackage[nonumberlist]{glossaries}     % provides glossary commands
 \usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{tikzsymbols}
 
 \makenoidxglossaries
 %
 % % Glossareinträge
 %
-\newglossaryentry{Dozent}
+\newglossaryentry{Applikation}
 {
-	name=Dozent,
-	plural=Dozenten,
-	description={Leiter eines oder mehrerer Seminartypen},
+	name=Applikation,
+	plural=Applikationen,
+	description={oder auch Anwendungssoftware werden Computerprogramme bezeichnet, die genutzt werden, um eine nützliche oder gewünschte nicht systemtechnische Funktionalität zu bearbeiten oder zu unterstützen. (Beispiele für Anwendungsgebiete sind: \enquote{Bildbearbeitung, E-Mail-Programme, Webbrowser, Textverarbeitung, Tabellenkalkulation oder Computerspiele})}
 }
 
-\newglossaryentry{Kunde}
+\newglossaryentry{iMage}
 {
-	name=Kunde,
-	plural=Kunden,
-	description={(Zahlende) Teilnehmer einer oder mehrerer Seminarveranstaltung/en}
+	name=iMage,
+	plural=-,
+	description={ist eine Anwendungssoftware der Firma Pear Corp und dient dem Anwenden von Kunstfiltern auf bestimmte Bilder}
 }
 
-\newglossaryentry{Seminartyp}
+\newglossaryentry{Komprimierung}
 {
-	name=Seminartyp,
-	plural=Seminartypen,
-	description={Typ einer Lehrveranstaltung (z.B. \enquote{Schöner Malen -- Anfängerkurs})}
+	name=Komprimierung,
+	plural=Komprimierungen,
+	description={ist ein Vorgang um Dateigrößen zu verringern}
 }
 
-\newglossaryentry{Seminarveranstaltung}
+\newglossaryentry{Domain}
 {
-	name=Seminarveranstaltung,
-	plural=Seminarveranstaltungen,
-	description={Tatsächlich stattfindende Lehrveranstaltung (z.B. \enquote{Schöner Malen -- Anfängerkurs, Sommer 2014})}
-}
-
-\newglossaryentry{Computer}
-{
-	name=Computer,
-	description={Gerät zur Verarbeitung zur Daten, das die Daten einlesen, verarbeiten, speichern und ausgeben kann}
+    name=Domain,
+    description={ist vereinfacht gesagt ein Name für einen gewissen Netzwerkbereich (z.B. \enquote{führt google.com zur Google Suchmaschine})}
 }
 
 \title{SWT1: Lastenheftvorlage}
-\author{John Doe, 1234567}
+\author{Nils Pukropp, 2301588}
 
 \begin{document}
 
 \maketitle
 
 %
-% % Hinweise - sollen nicht im endgültigen Dokument erscheinen, daher vor der Abgabe löschen!
-%
-\section{Vorwort}
-Die Dokumentation der Pakete ist häufig lesenswert.
-Insbesondere bei den Paketen hyperref und scrguide (KOMA-Script).
-Wer TeXLivei per Kommandozeile benutzt kann einfach texdoc scrguide aufrufen.
-Windows-Benutzer, die noch nie mit Latex gearbeitet haben, können sich alternativ MikTex anschauen; Mac-Benutzer MacTex.
-
-Zum Erzeugen eines PDFs aus den LATEX-Sourcen empfehlen wir einen Wrapper wie latexmk\footnote{\url{https://www.ctan.org/tex-archive/support/latexmk}} oder einen Editor wie TeXStudio\footnote{\url{http://www.texstudio.org/}} zu verwenden.
-Dieser übernimmt beispielsweise das mehrfache Ausführen von pdflatex, wo es notwendig ist.
-
-Legen Sie für dieses Dokument ein neues Verzeichnis in Ihrem Git an, zum Beispiel \texttt{image.lastenheft} und speichern Sie alle benötigten Dateien darin.
-Speichern Sie keine von Latex generierten Dateien (außer dem PDF) im Git.
-Dies geschieht über die mitgelieferte \texttt{.gitignore}.
-Sie können aber auch Ihre persönliche \texttt{.gitignore} bei Bedarf erweitern.
-
-\section{Technisches Schreiben}
-
-Technisches Schreiben ist wichtig für alle Arten von technischen und wissenschaftlichen Dokumenten, also auch im PSE und in der Bachelorarbeit.
-Es bedeutet vor allem eine präzise Ausdrucksweise und widerspricht dabei einigen Regeln, die man im Deutschunterricht gelernt hat.
-Ein paar praktische Tipps (aus den PSE-Dokumenten von Prof. Snelting):
-\begin{itemize}[nosep]
-\item Vermeide Adjektive.
-      Oft (nicht immer) sind sie unnötig oder ein schlechter Ersatz für einen ungenauen Begriff.
-\item Nebensatzkonstruktionen vermeiden; Hauptsätze verwenden!
-\item Definiere Begriffe klar und verwende keine Synonyme.
-      Synonyme lassen offen, ob genau das gleiche gemeint ist oder nur etwas ähnliches.
-      Definiere spezielle Begriffe, z.B. \gls{Computer}, in einem Glossar und verweise im Dokument entsprechend darauf.
-\item Abkürzungen sollten bei der ersten Verwendung (EV) ausgeschrieben werden.
-      Nach der EV reicht dann die Kurzform.
-\item Versuche konkrete Zahlen und Namen anzugeben.
-      Vermeide ungenaue Ausflüchte wie: meistens, viele, oft, möglichst, üblich, jemand, manche.
-\item Viele kurze Sätze sind einfacher zu verstehen als wenige lange Sätze.
-\item Beispiele machen das Endprodukt greifbarer.
-\item Illustrationen minimalistisch halten (z.B. IKEA Bauanleitung).
-      Eine Information, ein Bild.
-      Lieber mehrere ähnliche Bilder als ein komplexes Bild.
-\item Vermeide Wiederholung, stattdessen Referenzen benutzen.
-      Wiederholungen haben oft subtile Unterschiede, was zu Unklarheit und Verwirrung führt.
-      Bei Änderungen wird oft vergessen, dass Wiederholungen auch angepasst werden müssen.
-\item Versionskontrolle ergibt auch für technische Texte Sinn und nicht nur für Code.
-\end{itemize}
-
-%
 % % Hier beginnt die Gliederung des Lastenhefts
 %
 \section{Zielbestimmung}
-Die Firma Teachware soll durch das Produkt in die Lage versetzt werden, die von ihr veranstalteten Seminare rechnerunterstützt zu verwalten.
+Die Firma Pear Corp soll durch das Produkt in die Lage versetzt werden, Bilder automatisiert aus dem Internet herunterzuladen.
 
 \section{Produkteinsatz}
-Das Produkt dient zur Kunden- und Seminarverwaltung der Firma Teachware. Außerdem sollen verschiedene Anfragen beantwortet werden können.
+Das Produkt dient der Firma Pear Corp zum Beschaffen von frei verfügbaren Bildern übers Internet.
 
-Zielgruppe: die Mitarbeiter der Firma Teachware.
+Zielgruppe: Nutzer der \gls{Applikation} \gls{iMage}
 
-Plattform: PC mit Windows XP oder Nachfolger-Betriebssystem
+Plattform: Arch, React, Nintendo Switch, Playstation 4, xBox One X
 
 \section{Funktionale Anforderungen}
 \begin{itemize}[nosep]
-\item[FA10] Ersterfassung, Änderung und Löschung von \glspl{Kunde} (Teilnehmer, Interessenten).
-\item[FA20] Benachrichtigung der Kunden (Anmeldebestätigung, Abmeldebestätigung, Änderungsmitteilungen, Rechnung, Werbung).
-\item[FA30] Ersterfassung, Änderung und Löschung von Seminarveranstaltungen und Seminartypen.
-\item[FA40] Ersterfassung, Änderung und Löschung von \glspl{Dozent} sowie Zuordnung zu \glspl{Seminarveranstaltung} und \glspl{Seminartyp}.
-\item[FA50] Ersterfassung, Änderung und Löschung von Seminarbuchungen.
-\item[FA60] Erstellung von Rechnungen.
-\item[FA70] Erstellung verschiedener Listen (Teilnehmerliste, Umsatzliste, Teilnehmerbescheinigungen).
-\item[FA80] Anfragen der folgenden Art sollen möglich sein:
-     Wann findet das nächste Seminar X statt? Welche Mitarbeiter der Firma Y haben das Seminar X besucht?
+\item[FA10] Das Suchen von Bildern mit Kriterien(Anzahl, Nutzungsrechte, Dateiformat, Dateigröße)
+\item[FA20] Das Suchen von Bildern mit integrierter \gls{Komprimierung}
+\item[FA30] Das Suchen von Bildern in angegebenen (Sub-)\glspl{Domain}
+\item[FA40] Das Anzeigen der über die Sucher geladenen Bilder mit Kriterien(mittlerer Farbwert, Name, Herkunft)
+\item[FA50] Die Bilder können lokal oder auf den Pear Crop Zentralservern gespeichert werden.
 \end{itemize}
 
 \section{Produktdaten}
 \begin{itemize}[nosep]
-\item[PD10] Es sind relevante Daten über die Kunden zu speichern.
-\item[PD20] Falls ein Kunde zu einer Firma gehört, dann sind relevante Daten über die Firma zu speichern.
-\item[PD30] Es sind relevante Daten über Seminarveranstaltungen, Seminartypen und Dozenten zu speichern.
-\item[PD40] Bucht ein Kunde eine Seminarveranstaltung, dann sind entsprechende Buchungsdaten zu speichern.
+\item[PD10] Es sind relevante Daten über die Nutzer zu speichern.
+\item[PD20] Es sind relevante Daten über die geladenen Bilder zu speichern
+\item[PD30] Es sind Bilder lokal oder über den Zentralserver zu speichern
 \end{itemize}
 
 \section{Nichtfunktionale Anforderungen}
 \begin{itemize}[nosep]
-\item[NF10] Die Funktion /FA80/ darf nicht länger als 15 Sekunden Interaktionszeit benötigen, alle anderen Reaktionszeiten müssen unter 2 Sekunden liegen.
-\item[NF20] Es müssen maximal 50.000 Teilnehmer und maximal 10.000 Seminare verwaltet werden können.
+\item[NF10] Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+\item[NF20] Die Funktion /FA20/ soll für 500 Bilder maximal 20 Minuten benötigen und selbständig nach einer Suchdauer von zwei Stunden abbrechen.
+\item[NF30] Der Zugriff auf den Zentralserver von Pear Corp soll von mindestens einhundert (100) Nutzern gleich-
+zeitig erfolgen können und die Dauer des Hochladens der Bilder maximal linear mit der Anzahl der Bilder
+wachsen.
 \end{itemize}
 
 \section{Systemmodelle}
@@ -146,14 +92,29 @@ Plattform: PC mit Windows XP oder Nachfolger-Betriebssystem
 \subsection{Szenarien}
 
 \subsection{Anwendungsfälle}
-\subsubsection{Seminarorganisation}
-\begin{center}
-\includegraphics[width=0.8\textwidth]{szenario_seminarorganisation.pdf}
-\end{center}
+\subsubsection{Bildersuchen/-anzeigen}
+% I have no idea what I'm doing, send help pls :( 
+\begin{tikzpicture}
+    \fill[blue,opacity=0.3] (2,0) rectangle ++(6,9);
+    \umlsimpleclass[x=5,y=7, width=20ex]{Bildersuche}
+    \umlsimpleclass[x=5,y=1, width=20ex]{Bilder anzeigen}
+    \umlsimpleclass[x=5,y=4]{Geladene Bilder}
+    \path (-0.3,4.4) node[above,inner sep=0pt] {\Strichmaxerl[7]} node[below] {Nutzer};
+    \path (11,4.4) node[above,inner sep=0pt] {\Ofen[5]} node[below] {Server};
+    \coordinate (user) at (0,5);
+    \coordinate (server) at (10,4);
+    \node[draw] at (5,8.5) {Applikation};
+    \draw (user) edge[->, thick,shorten >=2pt,shorten <=2pt] node[sloped, anchor=center, above]{Bilder suchen} (3.2,7);
+    \draw (Bildersuche) edge[->, thick,shorten >=2pt,shorten <=2pt] node[right] {Bilder laden}(Geladene Bilder);
+    \draw (Geladene Bilder) edge[->, thick, shorten >=2pt, shorten <=2pt] node[right] {Bilder laden} (Bilder anzeigen);
+    \draw (Bilder anzeigen) edge[bend right,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,below] {Bilder auf Server speichern} (server);
+    \draw (Bilder anzeigen) edge[bend left,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,below] {Bilder lokal speichern} (0,3.9);
+    \draw (0,3.9) edge[bend left,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,above] {Bilder anzeigen} (3.35,1.35);
+\end{tikzpicture}
 
-Akteure: Kundensachbearbeiter, Seminarsachbearbeiter.
+Akteure: Nutzer, Server.
 
-Anwendungsfälle: Kundenverwaltung, Rechnungsstellung, Anfragebearbeitung, Dozentenverwaltung, Listenverwaltung, Seminarverwaltung.
+Anwendungsfälle: Bildersuche, Bilder anzeigen, Bilder speichern.
 
 Textuelle Beschreibung: (folgt)
 
