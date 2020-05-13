@@ -90,26 +90,37 @@ wachsen.
 \section{Systemmodelle}
 
 \subsection{Szenarien}
+\begin{flushleft}
+    Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+    Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+    Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+    Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+    Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+\end{flushleft}
 
 \subsection{Anwendungsfälle}
-\subsubsection{Bildersuchen/-anzeigen}
-% I have no idea what I'm doing, send help pls :( 
+\subsubsection{Bilder suchen/anzeigen/speichern}
 \begin{tikzpicture}
-    \fill[blue,opacity=0.3] (2,0) rectangle ++(6,9);
-    \umlsimpleclass[x=5,y=7, width=20ex]{Bildersuche}
-    \umlsimpleclass[x=5,y=1, width=20ex]{Bilder anzeigen}
-    \umlsimpleclass[x=5,y=4]{Geladene Bilder}
-    \path (-0.3,4.4) node[above,inner sep=0pt] {\Strichmaxerl[7]} node[below] {Nutzer};
-    \path (11,4.4) node[above,inner sep=0pt] {\Ofen[5]} node[below] {Server};
-    \coordinate (user) at (0,5);
-    \coordinate (server) at (10,4);
-    \node[draw] at (5,8.5) {Applikation};
-    \draw (user) edge[->, thick,shorten >=2pt,shorten <=2pt] node[sloped, anchor=center, above]{Bilder suchen} (3.2,7);
-    \draw (Bildersuche) edge[->, thick,shorten >=2pt,shorten <=2pt] node[right] {Bilder laden}(Geladene Bilder);
-    \draw (Geladene Bilder) edge[->, thick, shorten >=2pt, shorten <=2pt] node[right] {Bilder laden} (Bilder anzeigen);
-    \draw (Bilder anzeigen) edge[bend right,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,below] {Bilder auf Server speichern} (server);
-    \draw (Bilder anzeigen) edge[bend left,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,below] {Bilder lokal speichern} (0,3.9);
-    \draw (0,3.9) edge[bend left,->, thick, shorten >=2pt, shorten <=2pt] node[sloped, anchor=center,above] {Bilder anzeigen} (3.35,1.35);
+    \begin{umlpackage}{Applikation}
+        \umlsimpleclass[x=3,y=7]{Bilder suchen}
+        \umlsimpleclass[x=6,y=5]{Bilder anzeigen}
+        \umlsimpleclass[x=3,y=2]{Bilder lokal speichern}
+        \umlsimpleclass[x=9,y=2]{Bilder online speichern}
+
+        \umldep[geometry=|-,stereo=depend, pos stereo=0.5]{Bilder anzeigen} {Bilder  suchen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder lokal speichern} {Bilder  anzeigen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder online speichern} {Bilder  anzeigen}
+    \end{umlpackage}
+    \umlactor[x=-0.5,y=5]{User}
+
+    \umlassoc[geometry=|-]{User} {Bilder suchen}
+    \umlassoc[]{User} {Bilder anzeigen}
+    \umlassoc[geometry=|-]{User} {Bilder lokal speichern}
+
+    \umlactor[x=12.5,y=5]{Server}
+    \path (12.5,5.25) node[above,inner sep=0pt] {\Ofen[2]};
+
+    \umlassoc[geometry=|-]{Server} {Bilder online speichern}
 \end{tikzpicture}
 
 Akteure: Nutzer, Server.
