@@ -81,5 +81,6 @@ Thumbs.db
 *.run.xml
 *.snm
 *.synctex.gz
+*.synctex(busy)
 *.tdo
 *.toc
