@@ -1,0 +1,51 @@
+\documentclass[parskip=full]{scrartcl}
+\usepackage[utf8]{inputenc} % use utf8 file encoding for TeX sources
+\usepackage[T1]{fontenc}    % avoid garbled Unicode text in pdf
+\usepackage[german]{babel}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{tikzsymbols}
+
+\title{SWT1: UML-Diagramme}
+\author{Nils Pukropp, 2301588}
+
+\begin{document}
+
+\maketitle
+
+\section{Aufgabe 3}
+
+\subsection{a)}
+
+\begin{tikzpicture}
+    \umlsimpleclass[x=0,y=5]{Picture}
+    \umlclass[x=9,y=9]{Pixel}{x : int \\ y : int}{}{}
+
+    \umlaggreg[geometry=-|-,arg1=0\dots1,arg2=$\displaystyle\prod_{d=1}^{x}(1\dots65528)$,pos2=2.65]{Picture}{Pixel}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \begin{umlpackage}{Applikation}
+        \umlsimpleclass[x=3,y=7]{Bilder suchen}
+        \umlsimpleclass[x=6,y=5]{Bilder anzeigen}
+        \umlsimpleclass[x=3,y=2]{Bilder lokal speichern}
+        \umlsimpleclass[x=9,y=2]{Bilder online speichern}
+
+        \umldep[geometry=|-,stereo=depend, pos stereo=0.5]{Bilder anzeigen} {Bilder  suchen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder lokal speichern} {Bilder  anzeigen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder online speichern} {Bilder  anzeigen}
+    \end{umlpackage}
+    \umlactor[x=-0.5,y=5]{User}
+
+    \umlassoc[geometry=|-]{User} {Bilder suchen}
+    \umlassoc[]{User} {Bilder anzeigen}
+    \umlassoc[geometry=|-]{User} {Bilder lokal speichern}
+
+    \umlactor[x=12.5,y=5]{Server}
+    \path (12.5,5.25) node[above,inner sep=0pt] {\Ofen[2]};
+
+    \umlassoc[geometry=|-]{Server} {Bilder online speichern}
+\end{tikzpicture}
+
+
+\end{document}
