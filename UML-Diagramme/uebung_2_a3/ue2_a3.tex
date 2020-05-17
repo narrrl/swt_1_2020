@@ -19,7 +19,7 @@
 
 \begin{tikzpicture}
     \umlsimpleclass[x=0,y=5]{Picture}
-    \umlclass[x=9,y=9]{Pixel}{x : int \\ y : int}{}{}
+    \umlclass[x=9,y=9]{Pixel}{x : unsigned int \\ y : unsigned int}{}{}
 
     \umlaggreg[geometry=-|-,arg1=0\dots1,arg2=$\displaystyle\prod_{d=1}^{x}(1\dots65528)$,pos2=2.65]{Picture}{Pixel}
 \end{tikzpicture}
