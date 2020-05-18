@@ -18,34 +18,18 @@
 \subsection{a)}
 
 \begin{tikzpicture}
-    \umlsimpleclass[x=0,y=5]{Picture}
-    \umlclass[x=9,y=9]{Pixel}{x : unsigned int \\ y : unsigned int}{}{}
+    \umlsimpleclass[x=5,y=6]{Picture}
+    \umlsimpleclass[x=5,y=3]{Block}
+    \umlclass[x=11,y=3]{Bildpunkt}{xCoordinate : unsigned int \\ yCoordinate : unsigned int}{}{}
+    \umlclass[x=16,y=3]{Farbwerte}{codec: int \\ depthMax: int \\ depthMin: int}{}{}
+    \umlsimpleclass[x=16,y=6]{Helligkeitswert}
+    \umlsimpleclass[x=16,y=0]{Buntheitswert}
 
-    \umlaggreg[geometry=-|-,arg1=0\dots1,arg2=$\displaystyle\prod_{d=1}^{x}(1\dots65528)$,pos2=2.65]{Picture}{Pixel}
+    \umlcompo[arg2=$1..8191$]{Picture}{Block}
+    \umlcompo[arg2=$8\times 8$]{Block}{Bildpunkt}
+    \umlassoc[]{Bildpunkt}{Farbwerte}
+    \umlcompo[arg2=$1$]{Farbwerte}{Helligkeitswert}
+    \umlcompo[arg2=$2$]{Farbwerte}{Buntheitswert}
 \end{tikzpicture}
-
-\begin{tikzpicture}
-    \begin{umlpackage}{Applikation}
-        \umlsimpleclass[x=3,y=7]{Bilder suchen}
-        \umlsimpleclass[x=6,y=5]{Bilder anzeigen}
-        \umlsimpleclass[x=3,y=2]{Bilder lokal speichern}
-        \umlsimpleclass[x=9,y=2]{Bilder online speichern}
-
-        \umldep[geometry=|-,stereo=depend, pos stereo=0.5]{Bilder anzeigen} {Bilder  suchen}
-        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder lokal speichern} {Bilder  anzeigen}
-        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder online speichern} {Bilder  anzeigen}
-    \end{umlpackage}
-    \umlactor[x=-0.5,y=5]{User}
-
-    \umlassoc[geometry=|-]{User} {Bilder suchen}
-    \umlassoc[]{User} {Bilder anzeigen}
-    \umlassoc[geometry=|-]{User} {Bilder lokal speichern}
-
-    \umlactor[x=12.5,y=5]{Server}
-    \path (12.5,5.25) node[above,inner sep=0pt] {\Ofen[2]};
-
-    \umlassoc[geometry=|-]{Server} {Bilder online speichern}
-\end{tikzpicture}
-
 
 \end{document}
