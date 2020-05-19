@@ -16,7 +16,7 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
   private BufferedImage picture;
 
   /**
-   * Create a new {@link IMosaiqueShape}.
+   * Create a new {@link IMosaiqueShape}. It
    *
    * @param image
    *          the image to use
@@ -27,11 +27,23 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
    */
   public RectangleShape(final BufferedArtImage image, final int w, final int h) {
     this.picture = ImageUtils.scaleAndCrop(image.toBufferedImage(),w,h);
+
   }
 
   @Override
   public int getAverageColor() {
-    throw new RuntimeException("not implemented");
+    if (this.picture != null) {
+      final int h = this.picture.getHeight();
+      final int w =  this.picture.getWidth();
+      int argb = 0;
+      for(int i = picture.getMinX(); i < h; i++) {
+        for(int i2 = picture.getMinY(); i2 < w; i2++) {
+          argb += this.picture.getRGB(i,i2);
+        }
+      }
+      return argb / (h * w);
+    }
+    return -1;
   }
 
   @Override
