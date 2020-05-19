@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -21,9 +23,9 @@ public class RectangleArtistTest {
     private ArrayList<BufferedArtImage> images;
 
     @Before
-    public final void createArtist() throws IOException {
-        String path = "C:/Users/NilsP/JavaDev/swt_1_2020/iMage/"
-                + "iMage.mosaique/target/test-classes/org/iMage/mosaique/images";
+    public final void createArtist() throws IOException, URISyntaxException {
+        String path = this.getClass().getResource(File.separator).toURI().getPath() + "org"
+                + File.separator + "iMage" + File.separator + "mosaique" + File.separator + "images" + File.separator;
         final File resource = new File(path);
         File[] files = resource.listFiles();
         if (files == null) throw new IOException("no images");
