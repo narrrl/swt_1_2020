@@ -10,59 +10,72 @@ import org.iMage.mosaique.base.ImageUtils;
  * This class represents a rectangle as {@link IMosaiqueShape} based on an {@link BufferedArtImage}.
  *
  * @author Dominik Fuchss
- *
  */
 public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
-  private BufferedImage picture;
+    private final BufferedImage picture;
+    private final int height;
+    private final int width;
 
-  /**
-   * Create a new {@link IMosaiqueShape}. It
-   *
-   * @param image
-   *          the image to use
-   * @param w
-   *          the width
-   * @param h
-   *          the height
-   */
-  public RectangleShape(final BufferedArtImage image, final int w, final int h) {
-    this.picture = ImageUtils.scaleAndCrop(image.toBufferedImage(),w,h);
-
-  }
-
-  @Override
-  public int getAverageColor() {
-    if (this.picture != null) {
-      final int h = this.picture.getHeight();
-      final int w =  this.picture.getWidth();
-      int argb = 0;
-      for(int i = picture.getMinX(); i < h; i++) {
-        for(int i2 = picture.getMinY(); i2 < w; i2++) {
-          argb += this.picture.getRGB(i,i2);
-        }
-      }
-      return argb / (h * w);
+    /**
+     * Create a new {@link IMosaiqueShape}. It
+     *
+     * @param image the image to use
+     * @param w     the width
+     * @param h     the height
+     */
+    public RectangleShape(final BufferedArtImage image, final int w, final int h) {
+        this.picture = ImageUtils.scaleAndCrop(image.toBufferedImage(), w, h);
+        height = this.picture.getHeight();
+        width = this.picture.getWidth();
     }
-    return -1;
-  }
 
-  @Override
-  public BufferedImage getThumbnail() {
-    throw new RuntimeException("not implemented");
-  }
+    @Override
+    public int getAverageColor() {
+        if (this.picture != null) {
+            int argb = 0;
+            for (int i = picture.getMinX(); i < height; i++) {
+                for (int i2 = picture.getMinY(); i2 < width; i2++) {
+                    argb += this.picture.getRGB(i, i2);
+                }
+            }
+            return argb / (height * width);
+        }
+        return 0;
+    }
 
-  @Override
-  public void drawMe(BufferedArtImage targetRect) {
-    throw new RuntimeException("not implemented");
-  }
+    @Override
+    public BufferedImage getThumbnail() {
+        return this.picture;
+    }
 
-  @Override
-  public int getHeight() {
-    throw new RuntimeException("not implemented");
-  }
+    @Override
+    public void drawMe(BufferedArtImage targetRect) {
+        final int heightDif = Math.abs(this.height - targetRect.getHeight());
+        final int widthDif = Math.abs(this.width - targetRect.getWidth());
+        final int h = (this.height >= targetRect.getHeight())
+                ? this.height - heightDif : targetRect.getHeight() - heightDif;
+        final int w = (this.width >= targetRect.getWidth())
+                ? this.width - widthDif : targetRect.getWidth() - widthDif;
+        for (int i = 0; i < h; i++) {
+          for (int i2 = 0; i2 < w; i2++) {
+            targetRect.setRGB(i,i2,picture.getRGB(i,i2));
+          }
+        }
+    }
 
-  @Override
-  public int getWidth() {
-    throw new RuntimeException("not implemented");
-  }
+    @Override
+    public int getHeight() {
+        if (this.picture != null) {
+            return this.height;
+        }
+        return 0;
+    }
+
+    @Override
+    public int getWidth() {
+        if (this.picture != null) {
+            return this.width;
+        }
+        return 0;
+    }
 }
