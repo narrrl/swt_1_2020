@@ -39,9 +39,11 @@ public class RectangleArtistTest {
 
     @Test
     public final void getTileForRegionTestWithSameImage() {
-        BufferedArtImage source = images.get(0);
-        BufferedArtImage testPic = artist.getTileForRegion(source);
-        assertTrue(RectangleArtistTest.imageEquals(source.toBufferedImage(), testPic.toBufferedImage()));
+        for (int i = 0; i < images.size(); i++) {
+            BufferedArtImage source = images.get(i);
+            BufferedArtImage testPic = artist.getTileForRegion(source);
+            assertTrue(RectangleArtistTest.imageEquals(source.toBufferedImage(), testPic.toBufferedImage()));
+        }
     }
 
     static boolean imageEquals(BufferedImage expected, BufferedImage actual) {
