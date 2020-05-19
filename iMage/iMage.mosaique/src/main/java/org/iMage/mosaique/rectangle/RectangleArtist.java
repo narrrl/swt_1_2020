@@ -72,7 +72,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
           alpha += pixel.getAlpha();
         }
       }
-      long total = w * h;
+      float total = w * h * 255;
       return new Color(red / total, green / total, blue / total, alpha / total);
     }
 
