@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
@@ -147,7 +148,7 @@ public class LayoutGalerieTest {
 	 * 
 	 * @throws IOException when the test is successful
 	 */
-	@Test(expected = IOException.class)
+	@Test(expected = IOException.class)@Ignore // Doesn't work under windows!!!
 	public final void copyFileLockedSourceFile() throws IOException {
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
@@ -175,7 +176,7 @@ public class LayoutGalerieTest {
 	 * 
 	 * @throws IOException when the test is successful
 	 */
-	@Test(expected = IOException.class)
+	@Test(expected = IOException.class)@Ignore // Doesn't work under windows!!!
 	public final void copyFileLockedDestinationFile() throws IOException {
 		try {
 			final File resourceFolder = new File(this.getClass().getResource(File.separator).toURI());
