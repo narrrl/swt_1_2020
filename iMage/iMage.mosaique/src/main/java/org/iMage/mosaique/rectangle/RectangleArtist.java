@@ -43,7 +43,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
     }
 
     @Override
-    public BufferedArtImage getTileForRegion(BufferedArtImage region) {
+    public BufferedArtImage getTileForRegion(final BufferedArtImage region) {
         Vector<Integer> rVec = toColorVector(region);
         double dist = euclideanDistance(rVec, toColorVector(images.getFirst()));
         BufferedArtImage out = images.getFirst();
@@ -56,7 +56,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       return out;
     }
 
-    private Color avgColor(final BufferedImage img) {
+    public static Color averageColor(final BufferedImage img) {
       final int h = img.getHeight();
       final int w = img.getWidth();
       long alpha = 0;
@@ -87,7 +87,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
 
     private Vector<Integer> toColorVector(final BufferedArtImage img) {
       Vector<Integer> vec = new Vector<>();
-      Color c = avgColor(img.toBufferedImage());
+      Color c = RectangleArtist.averageColor(img.toBufferedImage());
       vec.add(c.getAlpha());
       vec.add(c.getRed());
       vec.add(c.getGreen());

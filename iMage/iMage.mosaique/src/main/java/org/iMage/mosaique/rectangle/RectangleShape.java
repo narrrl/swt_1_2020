@@ -32,6 +32,7 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
     @Override
     public int getAverageColor() {
         if (this.picture != null) {
+            /*
             int argb = 0;
             for (int i = picture.getMinX(); i < height; i++) {
                 for (int i2 = picture.getMinY(); i2 < width; i2++) {
@@ -39,6 +40,8 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
                 }
             }
             return argb / (height * width);
+            */
+            return RectangleArtist.averageColor(this.picture).getRGB();
         }
         return 0;
     }
