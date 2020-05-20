@@ -20,6 +20,8 @@
     </build>
     <modules>
         <module>jmjrst.main</module>
+        <module>iMage.mosaique</module>
+        <module>iMage.mosaique.cli</module>
     </modules>
     <parent>
         <groupId>edu.kit.ipd.swt1.ss2020</groupId>
