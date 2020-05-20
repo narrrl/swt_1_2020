@@ -9,23 +9,20 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class RectangleArtistTest {
     private RectangleArtist artist;
     private ArrayList<BufferedArtImage> images;
 
     @Before
-    public final void createArtist() throws IOException, URISyntaxException {
-        String path = this.getClass().getResource(File.separator).toURI().getPath() + "org"
-                + File.separator + "iMage" + File.separator + "mosaique" + File.separator + "images" + File.separator;
+    public final void createArtist() throws IOException {
+        String path = Paths.get("").toAbsolutePath().toString() + File.separator + "target"+ File.separator
+                + "test-classes" + File.separator + "org" + File.separator + "iMage" + File.separator + "mosaique"
+                + File.separator + "images" + File.separator;
         final File resource = new File(path);
         File[] files = resource.listFiles();
         if (files == null) throw new IOException("no images");
@@ -36,16 +33,25 @@ public class RectangleArtistTest {
                 images.add(new BufferedArtImage(ImageIO.read(f)));
             }
         }
-        artist = new RectangleArtist(images,256,256);
+        artist = new RectangleArtist(images,16,16);
     }
 
     @Test
     public final void getTileForRegionTestWithSameImage() {
-        for (int i = 0; i < images.size(); i++) {
-            BufferedArtImage source = images.get(i);
+        for (BufferedArtImage source : images) {
             BufferedArtImage testPic = artist.getTileForRegion(source);
             assertTrue(RectangleArtistTest.imageEquals(source.toBufferedImage(), testPic.toBufferedImage()));
         }
+    }
+
+    @Test
+    public final void getTileForRegion() throws IOException {
+        String path = Paths.get("").toAbsolutePath().toString() + File.separator + "target"+ File.separator
+                + "test-classes" + File.separator + "shino.jpg";
+        BufferedArtImage source = new BufferedArtImage(ImageIO.read(new File(path)));
+        BufferedArtImage result1 = artist.getTileForRegion(source);
+        BufferedArtImage result2 = artist.getTileForRegion(source);
+        assertTrue(imageEquals(result1.toBufferedImage(),result2.toBufferedImage()));
     }
 
     static boolean imageEquals(BufferedImage expected, BufferedImage actual) {

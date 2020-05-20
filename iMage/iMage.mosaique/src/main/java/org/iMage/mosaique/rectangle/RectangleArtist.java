@@ -1,10 +1,10 @@
 package org.iMage.mosaique.rectangle;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueArtist;
@@ -15,7 +15,7 @@ import org.iMage.mosaique.base.IMosaiqueArtist;
  * @author Dominik Fuchss
  */
 public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
-    LinkedList<BufferedArtImage> images;
+    HashMap<Color, BufferedImage> imagesMap;
     final int tileWidht;
     final int tileHeigt;
 
@@ -28,32 +28,43 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
      * @throws IllegalArgumentException iff tileWidth or tileHeight &lt;= 0, or images is empty.
      */
     public RectangleArtist(Collection<BufferedArtImage> images, int tileWidth, int tileHeight) {
-        if (images.isEmpty()) throw new IllegalArgumentException("images shouldn't be empty");
-        if (tileWidth == 0 || tileHeight == 0) throw new IllegalArgumentException(tileHeight + " or "
+        if (images.isEmpty()) {
+            throw new IllegalArgumentException("images shouldn't be empty");
+        }
+
+        if (tileWidth == 0 || tileHeight == 0) {
+            throw new IllegalArgumentException(tileHeight + " or "
                 + tileWidth + " is 0");
-        this.images = new LinkedList<>();
-        this.images.addAll(images);
+        }
+        this.imagesMap = new HashMap<>();
+        images.forEach(img -> imagesMap.put(averageColor(img.toBufferedImage()), img.toBufferedImage()));
         this.tileHeigt = tileHeight;
         this.tileWidht = tileWidth;
     }
 
     @Override
     public List<BufferedImage> getThumbnails() {
-        return images.stream().map(BufferedArtImage::toBufferedImage).collect(Collectors.toList());
+        return List.copyOf(imagesMap.values());
     }
 
     @Override
     public BufferedArtImage getTileForRegion(final BufferedArtImage region) {
-        Vector<Integer> rVec = toColorVector(region);
-        double dist = euclideanDistance(rVec, toColorVector(images.getFirst()));
-        BufferedArtImage out = images.getFirst();
-        double tmpDist;
-      for (BufferedArtImage img : images) {
-        tmpDist = euclideanDistance(rVec, toColorVector(img));
-        if (tmpDist < dist) out = img;
-        dist = Math.min(dist, tmpDist);
-      }
-      return out;
+      Color current = averageColor(region.toBufferedImage());
+      Color nearest = null;
+        int shortestDistance;
+        shortestDistance = Integer.MAX_VALUE;
+
+        for (Color c : imagesMap.keySet()) {
+            int distance;
+
+            distance = RectangleArtist.getDistance(current, c);
+
+            if (distance < shortestDistance) {
+                nearest = c;
+                shortestDistance = distance;
+            }
+        }
+      return new BufferedArtImage(imagesMap.get(nearest));
     }
 
     public static Color averageColor(final BufferedImage img) {
@@ -65,7 +76,7 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       long green = 0;
       for (int x = img.getMinX(); x < w; x++) {
         for (int y = img.getMinY(); y < h; y++) {
-          Color pixel = new Color(img.getRGB(x,y));
+          Color pixel = new Color(img.getRGB(x, y));
           red += pixel.getRed();
           blue += pixel.getBlue();
           green += pixel.getGreen();
@@ -76,23 +87,18 @@ public class RectangleArtist implements IMosaiqueArtist<BufferedArtImage> {
       return new Color(red / total, green / total, blue / total, alpha / total);
     }
 
-    private double euclideanDistance(final Vector<Integer> p, final Vector<Integer> q) {
-      if (p.size() != q.size()) throw new IllegalArgumentException("vectors must have same dimensions");
-      double sum = 0;
-      for (int i = 0; i < p.size(); i++) {
-        sum += Math.pow(p.get(i) - q.get(i),2);
-      }
-      return Math.sqrt(sum);
-    }
+    private static int getDistance(final Color current, final Color match) {
+        int redDifference;
+        int greenDifference;
+        int blueDifference;
+        int alphaDifference;
+        alphaDifference = current.getAlpha() - match.getAlpha();
+        redDifference = current.getRed() - match.getRed();
+        greenDifference = current.getGreen() - match.getGreen();
+        blueDifference = current.getBlue() - match.getBlue();
 
-    private Vector<Integer> toColorVector(final BufferedArtImage img) {
-      Vector<Integer> vec = new Vector<>();
-      Color c = RectangleArtist.averageColor(img.toBufferedImage());
-      vec.add(c.getAlpha());
-      vec.add(c.getRed());
-      vec.add(c.getGreen());
-      vec.add(c.getBlue());
-      return vec;
+        return alphaDifference * alphaDifference + redDifference * redDifference + greenDifference * greenDifference
+                + blueDifference * blueDifference;
     }
 
     @Override

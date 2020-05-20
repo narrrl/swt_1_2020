@@ -61,7 +61,7 @@ public class RectangleShape implements IMosaiqueShape<BufferedArtImage> {
                 ? this.width - widthDif : targetRect.getWidth() - widthDif;
         for (int i = 0; i < h; i++) {
           for (int i2 = 0; i2 < w; i2++) {
-            targetRect.setRGB(i,i2,picture.getRGB(i,i2));
+            targetRect.setRGB(i, i2, picture.getRGB(i, i2));
           }
         }
     }
