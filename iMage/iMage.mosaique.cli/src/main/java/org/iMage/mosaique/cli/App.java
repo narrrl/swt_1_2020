@@ -6,6 +6,16 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.iMage.mosaique.MosaiqueEasel;
+import org.iMage.mosaique.base.BufferedArtImage;
+import org.iMage.mosaique.rectangle.RectangleArtist;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class parses all command line parameters and creates a mosaique.
@@ -33,13 +43,38 @@ public final class App {
     }
     // ...this!
 
-    /**
-     * Implement me! Remove exception when done!
-     *
-     * HINT: You have to convert the files from the image folder to Objects of class
-     * org.iMage.mosaique.base.BufferedArtImage before you can use Mosaique.
-     */
-    throw new RuntimeException("not implemented");
+    BufferedImage source;
+    File pictureFolder;
+    File out;
+    int hTile;
+    int wTile;
+    try {
+      source = ImageIO.read(new File(cmd.getOptionValue(CMD_OPTION_INPUT_IMAGE)));
+      pictureFolder = new File(cmd.getOptionValue(CMD_OPTION_INPUT_TILES_DIR));
+      hTile = Integer.parseInt(cmd.getOptionValue(CMD_OPTION_TILE_H));
+      wTile = Integer.parseInt(cmd.getOptionValue(CMD_OPTION_TILE_W));
+      out = new File(cmd.getOptionValue(CMD_OPTION_OUTPUT_IMAGE));
+    } catch (IOException | NumberFormatException e) {
+      System.err.println(e.getMessage());
+      return;
+    }
+    ArrayList<BufferedArtImage> images = new ArrayList<>();
+    for (File f : Objects.requireNonNull(pictureFolder.listFiles())) {
+      try {
+        images.add(new BufferedArtImage(ImageIO.read(f)));
+      } catch (IOException e) {
+        System.err.println(e.getMessage());
+        return;
+      }
+    }
+    MosaiqueEasel easel = new MosaiqueEasel();
+    RectangleArtist artist = new RectangleArtist(images, wTile, hTile);
+    BufferedImage outImage = easel.createMosaique(source, artist);
+    try {
+      ImageIO.write(outImage, "png", out);
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
 
   }
 
