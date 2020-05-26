@@ -2,11 +2,11 @@ package org.iMage.plugins;
 
 import org.jis.Main;
 
-public class TestPlugin extends PluginForJmjrst {
+public class TestPlugin3 extends PluginForJmjrst {
 
     @Override
     public String getName() {
-        return "abc";
+        return "abcd";
     }
 
     @Override
@@ -16,12 +16,12 @@ public class TestPlugin extends PluginForJmjrst {
 
     @Override
     public void init(Main main) {
-        // what ever
+
     }
 
     @Override
     public void run() {
-        // what ever
+
     }
 
     @Override
@@ -31,7 +31,7 @@ public class TestPlugin extends PluginForJmjrst {
 
     @Override
     public void configure() {
-      // what ever
+
     }
 
     @Override

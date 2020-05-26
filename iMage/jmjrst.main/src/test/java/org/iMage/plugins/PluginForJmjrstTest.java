@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 
 public class PluginForJmjrstTest {
-    LinkedList<TestPlugin> list;
+    LinkedList<PluginForJmjrst> list;
 
     /**
      * Creates a new list of plugins {@link org.iMage.plugins.TestPlugin} that extends
@@ -18,8 +18,8 @@ public class PluginForJmjrstTest {
     @Before
     public final void buildUp() {
         list = new LinkedList<>();
-        list.addAll(Arrays.asList(new TestPlugin("abc",0), new TestPlugin("abc",2987074),
-                new TestPlugin("abcd",0), new TestPlugin("abc",-2987074)));
+        list.addAll(Arrays.asList(new TestPlugin(), new TestPlugin2(),
+                new TestPlugin3(), new TestPlugin4()));
     }
 
     /**
