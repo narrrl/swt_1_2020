@@ -47,21 +47,52 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
    */
   public abstract void configure();
 
+  /**
+   * Compares two hashes by subtracting this hashcode with the others hashcode.
+   * if both have the same name, the parameter count gets compared.
+   * @param otherPlugin the compared object
+   * @return subtracted hash
+   */
   @Override
   public int compareTo(PluginForJmjrst otherPlugin) {
-    //TODO: implement me!
-    return 0;
+    if (this == otherPlugin) {
+      return 0;
+    }
+    if (otherPlugin == null) {
+      return this.hashCode();
+    }
+    if (this.getName().equals(otherPlugin.getName())) {
+      return this.getNumberOfParameters() - otherPlugin.getNumberOfParameters();
+    }
+    return this.hashCode() - otherPlugin.hashCode();
   }
 
+  /**
+   * Hashcode is the hash of the name string {@link String#hashCode()}
+   * @return hash for this object
+   */
   @Override
   public int hashCode() {
-    //TODO: implement me!
-    return 0;
+    return this.getName().hashCode();
   }
 
+  /**
+   * Compares the input obj with this.
+   * @param obj the compared object
+   * @return if obj equals this
+   */
   @Override
   public boolean equals(Object obj) {
-    //TODO: implement me!
-    return true;
+    if (obj == null) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    if (obj.getClass() == this.getClass()) {
+      PluginForJmjrst plugin = (PluginForJmjrst) obj;
+      return this.compareTo(plugin) == 0;
+    }
+    return false;
   }
 }
