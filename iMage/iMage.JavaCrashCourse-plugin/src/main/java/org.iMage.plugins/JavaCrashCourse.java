@@ -40,6 +40,10 @@ public class JavaCrashCourse extends PluginForJmjrst {
         System.out.printf("Found %s Java versions since Java 8", RELEASES.size());
     }
 
+    /**
+     * Gets an random Java version from {@link JavaCrashCourse#RELEASES}
+     * and prints a message depending on the version.
+     */
     @Override
     public void run() {
         Random rand = new Random();
