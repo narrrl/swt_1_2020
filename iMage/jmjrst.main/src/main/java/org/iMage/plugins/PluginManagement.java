@@ -28,10 +28,6 @@ public final class PluginManagement {
   public static Iterable<PluginForJmjrst> getPlugins() {
     Iterable<PluginForJmjrst> iterable = () -> ServiceLoader.load(PluginForJmjrst.class).iterator();
     return StreamSupport.stream(iterable.spliterator(), false).sorted().collect(Collectors.toList());
-
-    // ArrayList<PluginForJmjrst> plugins = new ArrayList<>();
-    // ServiceLoader.load(PluginForJmjrst.class).iterator().forEachRemaining(plugins::add);
-    // return plugins.stream().sorted().collect(Collectors.toList());
   }
 
 }

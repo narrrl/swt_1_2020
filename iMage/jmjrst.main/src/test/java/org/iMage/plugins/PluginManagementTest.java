@@ -7,7 +7,7 @@ public class PluginManagementTest {
 
     /**
      * Tests {@link PluginManagement#getPlugins()}
-     * the return of it should be an ordered Iterable of
+     * the return of it should be an ordered {@link Iterable} of
      * {@link TestPlugin}{@link TestPlugin2} {@link TestPlugin3} {@link TestPlugin4}.
      */
     @Test

@@ -12,8 +12,7 @@ public class PluginForJmjrstTest {
     LinkedList<PluginForJmjrst> list;
 
     /**
-     * Creates a new list of plugins {@link org.iMage.plugins.TestPlugin} that extends
-     * {@link org.iMage.plugins.PluginForJmjrst}.
+     * Creates a {@link LinkedList} of objects that are extending {@link PluginForJmjrst}.
      */
     @Before
     public final void buildUp() {
@@ -23,8 +22,8 @@ public class PluginForJmjrstTest {
     }
 
     /**
-     * Tests {@link org.iMage.plugins.PluginForJmjrst#compareTo(PluginForJmjrst)}
-     * and {@link org.iMage.plugins.PluginForJmjrst#hashCode()} by sorting the list
+     * Tests {@link PluginForJmjrst#compareTo(PluginForJmjrst)}
+     * and {@link PluginForJmjrst#hashCode()} by sorting the list
      * and comparing the output with the expected output.
      */
     @Test
@@ -38,7 +37,7 @@ public class PluginForJmjrstTest {
     }
 
     /**
-     * Removes the list of test plugins.
+     * Removes {@link PluginForJmjrstTest#list}.
      */
     @After
     public final void cleanUp() {
