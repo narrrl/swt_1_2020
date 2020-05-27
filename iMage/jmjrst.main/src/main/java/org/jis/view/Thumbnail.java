@@ -35,21 +35,23 @@ import javax.swing.SwingConstants;
 public class Thumbnail extends JPanel {
   private static final long serialVersionUID = 8236547612309540341L;
 
-  private BufferedImage     previewImage;
-  private File              file;
-  private int               maxWidth;
-  private int               maxHeight;
+  private BufferedImage previewImage;
+  private File file;
+  private int maxWidth;
+  private int maxHeight;
 
   public Thumbnail(final String filename, int maxWidth, int maxHeight) throws IOException {
     super();
     this.maxWidth = maxWidth;
     this.maxHeight = maxHeight;
-    if (filename == null) { throw new IllegalArgumentException("Argument filename is null."); }
+    if (filename == null) {
+      throw new IllegalArgumentException("Argument filename is null.");
+    }
     file = new File(filename);
     this.previewImage = ImageIO.read(file);
     initialize();
   }
-  
+
   public Thumbnail(File file, int maxWidth, int maxHeight) throws IOException {
     super();
     this.maxWidth = maxWidth;
@@ -78,8 +80,8 @@ public class Thumbnail extends JPanel {
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-   
-    if(this.previewImage == null)
+
+    if (this.previewImage == null)
       return;
 
     Graphics2D g2 = (Graphics2D) g;
@@ -115,8 +117,7 @@ public class Thumbnail extends JPanel {
       start_x = (getWidth() / 2) - (maxWidth / 2);
       start_y = (getHeight() / 2) - (maxHeight / 2);
       g2.drawImage(bi, start_x, start_y, maxWidth, maxHeight, null);
-    }
-    else {
+    } else {
       Image bi = previewImage.getScaledInstance(maxHeight, maxWidth, Image.SCALE_FAST);
       start_x = (getWidth() / 2) - (maxHeight / 2);
       start_y = (getHeight() / 2) - (maxWidth / 2);
@@ -124,18 +125,15 @@ public class Thumbnail extends JPanel {
     }
   }
 
-  public File getFile()
-  {
+  public File getFile() {
     return file;
   }
 
-  public BufferedImage getImage()
-  {
+  public BufferedImage getImage() {
     return previewImage;
   }
 
-  public void setImage(BufferedImage image)
-  {
+  public void setImage(BufferedImage image) {
     this.previewImage = image;
   }
 }

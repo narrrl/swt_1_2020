@@ -61,9 +61,9 @@ import org.jis.options.Options;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  *
- * <p>
- * This class do the main work and resize the images.
- * </p>
+ *         <p>
+ *         This class do the main work and resize the images.
+ *         </p>
  */
 public class Generator {
   public final static double ROTATE_90 = Math.toRadians(90);
@@ -79,8 +79,7 @@ public class Generator {
   private float quality;
 
   /**
-   * @param m
-   * 		a reference to the Main Class.
+   * @param m a reference to the Main Class.
    */
   public Generator(Main m, float quality) {
     super();
@@ -90,18 +89,15 @@ public class Generator {
   }
 
   /**
-   * @param zipFileName
-   * 		File, the Name of the new ZIP-File
-   * @param selected
-   * 		Vector, the Images for the ZIP-File
+   * @param zipFileName File, the Name of the new ZIP-File
+   * @param selected    Vector, the Images for the ZIP-File
    */
   public void createZip(File zipFileName, Vector<File> selected) {
     try {
       byte[] buffer = new byte[4096];
 
       // Create the new ZIP-Fiel and set the Options
-      ZipOutputStream out = new ZipOutputStream(
-          new BufferedOutputStream(new FileOutputStream(zipFileName), 8096));
+      ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFileName), 8096));
       out.setLevel(Deflater.BEST_COMPRESSION);
       out.setMethod(ZipOutputStream.DEFLATED);
 
@@ -135,19 +131,17 @@ public class Generator {
   }
 
   /**
-   * @param zip
-   * 		boolean, should the output zipped?
+   * @param zip boolean, should the output zipped?
    */
   public void generate(boolean zip) {
-    //check if folder empty
+    // check if folder empty
     if (!zip) {
       File outputDir = new File(o.getOutput_dir());
 
       if (outputDir.isDirectory() && outputDir.listFiles().length > 0) {
         int response = JOptionPane.showConfirmDialog(m.list,
-            m.mes.getString("Generator.53") + " " + o.getOutput_dir() + " " + m.mes
-                .getString("Generator.54"), m.mes.getString("Generator.52"),
-            JOptionPane.YES_NO_OPTION);
+            m.mes.getString("Generator.53") + " " + o.getOutput_dir() + " " + m.mes.getString("Generator.54"),
+            m.mes.getString("Generator.52"), JOptionPane.YES_NO_OPTION);
         if (response != JOptionPane.YES_OPTION) {
           return;
         }
@@ -175,8 +169,7 @@ public class Generator {
         });
 
         fo.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fo.setCurrentDirectory(
-            FileSystemView.getFileSystemView().getParentDirectory(new File(o.getOutput_dir())));
+        fo.setCurrentDirectory(FileSystemView.getFileSystemView().getParentDirectory(new File(o.getOutput_dir())));
         int returnVal = fo.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION)
           zipFile = fo.getSelectedFile();
@@ -186,25 +179,25 @@ public class Generator {
       // generate only selected Images or the whole directory?
       if (m.list.getSelectedValues().size() == 0)
         dir = m.list.getPictures();
-      else if (m.list.getSelectedValues().size() > 0 && m.list.getSelectedValues().size() < m.list
-          .getPictures().length) {
+      else if (m.list.getSelectedValues().size() > 0
+          && m.list.getSelectedValues().size() < m.list.getPictures().length) {
         int response = JOptionPane.showConfirmDialog(m.list, m.mes.getString("Generator.23"),
             m.mes.getString("Generator.24"), JOptionPane.YES_NO_CANCEL_OPTION);
         switch (response) {
-        case JOptionPane.YES_OPTION:
-          Vector<File> vf = m.list.getSelectedValues();
-          dir = new File[vf.size()];
-          for (int i = 0; i < dir.length; i++)
-            dir[i] = vf.get(i);
-          ;
-          break; // generate only the selected images
-        case JOptionPane.NO_OPTION:
-          dir = m.list.getPictures();
-          break; // generate the whole directory
-        case JOptionPane.CANCEL_OPTION:
-          return; // do nothing
-        case JOptionPane.CLOSED_OPTION:
-          return; // do nothing
+          case JOptionPane.YES_OPTION:
+            Vector<File> vf = m.list.getSelectedValues();
+            dir = new File[vf.size()];
+            for (int i = 0; i < dir.length; i++)
+              dir[i] = vf.get(i);
+            ;
+            break; // generate only the selected images
+          case JOptionPane.NO_OPTION:
+            dir = m.list.getPictures();
+            break; // generate the whole directory
+          case JOptionPane.CANCEL_OPTION:
+            return; // do nothing
+          case JOptionPane.CLOSED_OPTION:
+            return; // do nothing
         }
       } else {
         Vector<File> vf = m.list.getSelectedValues();
@@ -217,19 +210,17 @@ public class Generator {
       final File files[] = dir;
       Thread t = new Thread() {
         public void run() {
-          String p_titel =
-              files.length + m.mes.getString("Generator.28") + files[0].getParent() + m.mes
-                  .getString("Generator.29") + (Options.getInstance().getQuality() * 100) + m.mes
-                  .getString("Generator.30");
-          m.p_monitor = new ProgressMonitor(m, p_titel, m.mes.getString("Generator.10"), 0,
-              files.length);
+          String p_titel = files.length + m.mes.getString("Generator.28") + files[0].getParent()
+              + m.mes.getString("Generator.29") + (Options.getInstance().getQuality() * 100)
+              + m.mes.getString("Generator.30");
+          m.p_monitor = new ProgressMonitor(m, p_titel, m.mes.getString("Generator.10"), 0, files.length);
           m.p_monitor.setMillisToPopup(0);
           m.p_monitor.setMillisToDecideToPopup(0);
           m.status.setStatusOn();
           Element[] elements = new Element[files.length];
           for (int i = 0; i < files.length; i++)
-            elements[i] = new Element(i, files[i], Options.getInstance().getHmax(),
-                Options.getInstance().getVmax(), new File(Options.getInstance().getOutput_dir()));
+            elements[i] = new Element(i, files[i], Options.getInstance().getHmax(), Options.getInstance().getVmax(),
+                new File(Options.getInstance().getOutput_dir()));
 
           Producer producer = new Producer(m, elements, m.mes.getString("Generator.22"));
           Thread producerThread = new Thread(producer);
@@ -253,9 +244,8 @@ public class Generator {
           }
 
           try {
-            m.jOutputDoc.insertString(m.jOutputDoc.getLength(),
-                Options.ls + m.mes.getString("Generator.44") + o.getOutput_dir() + m.mes
-                    .getString("Generator.45") + Options.ls, m.readyAtr);
+            m.jOutputDoc.insertString(m.jOutputDoc.getLength(), Options.ls + m.mes.getString("Generator.44")
+                + o.getOutput_dir() + m.mes.getString("Generator.45") + Options.ls, m.readyAtr);
             m.text.setCaretPosition(m.jOutputDoc.getLength());
           } catch (Exception e) {
             System.out.println(Options.ls + m.mes.getString("Generator.46") + Options.ls);
@@ -282,23 +272,15 @@ public class Generator {
    * scale the Image and write it to a specified Directory or File
    * </p>
    *
-   * @param file
-   * 		String, filename for the outputimage
-   * @param image
-   * 		Image, the input image
-   * @param iout
-   * 		File, the directory or file for the scaled image
-   * @param print
-   * 		boolean, Logs for GUI
-   * @param width
-   * 		int, width of the scaled image
-   * @param height
-   * 		int, heigth of the scaled image
+   * @param iout   File, the directory or file for the scaled image
+   * @param print  boolean, Logs for GUI
+   * @param width  int, width of the scaled image
+   * @param height int, heigth of the scaled image
    * @return File
    * @throws IOException
    */
-  public File generateImage(File imageFile, File iout, boolean print, int width, int height,
-      String praefix) throws IOException {
+  public File generateImage(File imageFile, File iout, boolean print, int width, int height, String praefix)
+      throws IOException {
 
     // Output Image
     File fo = new File(iout, praefix + imageFile.getName());
@@ -319,12 +301,10 @@ public class Generator {
       // if image in landscape format?
       if ((w >= h || height == 0) && width > 0) {
         double tmp = (double) w / width;
-        double h1 = h;
-        height = (int) (h1 / tmp);
+        height = (int) ((double) h / tmp);
       } else {
         double tmp = (double) h / height;
-        double w1 = w;
-        width = (int) (w1 / tmp);
+        width = (int) ((double) w / tmp);
       }
 
       // Create new Image
@@ -334,33 +314,28 @@ public class Generator {
       Graphics2D g = bimage.createGraphics();
 
       // set quality of the new Image
-      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
       switch (Options.getInstance().getModus()) {
-      case Options.MODUS_QUALITY:
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-            RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        break;
+        case Options.MODUS_QUALITY:
+          g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+          g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+          break;
 
-      case Options.MODUS_DEFAULT:
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-            RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
-        break;
+        case Options.MODUS_DEFAULT:
+          g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+          g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+          break;
 
-      case Options.MODUS_SPEED:
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-            RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        break;
+        case Options.MODUS_SPEED:
+          g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+          g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+          break;
 
-      default:
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-            RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
-        break;
+        default:
+          g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+          g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+          break;
       }
 
       if (Options.getInstance().isAntialiasing()) {
@@ -395,8 +370,7 @@ public class Generator {
       // Print process info for the GUI
       if (print)
         try {
-          m.jOutputDoc
-              .insertString(m.jOutputDoc.getLength(), m.mes.getString("Generator.20"), m.outputAtr);
+          m.jOutputDoc.insertString(m.jOutputDoc.getLength(), m.mes.getString("Generator.20"), m.outputAtr);
           m.text.setCaretPosition(m.jOutputDoc.getLength());
 
         } catch (Exception e) {
@@ -443,8 +417,7 @@ public class Generator {
    * rotate the Image and write it to the File
    * </p>
    *
-   * @param file
-   * 		File
+   * @param file File
    */
   public void rotate(File file) {
     BufferedImage i = null;
@@ -487,8 +460,7 @@ public class Generator {
       writer.setOutput(new MemoryCacheImageOutputStream(new FileOutputStream(file)));
       ImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());
       iwparam.setCompressionMode(ImageWriteParam.MODE_COPY_FROM_METADATA);
-      IIOMetadata meta_convert = writer
-          .convertImageMetadata(imeta, new ImageTypeSpecifier(i), iwparam);
+      IIOMetadata meta_convert = writer.convertImageMetadata(imeta, new ImageTypeSpecifier(i), iwparam);
       IIOMetadataController imc = meta_convert.getController();
       imc.activate(meta_convert);
 
@@ -505,10 +477,8 @@ public class Generator {
    * Resize a single image
    * </p>
    *
-   * @param file
-   * 		File, input Image File
-   * @param image
-   * 		BufferedImage, input Image
+   * @param file  File, input Image File
+   * @param image BufferedImage, input Image
    */
   public void generateSingle(File file, BufferedImage image) {
 
@@ -519,8 +489,8 @@ public class Generator {
     JFileChooser fo = new JFileChooser();
     fo.setFileFilter(new FileFilter() {
       public boolean accept(File f) {
-        return f.isDirectory() || f.getName().toLowerCase().endsWith(".jpg") || f.getName()
-            .toLowerCase().endsWith(".jpeg");
+        return f.isDirectory() || f.getName().toLowerCase().endsWith(".jpg")
+            || f.getName().toLowerCase().endsWith(".jpeg");
       }
 
       public String getDescription() {
@@ -548,17 +518,14 @@ public class Generator {
 
   /**
    * <p>
-   * Resize the Images without the GUI, when the Programm is started with Arguments
+   * Resize the Images without the GUI, when the Programm is started with
+   * Arguments
    * </p>
    *
-   * @param input
-   * 		File, the Input Directory
-   * @param output
-   * 		File, the Output Directory
-   * @param width
-   * 		int, width of the scaled image
-   * @param height
-   * 		int, heigth of the scaled image
+   * @param input  File, the Input Directory
+   * @param output File, the Output Directory
+   * @param width  int, width of the scaled image
+   * @param height int, heigth of the scaled image
    */
   public void generateText(File input, File output, int width, int height) {
 
@@ -572,24 +539,21 @@ public class Generator {
         for (int i = 0; i < dir.length; i++)
           // text.setText(text.getText() + dir[i].toString() + "\n");
           try {
-            String end = dir[i].toString()
-                .substring(dir[i].toString().lastIndexOf(".") + 1, dir[i].toString().length());
+            String end = dir[i].toString().substring(dir[i].toString().lastIndexOf(".") + 1,
+                dir[i].toString().length());
             if (dir[i].isFile() && (end.equalsIgnoreCase("jpg") || end.equalsIgnoreCase("jpeg")))
               v.addElement(dir[i]);
           } catch (Exception st) {
           }
 
         // print info message
-        System.out.println(v.size() + m.mes.getString("Generator.28") + input.toString() + m.mes
-            .getString("Generator.29") + quality + m.mes.getString("Generator.30") + Options.ls
-            + Options.ls);
+        System.out.println(v.size() + m.mes.getString("Generator.28") + input.toString()
+            + m.mes.getString("Generator.29") + quality + m.mes.getString("Generator.30") + Options.ls + Options.ls);
 
         // resize the images
         for (int i = 0; i < v.size(); i++) {
-          System.out
-              .print(m.mes.getString("Generator.10") + v.elementAt(i).getName() + "\t . . . ");
-          generateImage(v.elementAt(i), output, true, o.getHmax(), o.getVmax(),
-              m.mes.getString("Generator.22"));
+          System.out.print(m.mes.getString("Generator.10") + v.elementAt(i).getName() + "\t . . . ");
+          generateImage(v.elementAt(i), output, true, o.getHmax(), o.getVmax(), m.mes.getString("Generator.22"));
           System.out.println(m.mes.getString("Generator.12"));
         }
         System.out.println(Options.ls + v.size() + m.mes.getString("Generator.46") + Options.ls);
@@ -599,8 +563,7 @@ public class Generator {
     else if (input.isFile()) {
       try {
         // resize single image
-        generateImage(input, output, true, o.getHmax(), o.getVmax(),
-            m.mes.getString("Generator.22"));
+        generateImage(input, output, true, o.getHmax(), o.getVmax(), m.mes.getString("Generator.22"));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -613,8 +576,7 @@ public class Generator {
    * write it to the File
    * </p>
    *
-   * @param file
-   * 		File
+   * @param file File
    */
   public void rotate(File file, int angel) {
     BufferedImage i = null;
@@ -694,8 +656,7 @@ public class Generator {
     }
 
     // Return a new Image
-    BufferedImage returnImage = new BufferedImage(width, height,
-        image.getColorModel().getColorSpace().getType());
+    BufferedImage returnImage = new BufferedImage(width, height, image.getColorModel().getColorSpace().getType());
     Graphics2D g = returnImage.createGraphics();
     g.drawImage(image, transform, null);
 

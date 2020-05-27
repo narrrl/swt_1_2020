@@ -41,16 +41,16 @@ import org.jis.Main;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- * <p>
- * The FileTree to select a directory
- * </p>
+ *         <p>
+ *         The FileTree to select a directory
+ *         </p>
  */
 public class FileTree extends JTree {
   private static final long serialVersionUID = 4317616202609184678L;
 
-  private List              l;
-  private Main              m;
-  private Map<String, Icon>  icons = new HashMap<String, Icon>();
+  private List l;
+  private Main m;
+  private Map<String, Icon> icons = new HashMap<String, Icon>();
 
   /*
    * <p> Render the Items of the FileTree OS specific </p>
@@ -58,33 +58,31 @@ public class FileTree extends JTree {
   private class FileTreeRenderer extends DefaultTreeCellRenderer {
     private static final long serialVersionUID = 7646702219465760758L;
 
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-    {
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf,
+        int row, boolean hasFocus) {
       super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
       Object user = ((DefaultMutableTreeNode) value).getUserObject();
-      if (user instanceof File)
-      {
-        FileSystemView    fsv              = FileSystemView.getFileSystemView();
+      if (user instanceof File) {
+        FileSystemView fsv = FileSystemView.getFileSystemView();
         File f = (File) user;
         String name = f.getName();
         String ext = name.substring(name.lastIndexOf('.') + 1);
-        if (icons.containsKey(ext)) setIcon(icons.get(ext));
-        else setIcon(fsv.getSystemIcon(f));
+        if (icons.containsKey(ext))
+          setIcon(icons.get(ext));
+        else
+          setIcon(fsv.getSystemIcon(f));
         setText(fsv.getSystemDisplayName(f));
       }
       return this;
     }
   }
 
-//  protected FileFilter       filter;
-//  protected DefaultTreeModel model;
+  // protected FileFilter filter;
+  // protected DefaultTreeModel model;
 
   /**
-   * @param m
-   *          a reference to the Main Class
-   * @param l
-   *          a referenc to the List where the files of a directory are
-   *          displayed
+   * @param m a reference to the Main Class
+   * @param l a referenc to the List where the files of a directory are displayed
    */
   public FileTree(Main m, List l) {
     DefaultTreeModel model;
@@ -98,22 +96,20 @@ public class FileTree extends JTree {
     DefaultMutableTreeNode home = new DefaultMutableTreeNode(homeDir);
 
     // windows: begin with home directory
-    if (System.getProperty("os.name").substring(0, 3).equalsIgnoreCase("win"))
-    {
+    if (System.getProperty("os.name").substring(0, 3).equalsIgnoreCase("win")) {
       root = new DefaultMutableTreeNode(homeDir);
       root.add(home);
     }
     // others: begin with home root directory
-    else
-    {
+    else {
       File[] roots = File.listRoots();
       root.add(home);
-      for (int i = 0; i < roots.length; i++)
-      {
-         root.add(new DefaultMutableTreeNode(roots[i]));
+      for (int i = 0; i < roots.length; i++) {
+        root.add(new DefaultMutableTreeNode(roots[i]));
       }
-//      root = new DefaultMutableTreeNode(FileSystemView.getFileSystemView(). new File("/"));
-//      root.add(home);
+      // root = new DefaultMutableTreeNode(FileSystemView.getFileSystemView(). new
+      // File("/"));
+      // root.add(home);
     }
     model = new DefaultTreeModel(root);
     setShowsRootHandles(true);
@@ -123,26 +119,21 @@ public class FileTree extends JTree {
     setModel(model);
     expandPath(home);
 
-    addTreeSelectionListener(new TreeSelectionListener()
-    {
+    addTreeSelectionListener(new TreeSelectionListener() {
 
-      public void valueChanged(TreeSelectionEvent arg0)
-      {
+      public void valueChanged(TreeSelectionEvent arg0) {
         expandPath((DefaultMutableTreeNode) (arg0.getPath().getLastPathComponent()));
       }
 
     });
 
-    addTreeWillExpandListener(new TreeWillExpandListener()
-    {
-      public void treeWillCollapse(TreeExpansionEvent e)
-      {
+    addTreeWillExpandListener(new TreeWillExpandListener() {
+      public void treeWillCollapse(TreeExpansionEvent e) {
         ((DefaultMutableTreeNode) (e.getPath().getLastPathComponent())).removeAllChildren();
         ((DefaultMutableTreeNode) (e.getPath().getLastPathComponent())).add(new DefaultMutableTreeNode(null));
       }
 
-      public void treeWillExpand(TreeExpansionEvent e)
-      {
+      public void treeWillExpand(TreeExpansionEvent e) {
         expandPath((DefaultMutableTreeNode) (e.getPath().getLastPathComponent()));
       }
     });
@@ -155,8 +146,7 @@ public class FileTree extends JTree {
    * 
    * @param d
    */
-  private void expandPath(final DefaultMutableTreeNode d)
-  {
+  private void expandPath(final DefaultMutableTreeNode d) {
     d.removeAllChildren();
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     File[] tempf;
@@ -166,11 +156,12 @@ public class FileTree extends JTree {
     Vector<File> dirs = new Vector<File>();
     Vector<File> files = new Vector<File>();
     for (int i = 0; i < tempf.length; i++)
-      if (tempf[i].isDirectory()) dirs.add(tempf[i]);
-      else
-      {
+      if (tempf[i].isDirectory())
+        dirs.add(tempf[i]);
+      else {
         String fileName = tempf[i].getName().toLowerCase();
-        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) files.add(tempf[i]);
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))
+          files.add(tempf[i]);
       }
 
     File[] sortedDirs = dirs.toArray(new File[0]);
@@ -182,17 +173,14 @@ public class FileTree extends JTree {
 
     elem.addAll(Arrays.asList(sortedDirs));
     // elem.addAll(Arrays.asList(sortedFiles));
-    if (sortedFiles.length > 0)
-    {
+    if (sortedFiles.length > 0) {
       m.menu.gallerie.setEnabled(true);
       m.menu.zippen.setEnabled(true);
       m.menu.gener.setEnabled(true);
       m.toolBar.gallerie.setEnabled(true);
       m.toolBar.zippen.setEnabled(true);
       m.toolBar.gener.setEnabled(true);
-    }
-    else
-    {
+    } else {
       m.menu.gallerie.setEnabled(false);
       m.menu.zippen.setEnabled(false);
       m.menu.gener.setEnabled(false);
@@ -203,48 +191,44 @@ public class FileTree extends JTree {
     l.setPictures(sortedFiles);
 
     DefaultMutableTreeNode tempd = null;
-    for (int i = 0; i < elem.size(); i++)
-    {
-//      if (getFileFilter() == null || getFileFilter().accept(elem.get(i)))
-//      {
-        tempd = new DefaultMutableTreeNode(elem.get(i));
-        if (elem.get(i).isDirectory()) tempd.add(new DefaultMutableTreeNode(null));
-        d.add(tempd);
-//      }
+    for (int i = 0; i < elem.size(); i++) {
+      // if (getFileFilter() == null || getFileFilter().accept(elem.get(i)))
+      // {
+      tempd = new DefaultMutableTreeNode(elem.get(i));
+      if (elem.get(i).isDirectory())
+        tempd.add(new DefaultMutableTreeNode(null));
+      d.add(tempd);
+      // }
     }
     ((DefaultTreeModel) getModel()).reload(d);
     setCursor(Cursor.getDefaultCursor());
   }
 
-//  public void setFileFilter(FileFilter f)
-//  {
-//    filter = f;
-//    expandPath((DefaultMutableTreeNode) model.getRoot());
-//  }
-//
-//  public FileFilter getFileFilter()
-//  {
-//    return filter;
-//  }
-//
-  public void setFileIcon(String ext, Icon icon)
-  {
+  // public void setFileFilter(FileFilter f)
+  // {
+  // filter = f;
+  // expandPath((DefaultMutableTreeNode) model.getRoot());
+  // }
+  //
+  // public FileFilter getFileFilter()
+  // {
+  // return filter;
+  // }
+  //
+  public void setFileIcon(String ext, Icon icon) {
     icons.put(ext, icon);
   }
 
-  public void removeFileIcon(String ext)
-  {
+  public void removeFileIcon(String ext) {
     icons.remove(ext);
   }
 
-  public void updateUI()
-  {
+  public void updateUI() {
     super.updateUI();
     setCellRenderer(new FileTreeRenderer());
   }
 
-  public Dimension getPreferredSize()
-  {
+  public Dimension getPreferredSize() {
     Dimension size = super.getPreferredSize();
     size.width = Math.max(200, size.width);
     size.height = Math.max(400, size.height);

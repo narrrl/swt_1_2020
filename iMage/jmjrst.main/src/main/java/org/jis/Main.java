@@ -55,30 +55,31 @@ import org.jis.view.dialog.OptionsEdit;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- * <p>
- * The Main Class is the Entry Point of the Application and build the GUI
- * </p>
+ *         <p>
+ *         The Main Class is the Entry Point of the Application and build the
+ *         GUI
+ *         </p>
  */
 public class Main extends JFrame {
   private static final long serialVersionUID = 5124271743719044219L;
 
-  private Options           o;
-  private Preview           preview          = null;
-  private JScrollPane       jsp              = new JScrollPane();
-  public JTextPane          text             = new JTextPane();
-  public List               list             = new List(preview);
-  public Menu               menu             = null;
-  public Toolbar            toolBar          = null;
-  public Generator          generator;
-  public Status             status           = null;
-  public boolean            error            = false;
-  public Messages           mes              = null;
-  public StyledDocument     jOutputDoc;
-  public SimpleAttributeSet outputAtr        = new SimpleAttributeSet();
-  public SimpleAttributeSet readyAtr         = new SimpleAttributeSet();
-  public SimpleAttributeSet errorAtr         = new SimpleAttributeSet();
-  public SimpleAttributeSet fileAtr          = new SimpleAttributeSet();
-  public ProgressMonitor    p_monitor        = null;
+  private Options o;
+  private Preview preview = null;
+  private JScrollPane jsp = new JScrollPane();
+  public JTextPane text = new JTextPane();
+  public List list = new List(preview);
+  public Menu menu = null;
+  public Toolbar toolBar = null;
+  public Generator generator;
+  public Status status = null;
+  public boolean error = false;
+  public Messages mes = null;
+  public StyledDocument jOutputDoc;
+  public SimpleAttributeSet outputAtr = new SimpleAttributeSet();
+  public SimpleAttributeSet readyAtr = new SimpleAttributeSet();
+  public SimpleAttributeSet errorAtr = new SimpleAttributeSet();
+  public SimpleAttributeSet fileAtr = new SimpleAttributeSet();
+  public ProgressMonitor p_monitor = null;
 
   private Main() {
     super();
@@ -93,20 +94,16 @@ public class Main extends JFrame {
     init();
   }
 
-  private void init()
-  {
+  private void init() {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices();
     GraphicsDevice gd = gs[0];
     GraphicsConfiguration gc = gd.getDefaultConfiguration();
 
-    try
-    {
+    try {
       UIManager.setLookAndFeel(o.getLookAndFeel());
       SwingUtilities.updateComponentTreeUI(this);
-    }
-    catch (Exception l)
-    {
+    } catch (Exception ignored) {
     }
 
     Rectangle bounds = gc.getBounds();
@@ -123,13 +120,12 @@ public class Main extends JFrame {
     setJMenuBar(menu);
 
     toolBar = new Toolbar(this);
-    
-    
+
     Container c = getContentPane();
     c.setLayout(new BorderLayout());
-    
+
     text.setVisible(true);
-    
+
     text.setEditable(false);
     Font font = new Font(mes.getString("Main.1"), Font.BOLD, 12);
     text.setForeground(Color.black);
@@ -140,13 +136,10 @@ public class Main extends JFrame {
     StyleConstants.setForeground(readyAtr, Color.BLUE);
     StyleConstants.setForeground(errorAtr, Color.RED);
     StyleConstants.setForeground(fileAtr, Color.GREEN);
-    try
-    {
+    try {
       jOutputDoc.insertString(jOutputDoc.getLength(), mes.getString("Main.2") + Options.ls, readyAtr);
       text.setCaretPosition(jOutputDoc.getLength());
-    }
-    catch (Exception e)
-    {
+    } catch (Exception ignored) {
     }
 
     jsp = new JScrollPane(text);
@@ -177,12 +170,9 @@ public class Main extends JFrame {
     jsplit.setOneTouchExpandable(true);
     jsplit.setResizeWeight(0.7D);
 
-    if(o.isTextbox())
-    {
+    if (o.isTextbox()) {
       c.add(jsplit, BorderLayout.CENTER);
-    }
-    else
-    {
+    } else {
       c.add(oben, BorderLayout.CENTER);
     }
     c.add(status, BorderLayout.SOUTH);
@@ -190,22 +180,20 @@ public class Main extends JFrame {
     setVisible(true);
 
     // after the first start of the Application open the Options Dialog
-    if (o.isInitial())
-    {
+    if (o.isInitial()) {
       openOptions();
       o.setInitial(false);
     }
   }
 
-  public static void main(String[] args)
-  {
-    if (args.length == 0) new Main();
-    else
-    {
+  public static void main(String[] args) {
+    if (args.length == 0)
+      new Main();
+    else {
       Messages mes = new Messages(Locale.ENGLISH);
-      if (args.length == 1 && args[0].equalsIgnoreCase(mes.getString("Main.3")))
-      {
-        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5") + System.getProperty("line.separator") + mes.getString("Main.7"));
+      if (args.length == 1 && args[0].equalsIgnoreCase(mes.getString("Main.3"))) {
+        System.out.println(System.getProperty("line.separator") + mes.getString("Main.5")
+            + System.getProperty("line.separator") + mes.getString("Main.7"));
         System.out.println(mes.getString("Main.8"));
         System.out.println(mes.getString("Main.9"));
         System.out.println();
@@ -228,50 +216,48 @@ public class Main extends JFrame {
       int h = 0;
       int v = 0;
 
-      for (int i = 0; i < args.length; i++)
-      {
+      for (int i = 0; i < args.length; i++) {
         System.out.println(args[i]);
-        try
-        {
-          if (args[i].substring(0, 4).equalsIgnoreCase(mes.getString("hmax"))) hmax = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
-          if (args[i].substring(0, 4).equalsIgnoreCase(mes.getString("vmax"))) vmax = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
-          if (args[i].substring(0, 5).equalsIgnoreCase(mes.getString("input"))) input = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
-          if (args[i].substring(0, 6).equalsIgnoreCase(mes.getString("output"))) output = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
-          if (args[i].substring(0, 7).equalsIgnoreCase(mes.getString("quality"))) quality = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
-        }
-        catch (Exception e)
-        {
+        try {
+          if (args[i].substring(0, 4).equalsIgnoreCase(mes.getString("hmax")))
+            hmax = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
+          if (args[i].substring(0, 4).equalsIgnoreCase(mes.getString("vmax")))
+            vmax = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
+          if (args[i].substring(0, 5).equalsIgnoreCase(mes.getString("input")))
+            input = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
+          if (args[i].substring(0, 6).equalsIgnoreCase(mes.getString("output")))
+            output = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
+          if (args[i].substring(0, 7).equalsIgnoreCase(mes.getString("quality")))
+            quality = args[i].substring(args[i].lastIndexOf(mes.getString("=")) + 1, args[i].length()).trim();
+        } catch (Exception e) {
         }
       }
-      if (input == null)
-      {
+      if (input == null) {
         System.out.println(mes.getString("Main.26"));
         System.exit(0);
-      }
-      else fi = new File(input);
-      if (output == null)
-      {
+      } else
+        fi = new File(input);
+      if (output == null) {
         System.out.println(mes.getString("Main.27"));
         System.exit(0);
-      }
-      else fo = new File(output);
-      if (quality == null)
-      {
+      } else
+        fo = new File(output);
+      if (quality == null) {
         System.out.println(mes.getString("Main.28"));
         System.exit(0);
-      }
-      else q = Integer.parseInt(quality);
-      if (hmax == null && vmax == null)
-      {
+      } else
+        q = Integer.parseInt(quality);
+      if (hmax == null && vmax == null) {
         System.out.println(mes.getString("Main.29"));
         System.exit(0);
+      } else {
+        if (hmax != null)
+          h = Integer.parseInt(hmax);
+        if (vmax != null)
+          v = Integer.parseInt(vmax);
       }
-      else
-      {
-        if (hmax != null) h = Integer.parseInt(hmax);
-        if (vmax != null) v = Integer.parseInt(vmax);
-      }
-      System.out.println(mes.getString("Main.30") + fi.toString() + mes.getString("Main.31") + fo.toString() + mes.getString("Main.32") + q); //$NON-NLS-3$
+      System.out.println(mes.getString("Main.30") + fi.toString() + mes.getString("Main.31") + fo.toString()
+          + mes.getString("Main.32") + q); //$NON-NLS-1$
       new Generator(null, q / 100.0F).generateText(fi, fo, h, v);
     }
   }
@@ -281,25 +267,17 @@ public class Main extends JFrame {
    * set the Look and Feel of this Application
    * </p>
    * 
-   * @param look
-   *          the LookAndFeel classname
+   * @param look the LookAndFeel classname
    */
-  public void setLookFeel(String look)
-  {
-    try
-    {
+  public void setLookFeel(String look) {
+    try {
       UIManager.setLookAndFeel(look);
       SwingUtilities.updateComponentTreeUI(this);
-    }
-    catch (Exception l)
-    {
-      try
-      {
+    } catch (Exception l) {
+      try {
         jOutputDoc.insertString(jOutputDoc.getLength(), mes.getString("Main.33") + look + Options.ls, errorAtr);
         text.setCaretPosition(jOutputDoc.getLength());
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
         System.err.println(mes.getString("Main.33") + look);
       }
     }
@@ -308,8 +286,7 @@ public class Main extends JFrame {
   /**
    * open the OptionsEdit Dialog
    */
-  public void openOptions()
-  {
+  public void openOptions() {
     setEnabled(false);
     OptionsEdit oe = new OptionsEdit(this);
     oe.edit();
@@ -319,8 +296,7 @@ public class Main extends JFrame {
   /**
    * restart the GUI, after changing the Language
    */
-  public void restart()
-  {
+  public void restart() {
     this.dispose();
     new Main();
   }

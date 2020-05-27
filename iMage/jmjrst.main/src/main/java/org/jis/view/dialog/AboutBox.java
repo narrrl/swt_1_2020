@@ -34,9 +34,9 @@ import org.jis.Main;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- * <p>
- * The AboutBox shows main informations about this program
- * </p>
+ *         <p>
+ *         The AboutBox shows main informations about this program
+ *         </p>
  */
 public class AboutBox extends JDialog {
   private static final long serialVersionUID = 2036493299703182824L;
@@ -46,8 +46,7 @@ public class AboutBox extends JDialog {
    * shows the Dialog
    * </p>
    * 
-   * @param frame
-   *          a reference to the Main Class
+   * @param frame a reference to the Main Class
    * @throws HeadlessException
    */
   public AboutBox(Main frame) throws HeadlessException {
@@ -76,10 +75,8 @@ public class AboutBox extends JDialog {
     this.add(new JLabel(frame.mes.getString("AboutBox.2")));
     this.add(new JLabel(frame.mes.getString("AboutBox.20")));
     JButton close = new JButton(frame.mes.getString("AboutBox.15"));
-    close.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent arg0)
-      {
+    close.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
         dispose();
       }
     });

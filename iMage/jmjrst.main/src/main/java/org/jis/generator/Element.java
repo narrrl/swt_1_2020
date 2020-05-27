@@ -8,9 +8,7 @@ public class Element {
   public final int width;
   public final int height;
   public final File outDir;
-  
-  
-  
+
   public Element(int index, File file, int width, int height, File outDir) {
     super();
     this.file = file;

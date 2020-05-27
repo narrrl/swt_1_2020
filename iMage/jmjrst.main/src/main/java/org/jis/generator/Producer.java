@@ -31,10 +31,10 @@ import org.jis.options.Options;
 public class Producer implements Runnable {
 
   protected BlockingQueue<Element> queue;
-  public final String              praefix;
-  private Element[]                elements;
-  private boolean                  isDone = false;
-  private Main                     m;
+  public final String praefix;
+  private Element[] elements;
+  private boolean isDone = false;
+  private Main m;
 
   Producer(Main m, Element[] elements, String praefix) {
     this.queue = new LinkedBlockingQueue<Element>(Runtime.getRuntime().availableProcessors() + 1);
@@ -43,36 +43,32 @@ public class Producer implements Runnable {
     this.praefix = praefix;
 
     // print info
-    try
-    {
+    try {
       m.jOutputDoc.remove(0, m.jOutputDoc.getLength());
-      m.jOutputDoc.insertString(
-                                m.jOutputDoc.getLength(),
-                                elements.length + m.mes.getString("Generator.28") + elements[0].file.getParent() + m.mes.getString("Generator.29") + Options.getInstance().getQuality() + m.mes.getString("Generator.30") + Options.ls + Options.ls,
-                                m.outputAtr);
+      m.jOutputDoc.insertString(m.jOutputDoc.getLength(),
+          elements.length + m.mes.getString("Generator.28") + elements[0].file.getParent()
+              + m.mes.getString("Generator.29") + Options.getInstance().getQuality() + m.mes.getString("Generator.30")
+              + Options.ls + Options.ls,
+          m.outputAtr);
       m.text.setCaretPosition(m.jOutputDoc.getLength());
-    }
-    catch (Exception e)
-    {
-      System.out.println(elements.length + m.mes.getString("Generator.31") + elements[0].file.getPath().toString() + m.mes.getString("Generator.32") + Options.getInstance().getQuality() + m.mes.getString("Generator.33") + Options.ls + Options.ls);
+    } catch (Exception e) {
+      System.out.println(elements.length + m.mes.getString("Generator.31") + elements[0].file.getPath().toString()
+          + m.mes.getString("Generator.32") + Options.getInstance().getQuality() + m.mes.getString("Generator.33")
+          + Options.ls + Options.ls);
     }
 
   }
 
-  public void run()
-  {
-    try
-    {
-      for (int i = 0; i < elements.length; i++)
-      {
-        if (m.p_monitor.isCanceled()) break;
+  public void run() {
+    try {
+      for (int i = 0; i < elements.length; i++) {
+        if (m.p_monitor.isCanceled())
+          break;
 
         Element elem = elements[i];
         queue.put(elem);
       }
-    }
-    catch (InterruptedException ex)
-    {
+    } catch (InterruptedException ex) {
       System.err.println("Producer INTERRUPTED");
     }
     isDone = true;
@@ -80,13 +76,11 @@ public class Producer implements Runnable {
 
   int index = 0;
 
-  public synchronized void incrementIndex()
-  {
+  public synchronized void incrementIndex() {
     m.p_monitor.setProgress(++index);
   }
 
-  public boolean isDone()
-  {
+  public boolean isDone() {
     return isDone;
   }
 }
