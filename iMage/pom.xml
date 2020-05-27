@@ -36,9 +36,4 @@
             <url>http://bob.ipd.kit.edu/nexus/repository/maven-public-all/</url>
         </repository>
     </repositories>
-
-
-  <scm>
-    <tag>test</tag>
-  </scm>
 </project>
