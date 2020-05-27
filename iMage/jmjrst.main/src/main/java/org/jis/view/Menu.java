@@ -16,6 +16,11 @@
 package org.jis.view;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -23,42 +28,44 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import org.iMage.plugins.PluginManagement;
 import org.jis.Main;
 import org.jis.listner.MenuListner;
 
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- * <p>
- * This is Menu of the GUI
- * </p>
+ *         <p>
+ *         This is Menu of the GUI
+ *         </p>
  */
 public class Menu extends JMenuBar {
   private static final long serialVersionUID = 1232107393895691717L;
 
-  public JMenuItem          gener;
-  public JMenuItem          zippen;
-  public JMenuItem          gallerie;
-  public JMenuItem          exit;
-  public JMenuItem          set_quality;
-  public JMenuItem          info;
-  public JMenuItem          look_windows;
-  public JMenuItem          look_windows_classic;
-  public JMenuItem          look_nimbus;
-  public JMenuItem          look_metal;
-  public JMenuItem          look_motif;
-  public JMenuItem          look_gtk;
-  public JMenuItem          update_check;
+  public JMenuItem gener;
+  public JMenuItem zippen;
+  public JMenuItem gallerie;
+  public JMenuItem exit;
+  public JMenuItem set_quality;
+  public JMenuItem info;
+  public JMenuItem look_windows;
+  public JMenuItem look_windows_classic;
+  public JMenuItem look_nimbus;
+  public JMenuItem look_metal;
+  public JMenuItem look_motif;
+  public JMenuItem look_gtk;
+  public JMenuItem update_check;
+  private java.util.List<JMenuItem> pluginItems;
 
   /**
-   * @param m
-   *          a reference to the Main class
+   * @param m a reference to the Main class
    */
   public Menu(Main m) {
     super();
     JMenu datei = new JMenu(m.mes.getString("Menu.0"));
     JMenu option = new JMenu(m.mes.getString("Menu.1"));
     JMenu optionen_look = new JMenu(m.mes.getString("Menu.2"));
+    JMenu loadPlugin = new JMenu(m.mes.getString("Menu.17"));
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
 
     gener = new JMenuItem(m.mes.getString("Menu.4"));
@@ -92,6 +99,7 @@ public class Menu extends JMenuBar {
     url = ClassLoader.getSystemResource("icons/system-software-update.png");
     update_check.setIcon(new ImageIcon(url));
 
+
     look_windows = new JMenuItem(m.mes.getString("Menu.8"));
     look_windows_classic = new JMenuItem(m.mes.getString("Menu.9"));
     look_nimbus = new JMenuItem(m.mes.getString("Menu.16"));
@@ -112,9 +120,33 @@ public class Menu extends JMenuBar {
     option.add(set_quality);
     option.addSeparator();
     option.add(update_check);
+    final URL pluginUrl = ClassLoader.getSystemResource("icons/plugin-icon.png");
+    pluginItems = new ArrayList<>();
+    PluginManagement.getPlugins().forEach(plug -> {
+      JMenuItem item = new JMenuItem(plug.getName());
+      item.setIcon(new ImageIcon(pluginUrl));
+      pluginItems.add(item);
+    });
+    if (pluginItems.isEmpty()) {
+      JMenuItem noPlugins = new JMenuItem(m.mes.getString("Menu.18"));
+      noPlugins.setEnabled(false);
+      url = ClassLoader.getSystemResource("icons/no-plugins-icon.png");
+      noPlugins.setIcon(new ImageIcon(url));
+      loadPlugin.add(noPlugins);
+    } else {
+      Collections.reverse(pluginItems);
+      Iterator<JMenuItem> i = pluginItems.iterator();
+      while (i.hasNext()) {
+        loadPlugin.add(i.next());
+        if (i.hasNext()) {
+          loadPlugin.addSeparator();
+        }
+      }
+    }
     about.add(info);
     this.add(datei);
     this.add(option);
+    this.add(loadPlugin);
     this.add(about);
 
     MenuListner al = new MenuListner(m, this);
@@ -132,21 +164,28 @@ public class Menu extends JMenuBar {
     look_gtk.addActionListener(al);
     update_check.addActionListener(al);
 
-    UIManager.LookAndFeelInfo uii[] = UIManager.getInstalledLookAndFeels();
-    for (int i = 0; i < uii.length; i++)
-    {
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-      .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) optionen_look.add(look_windows); //$NON-NLS-1$
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-      .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel")) optionen_look.add(look_windows_classic); //$NON-NLS-1$
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-      .equalsIgnoreCase("com.sun.java.swing.plaf.motif.MotifLookAndFeel")) optionen_look.add(look_motif); //$NON-NLS-1$
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-      .equalsIgnoreCase("javax.swing.plaf.metal.MetalLookAndFeel")) optionen_look.add(look_metal); //$NON-NLS-1$
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-      .equalsIgnoreCase("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) optionen_look.add(look_gtk); //$NON-NLS-1$
-      if (uii[i].toString().substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel")) optionen_look.add(look_nimbus); //$NON-NLS-1$
+    UIManager.LookAndFeelInfo[] uii = UIManager.getInstalledLookAndFeels();
+    for (UIManager.LookAndFeelInfo lookAndFeelInfo : uii) {
+      String substring = lookAndFeelInfo.toString().substring(lookAndFeelInfo.toString().lastIndexOf(" ") + 1,
+          lookAndFeelInfo.toString().lastIndexOf("]"));
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+        optionen_look.add(look_windows); // $NON-NLS-1$
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel"))
+        optionen_look.add(look_windows_classic); // $NON-NLS-1$
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.motif.MotifLookAndFeel"))
+        optionen_look.add(look_motif); // $NON-NLS-1$
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("javax.swing.plaf.metal.MetalLookAndFeel")) //$NON-NLS-1$
+        optionen_look.add(look_metal);
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"))
+        optionen_look.add(look_gtk); // $NON-NLS-1$
+      if (substring // $NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"))
+        optionen_look.add(look_nimbus); // $NON-NLS-1$
     }
   }
 
