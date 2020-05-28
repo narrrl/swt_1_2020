@@ -5,13 +5,12 @@
     <parent>
         <artifactId>iMage</artifactId>
         <groupId>swt1</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>swt1.ub3.a2</groupId>
-    <artifactId>iMage.JavaCrashCourse</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>image.JavaCrashCourse</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
