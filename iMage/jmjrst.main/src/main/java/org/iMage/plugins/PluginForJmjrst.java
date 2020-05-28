@@ -59,7 +59,7 @@ public abstract class PluginForJmjrst implements Comparable<PluginForJmjrst> {
       return 0;
     }
     if (otherPlugin == null) {
-      return this.hashCode();
+      throw new NullPointerException();
     }
     if (this.getName().equals(otherPlugin.getName())) {
       return this.getNumberOfParameters() - otherPlugin.getNumberOfParameters();
