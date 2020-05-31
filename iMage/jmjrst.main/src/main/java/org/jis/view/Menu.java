@@ -132,11 +132,13 @@ public class Menu extends JMenuBar {
       JMenuItem run = new JMenuItem(m.mes.getString("LoadPlugins.RUN"));
       run.setIcon(new ImageIcon(runURL));
       run.addActionListener(listener -> plug.run());
-      JMenuItem configure = new JMenuItem(m.mes.getString("LoadPlugins.Configure"));
-      configure.setIcon(new ImageIcon(configURL));
-      configure.addActionListener(listener -> plug.configure());
       item.add(run);
-      item.add(configure);
+      JMenuItem configure = new JMenuItem(m.mes.getString("LoadPlugins.Configure"));
+      if (plug.isConfigurable()) {
+        configure.setIcon(new ImageIcon(configURL));
+        configure.addActionListener(listener -> plug.configure());
+        item.add(configure);
+      }
       pluginItems.add(item);
     });
     if (pluginItems.isEmpty()) {
