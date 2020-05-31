@@ -15,6 +15,8 @@
  */
 package org.jis.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,11 +122,21 @@ public class Menu extends JMenuBar {
     option.add(set_quality);
     option.addSeparator();
     option.add(update_check);
-    final URL pluginUrl = ClassLoader.getSystemResource("icons/plugin-icon.png");
+    final URL pluginUrl = ClassLoader.getSystemResource("icons/plugin-icon.gif");
+    final URL runURL = ClassLoader.getSystemResource("icons/plugin-run.gif");
+    final URL configURL = ClassLoader.getSystemResource("icons/plugin-config.gif");
     pluginItems = new ArrayList<>();
     PluginManagement.getPlugins().forEach(plug -> {
-      JMenuItem item = new JMenuItem(plug.getName());
+      JMenu item = new JMenu(plug.getName());
       item.setIcon(new ImageIcon(pluginUrl));
+      JMenuItem run = new JMenuItem(m.mes.getString("LoadPlugins.RUN"));
+      run.setIcon(new ImageIcon(runURL));
+      run.addActionListener(listener -> plug.run());
+      JMenuItem configure = new JMenuItem(m.mes.getString("LoadPlugins.Configure"));
+      configure.setIcon(new ImageIcon(configURL));
+      configure.addActionListener(listener -> plug.configure());
+      item.add(run);
+      item.add(configure);
       pluginItems.add(item);
     });
     if (pluginItems.isEmpty()) {
