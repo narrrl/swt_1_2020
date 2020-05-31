@@ -47,9 +47,9 @@ public class JavaCrashCourse extends PluginForJmjrst {
     @Override
     public void run() {
         Random rand = new Random();
-        String randVersion = RELEASES.get(rand.nextInt(RELEASES.size() - 1));
+        String randVersion = RELEASES.get(rand.nextInt(RELEASES.size()));
         switch (randVersion) {
-            case JAVA_14 -> System.out.print("Keeping updated");
+            case JAVA_14 -> System.out.println("Keeping updated");
             case JAVA_8, JAVA_9, JAVA_10, JAVA_11, JAVA_12, JAVA_13 -> System.out.println("Running late");
             default -> System.out.println(this.getName() + "(" + this.getNumberOfParameters() + ")");
         }
