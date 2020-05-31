@@ -1,0 +1,25 @@
+\documentclass[parskip=full]{scrartcl}
+\usepackage[utf8]{inputenc} % use utf8 file encoding for TeX sources
+\usepackage[T1]{fontenc}    % avoid garbled Unicode text in pdf
+\usepackage[german]{babel}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{tikzsymbols}
+
+\title{SWT1: UML-Diagramme}
+\author{Nils Pukropp, 2301588}
+
+\begin{document}
+
+\maketitle
+
+\section{Aufgabe 4}
+
+\begin{tikzpicture}
+    \umlstateinitial[name=initial, x=0,y=0]
+    \umlsimpleclass[y=-2]{Stack<BildPunkte>}
+    \umltrans{initial}{Stack<BildPunkte>}
+    \umlstatedecision[y=-4, name=decision]
+    \umltrans[arg=IsNull?, pos=0.5]{Stack<BildPunkte>}{decision}
+\end{tikzpicture}
+\end{document}
