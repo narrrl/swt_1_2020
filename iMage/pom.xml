@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>swt1</groupId>
-    <artifactId>iMage</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>14</source>
-                    <target>14</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <modules>
-        <module>jmjrst.main</module>
-        <module>iMage.mosaique</module>
-        <module>iMage.mosaique.cli</module>
-        <module>iMage.JavaCrashCourse-plugin</module>
-        <module>iMage.bundle</module>
-    </modules>
     <parent>
         <groupId>edu.kit.ipd.swt1.ss2020</groupId>
         <artifactId>uebungsparent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <groupId>swt1</groupId>
+    <artifactId>iMage</artifactId>
+    <packaging>pom</packaging>
 
     <repositories>
         <repository>
@@ -37,4 +18,11 @@
             <url>http://bob.ipd.kit.edu/nexus/repository/maven-public-all/</url>
         </repository>
     </repositories>
+    <modules>
+	    <module>jmjrst.main</module>
+        <module>iMage.mosaique</module>
+        <module>iMage.mosaique.cli</module>
+        <module>iMage.bundle</module>
+        <module>iMage.JavaCrashCourse-plugin</module>
+    </modules>
 </project>

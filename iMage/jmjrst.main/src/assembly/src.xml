@@ -1,6 +1,5 @@
-<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
 	<id>src</id>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<formats>
@@ -10,22 +9,23 @@
 		<fileSet>
 			<includes>
 				<include>pom.xml</include>
-				<include>*.launch</include>
-				<include>LICENSE</include>
-			</includes>
-		</fileSet>
-
-		<fileSet>
-			<directory>../../</directory>
-			<useDefaultExcludes>false</useDefaultExcludes>
-			<includes>
-				<include>.gitignore</include>
 			</includes>
 		</fileSet>
 
 		<fileSet>
 			<directory>src</directory>
 		</fileSet>
+
+		<fileSet>
+			<useDefaultExcludes>false</useDefaultExcludes>
+			<includes>
+				<include>pom.xml</include>
+				<include>.gitignore</include>
+				<include>*.launch</include>
+				<include>LICENSE</include>
+			</includes>
+		</fileSet>
+
 
 		<fileSet>
 			<directory>target</directory>
@@ -36,4 +36,9 @@
 			<outputDirectory>docs</outputDirectory>
 		</fileSet>
 	</fileSets>
+	<!-- including the workspace .gitignore: <files>
+		<file>
+			<source>../../.gitignore</source>
+		</file>
+	</files> -->
 </assembly>

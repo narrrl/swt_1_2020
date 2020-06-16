@@ -23,32 +23,38 @@ import java.util.ResourceBundle;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- *         <p>
- *         This class controls the messages of the available languages
- *         </p>
+ * <p>
+ * This class controls the messages of the available languages
+ * </p>
  */
 public class Messages implements Serializable {
   private static final long serialVersionUID = -3129495340668876130L;
 
-  private final String BUNDLE_NAME = "org.jis.messages";
+  private final String   BUNDLE_NAME = "org.jis.messages";
 
   private ResourceBundle RESOURCE_BUNDLE;
 
   /**
-   * @param l the locale to use the correct resource bundle
+   * @param l
+   *          the locale to use the correct resource bundle
    */
   public Messages(Locale l) {
     RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, l);
   }
 
   /**
-   * @param key the message key
+   * @param key
+   *          the message key
    * @return returns the message of the specified language
    */
-  public String getString(String key) {
-    try {
+  public String getString(String key)
+  {
+    try
+    {
       return RESOURCE_BUNDLE.getString(key);
-    } catch (MissingResourceException e) {
+    }
+    catch (MissingResourceException e)
+    {
       e.printStackTrace();
       return '!' + key + '!';
     }

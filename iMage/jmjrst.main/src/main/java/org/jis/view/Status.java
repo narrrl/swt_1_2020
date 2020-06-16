@@ -26,25 +26,30 @@ import org.jis.Main;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- *         <p>
- *         The Status Panel of the GUI
- *         </p>
+ * <p>
+ * The Status Panel of the GUI
+ * </p>
  */
 public class Status extends JPanel {
   private static final long serialVersionUID = 3066478234356371570L;
 
-  private JProgressBar status;
+  private JProgressBar      status;
 
   public Status(Main m) {
     super(new BorderLayout());
     JLabel version = new JLabel(" " + m.mes.getString("AboutBox.22") + " " + m.mes.getString("Version"));
-    Thread t = new Thread() {
-      public void run() {
-        try {
+    Thread t = new Thread()
+    {
+      public void run()
+      {
+        try
+        {
           status = new JProgressBar(0, 10);
           status.setValue(0);
           add(status, BorderLayout.EAST);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
         }
       }
     };
@@ -56,14 +61,16 @@ public class Status extends JPanel {
   /**
    * Set the status of the ProgressBar on
    */
-  public void setStatusOn() {
+  public void setStatusOn()
+  {
     status.setIndeterminate(true);
   }
 
   /**
    * Set the status of the ProgressBar off
    */
-  public void setStatusOff() {
+  public void setStatusOff()
+  {
     status.setIndeterminate(false);
   }
 }

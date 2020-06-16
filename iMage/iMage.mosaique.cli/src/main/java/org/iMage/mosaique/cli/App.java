@@ -1,11 +1,6 @@
 package org.iMage.mosaique.cli;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.iMage.mosaique.MosaiqueEasel;
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.rectangle.RectangleArtist;
@@ -13,9 +8,10 @@ import org.iMage.mosaique.rectangle.RectangleArtist;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 /**
  * This class parses all command line parameters and creates a mosaique.
@@ -33,7 +29,6 @@ public final class App {
   private static final String CMD_OPTION_TILE_H = "h";
 
   public static void main(String[] args) {
-    // Don't touch...
     CommandLine cmd = null;
     try {
       cmd = App.doCommandLineParsing(args);
@@ -41,51 +36,123 @@ public final class App {
       System.err.println("Wrong command line arguments given: " + e.getMessage());
       System.exit(1);
     }
-    // ...this!
 
-    BufferedImage source;
-    File pictureFolder;
-    File out;
-    int hTile;
-    int wTile;
-    try {
-      source = ImageIO.read(new File(cmd.getOptionValue(CMD_OPTION_INPUT_IMAGE)));
-      pictureFolder = new File(cmd.getOptionValue(CMD_OPTION_INPUT_TILES_DIR));
-      hTile = Integer.parseInt(cmd.getOptionValue(CMD_OPTION_TILE_H));
-      wTile = Integer.parseInt(cmd.getOptionValue(CMD_OPTION_TILE_W));
-      out = new File(cmd.getOptionValue(CMD_OPTION_OUTPUT_IMAGE));
-    } catch (IOException | NumberFormatException e) {
-      System.err.println(e.getMessage());
-      return;
+    BufferedImage inputImage = loadInput(cmd);
+    List<BufferedArtImage> tiles = loadTiles(cmd);
+
+    int tileW = cmd.hasOption(App.CMD_OPTION_TILE_W) ?
+        Integer.parseInt(cmd.getOptionValue(App.CMD_OPTION_TILE_W)) :
+        inputImage.getWidth() / 10;
+
+    int tileH = cmd.hasOption(App.CMD_OPTION_TILE_H) ?
+        Integer.parseInt(cmd.getOptionValue(App.CMD_OPTION_TILE_H)) :
+        inputImage.getHeight() / 10;
+
+    if (tileW <= 0 || tileH <= 0 || tileW > inputImage.getWidth() || tileH > inputImage
+        .getHeight()) {
+      System.err.println("tileW/H is invalid: " + tileW + "," + tileH);
+      System.exit(1);
     }
-    ArrayList<BufferedArtImage> images = new ArrayList<>();
-    for (File f : Objects.requireNonNull(pictureFolder.listFiles())) {
-      try {
-        images.add(new BufferedArtImage(ImageIO.read(f)));
-      } catch (IOException e) {
-        System.err.println(e.getMessage());
-        return;
+
+    MosaiqueEasel me = new MosaiqueEasel();
+    RectangleArtist ra = new RectangleArtist(tiles, tileW, tileH);
+    BufferedImage outputImage = me.createMosaique(inputImage, ra);
+
+    writeOutput(cmd, outputImage);
+
+  }
+
+  private static BufferedImage loadInput(CommandLine cmd) {
+    try {
+      String path = cmd.getOptionValue(App.CMD_OPTION_INPUT_IMAGE);
+      if (!path.toLowerCase().endsWith(".png") && !path.toLowerCase().endsWith(".jpeg") && !path
+          .toLowerCase().endsWith("jpg")) {
+        System.err.println("Input is neither PNG nor JPG");
+        System.exit(1);
       }
-    }
-    MosaiqueEasel easel = new MosaiqueEasel();
-    RectangleArtist artist = new RectangleArtist(images, wTile, hTile);
-    BufferedImage outImage = easel.createMosaique(source, artist);
-    try {
-      ImageIO.write(outImage, "png", out);
+      return ImageIO.read(App.ensureFile(path, false));
     } catch (IOException e) {
       System.err.println(e.getMessage());
+      System.exit(1);
+      throw new Error("unreachable code");
+    }
+  }
+
+  private static List<BufferedArtImage> loadTiles(CommandLine cmd) {
+    List<BufferedArtImage> tiles = new ArrayList<>();
+    try {
+
+      String tileDir = cmd.getOptionValue(App.CMD_OPTION_INPUT_TILES_DIR);
+
+      File directory = App.ensureFile(tileDir, false);
+      FileFilter isImage = f -> f.getName().toLowerCase().endsWith(".jpeg") || f.getName()
+          .toLowerCase().endsWith(".jpg") || f.getName().toLowerCase().endsWith(".png");
+
+      for (File file : directory.listFiles(isImage)) {
+        BufferedImage bi = ImageIO.read(file);
+        BufferedArtImage bai = new BufferedArtImage(bi);
+        tiles.add(bai);
+      }
+
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+      System.exit(1);
     }
 
+    if (tiles.size() < 10) {
+      System.err.println("Not enough tiles found");
+      System.exit(1);
+    }
+
+    return tiles;
+
+  }
+
+  private static void writeOutput(CommandLine cmd, BufferedImage outputImage) {
+    File output = null;
+    try {
+      output = App.ensureFile(cmd.getOptionValue(App.CMD_OPTION_OUTPUT_IMAGE), true);
+      ImageIO.write(outputImage, "png", output);
+    } catch (IOException e) {
+      System.err.println("Could not save image: " + e.getMessage());
+      System.exit(1);
+    }
+
+  }
+
+  /**
+   * Ensure that a file exists (or create if allowed by parameter).
+   *
+   * @param path
+   *     the path to the file
+   * @param create
+   *     indicates whether creation is allowed
+   * @return the file
+   * @throws IOException
+   *     if something went wrong
+   */
+  private static File ensureFile(String path, boolean create) throws IOException {
+    File file = new File(path);
+    if (file.exists()) {
+      return file;
+    }
+    if (create) {
+      file.createNewFile();
+      return file;
+    }
+
+    // File not available
+    throw new IOException("The specified file does not exist: " + path);
   }
 
   /**
    * Parse and check command line arguments
    *
    * @param args
-   *          command line arguments given by the user
+   *     command line arguments given by the user
    * @return CommandLine object encapsulating all options
    * @throws ParseException
-   *           if wrong command line parameters or arguments are given
+   *     if wrong command line parameters or arguments are given
    */
   private static CommandLine doCommandLineParsing(String[] args) throws ParseException {
     Options options = new Options();

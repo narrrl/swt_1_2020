@@ -1,28 +1,21 @@
 /*
- * Copyright 2007 Johannes Geppert 
- * 
- * Licensed under the GPL, Version 2.0 (the "License"); 
+ * Copyright 2007 Johannes Geppert
+ *
+ * Licensed under the GPL, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  * You may obtain a copy of the License at
- * http://www.fsf.org/licensing/licenses/gpl.txt 
- * 
- * Unless required by applicable law or agreed to in writing, 
- * software distributed under the License is distributed on 
+ * http://www.fsf.org/licensing/licenses/gpl.txt
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the 
+ * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
 package org.jis.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -30,13 +23,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import org.iMage.plugins.PluginForJmjrst;
 import org.iMage.plugins.PluginManagement;
 import org.jis.Main;
 import org.jis.listner.MenuListner;
 
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
- * 
+ *
  *         <p>
  *         This is Menu of the GUI
  *         </p>
@@ -57,18 +51,21 @@ public class Menu extends JMenuBar {
   public JMenuItem look_motif;
   public JMenuItem look_gtk;
   public JMenuItem update_check;
-  private java.util.List<JMenuItem> pluginItems;
 
   /**
-   * @param m a reference to the Main class
+   * @param m
+   *          a reference to the Main class
    */
   public Menu(Main m) {
     super();
     JMenu datei = new JMenu(m.mes.getString("Menu.0"));
     JMenu option = new JMenu(m.mes.getString("Menu.1"));
     JMenu optionen_look = new JMenu(m.mes.getString("Menu.2"));
-    JMenu loadPlugin = new JMenu(m.mes.getString("Menu.17"));
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
+
+    // Add Plugins to JMJRST
+    JMenu plugins = new JMenu("Load plug-ins");
+    this.createPluginMenu(m, plugins);
 
     gener = new JMenuItem(m.mes.getString("Menu.4"));
     URL url = ClassLoader.getSystemResource("icons/media-playback-start.png");
@@ -101,7 +98,6 @@ public class Menu extends JMenuBar {
     url = ClassLoader.getSystemResource("icons/system-software-update.png");
     update_check.setIcon(new ImageIcon(url));
 
-
     look_windows = new JMenuItem(m.mes.getString("Menu.8"));
     look_windows_classic = new JMenuItem(m.mes.getString("Menu.9"));
     look_nimbus = new JMenuItem(m.mes.getString("Menu.16"));
@@ -122,45 +118,10 @@ public class Menu extends JMenuBar {
     option.add(set_quality);
     option.addSeparator();
     option.add(update_check);
-    final URL pluginUrl = ClassLoader.getSystemResource("icons/plugin-icon.gif");
-    final URL runURL = ClassLoader.getSystemResource("icons/plugin-run.gif");
-    final URL configURL = ClassLoader.getSystemResource("icons/plugin-config.gif");
-    pluginItems = new ArrayList<>();
-    PluginManagement.getPlugins().forEach(plug -> {
-      JMenu item = new JMenu(plug.getName());
-      item.setIcon(new ImageIcon(pluginUrl));
-      JMenuItem run = new JMenuItem(m.mes.getString("LoadPlugins.RUN"));
-      run.setIcon(new ImageIcon(runURL));
-      run.addActionListener(listener -> plug.run());
-      item.add(run);
-      JMenuItem configure = new JMenuItem(m.mes.getString("LoadPlugins.Configure"));
-      if (plug.isConfigurable()) {
-        configure.setIcon(new ImageIcon(configURL));
-        configure.addActionListener(listener -> plug.configure());
-        item.add(configure);
-      }
-      pluginItems.add(item);
-    });
-    if (pluginItems.isEmpty()) {
-      JMenuItem noPlugins = new JMenuItem(m.mes.getString("Menu.18"));
-      noPlugins.setEnabled(false);
-      url = ClassLoader.getSystemResource("icons/no-plugins-icon.png");
-      noPlugins.setIcon(new ImageIcon(url));
-      loadPlugin.add(noPlugins);
-    } else {
-      Collections.reverse(pluginItems);
-      Iterator<JMenuItem> i = pluginItems.iterator();
-      while (i.hasNext()) {
-        loadPlugin.add(i.next());
-        if (i.hasNext()) {
-          loadPlugin.addSeparator();
-        }
-      }
-    }
     about.add(info);
     this.add(datei);
     this.add(option);
-    this.add(loadPlugin);
+    this.add(plugins);
     this.add(about);
 
     MenuListner al = new MenuListner(m, this);
@@ -178,29 +139,76 @@ public class Menu extends JMenuBar {
     look_gtk.addActionListener(al);
     update_check.addActionListener(al);
 
-    UIManager.LookAndFeelInfo[] uii = UIManager.getInstalledLookAndFeels();
-    for (UIManager.LookAndFeelInfo lookAndFeelInfo : uii) {
-      String substring = lookAndFeelInfo.toString().substring(lookAndFeelInfo.toString().lastIndexOf(" ") + 1,
-          lookAndFeelInfo.toString().lastIndexOf("]"));
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
-        optionen_look.add(look_windows); // $NON-NLS-1$
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel"))
-        optionen_look.add(look_windows_classic); // $NON-NLS-1$
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.motif.MotifLookAndFeel"))
-        optionen_look.add(look_motif); // $NON-NLS-1$
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("javax.swing.plaf.metal.MetalLookAndFeel")) //$NON-NLS-1$
+    UIManager.LookAndFeelInfo uii[] = UIManager.getInstalledLookAndFeels();
+    for (int i = 0; i < uii.length; i++) {
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) {
+        optionen_look.add(look_windows);
+      }
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel")) {
+        optionen_look.add(look_windows_classic);
+      }
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.motif.MotifLookAndFeel")) {
+        optionen_look.add(look_motif);
+      }
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("javax.swing.plaf.metal.MetalLookAndFeel")) {
         optionen_look.add(look_metal);
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"))
-        optionen_look.add(look_gtk); // $NON-NLS-1$
-      if (substring // $NON-NLS-1$ //$NON-NLS-2$
-          .equalsIgnoreCase("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"))
-        optionen_look.add(look_nimbus); // $NON-NLS-1$
+      }
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.gtk.GTKLookAndFeel")) {
+        optionen_look.add(look_gtk);
+      }
+      if (uii[i].toString()
+          .substring(uii[i].toString().lastIndexOf(" ") + 1, uii[i].toString().lastIndexOf("]")) //$NON-NLS-1$ //$NON-NLS-2$
+          .equalsIgnoreCase("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel")) {
+        optionen_look.add(look_nimbus);
+      }
     }
+  }
+
+  /**
+   * Create the "Plugin" menu.
+   *
+   * @param m
+   *          the main reference
+   * @param plugins
+   *          the menu for plugin buttons
+   */
+  private void createPluginMenu(Main m, JMenu plugins) {
+    for (PluginForJmjrst plugin : PluginManagement.getPlugins()) {
+      plugin.init(m);
+
+      JMenuItem start = new JMenuItem("Start " + plugin.getName());
+      start.addActionListener(e -> plugin.run());
+      plugins.add(start);
+
+      if (plugin.isConfigurable()) {
+        JMenuItem configure = new JMenuItem("Configure " + plugin.getName());
+        configure.addActionListener(e -> plugin.configure());
+        plugins.add(configure);
+      }
+
+      plugins.addSeparator();
+
+    }
+    if (plugins.getItemCount() != 0) {
+      // Remove last separator
+      plugins.remove(plugins.getItemCount() - 1);
+    } else {
+      // Add indicator for no plugins
+      JMenuItem none = new JMenuItem("(No plug-ins available!)");
+      none.setEnabled(false);
+      plugins.add(none);
+    }
+
   }
 
 }

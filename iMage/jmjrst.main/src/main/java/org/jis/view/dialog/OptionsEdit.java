@@ -59,38 +59,43 @@ import org.jis.options.Options;
  *         </p>
  */
 public class OptionsEdit {
-  JDialog f;
+  JDialog    f;
 
-  String locals[] = { "Deutsch", "English" };
-  String sizes[] = { "320 x 240", "640 x 480", "800 x 600", "1024 x 768", "1280 x 1024", "1600 x 1200" };
-  JComboBox list_local = new JComboBox(locals);
-  JComboBox list_sizes = new JComboBox(sizes);
-  JTextField t_output = new JTextField();
-  JTextField t_copyright = new JTextField();
-  JTextField t_maxw = new JTextField();
-  JTextField t_maxh = new JTextField();
-  JCheckBox c_antialiasing = new JCheckBox();
-  JCheckBox c_metadata = new JCheckBox();
-  JCheckBox c_textbox = new JCheckBox();
-  JCheckBox c_copyright = new JCheckBox();
-  JPanel p_copyright = new JPanel();
-  JButton b_output = new JButton();
-  JButton b_copyright = new JButton();
-  JButton b_ok = new JButton();
-  JButton b_exit = new JButton();
+  String     locals[]       = {
+      "Deutsch", "English"
+                            };
+  String     sizes[]        = {
+      "320 x 240", "640 x 480", "800 x 600", "1024 x 768", "1280 x 1024", "1600 x 1200"
+                            };
+  JComboBox  list_local     = new JComboBox(locals);
+  JComboBox  list_sizes     = new JComboBox(sizes);
+  JTextField t_output       = new JTextField();
+  JTextField t_copyright    = new JTextField();
+  JTextField t_maxw         = new JTextField();
+  JTextField t_maxh         = new JTextField();
+  JCheckBox  c_antialiasing = new JCheckBox();
+  JCheckBox  c_metadata     = new JCheckBox();
+  JCheckBox  c_textbox      = new JCheckBox();
+  JCheckBox  c_copyright    = new JCheckBox();
+  JPanel     p_copyright    = new JPanel();
+  JButton    b_output       = new JButton();
+  JButton    b_copyright    = new JButton();
+  JButton    b_ok           = new JButton();
+  JButton    b_exit         = new JButton();
 
-  JSlider s_quality = new JSlider(0, 100);
-  JSlider s_rendermodus = new JSlider(0, 2);
-  JLabel l_qual = new JLabel(s_quality.getValue() + "%"); //$NON-NLS-1$
+  JSlider    s_quality      = new JSlider(0, 100);
+  JSlider    s_rendermodus  = new JSlider(0, 2);
+  JLabel     l_qual         = new JLabel(s_quality.getValue() + "%"); //$NON-NLS-1$
 
-  Options opts;
-  Main main;
-  File file;
+  Options    opts;
+  Main       main;
+  File       file;
 
   /**
    * shows the Options Edit Dialog
    */
-  public void edit() {
+  public void edit()
+  {
     f = new JDialog(main, main.mes.getString("OptionsEdit.8"));
     JLabel l_local = new JLabel(main.mes.getString("OptionsEdit.7"));
     JLabel l_textbox = new JLabel(main.mes.getString("OptionsEdit.10"));
@@ -121,10 +126,13 @@ public class OptionsEdit {
     GraphicsDevice[] gs = ge.getScreenDevices();
     GraphicsDevice gd = gs[0];
     GraphicsConfiguration gc = gd.getDefaultConfiguration();
-    try {
+    try
+    {
       UIManager.setLookAndFeel(opts.getLookAndFeel());
       SwingUtilities.updateComponentTreeUI(f);
-    } catch (Exception l) {
+    }
+    catch (Exception l)
+    {
       System.err.println(l);
     }
     Rectangle bounds = gc.getBounds();
@@ -141,7 +149,8 @@ public class OptionsEdit {
     // t_input.setText(opts.getInput_dir());
     t_output.setEditable(false);
 
-    if (opts != null) {
+    if (opts != null)
+    {
       t_output.setText(opts.getOutput_dir());
       t_maxw.setText("" + opts.getHmax());
       t_maxh.setText("" + opts.getVmax());
@@ -155,11 +164,11 @@ public class OptionsEdit {
 
       s_quality.setValue(Float.valueOf((opts.getQuality() * 100.0F)).intValue());
       s_rendermodus.setValue(opts.getModus());
-      if (opts.getLocal().getLanguage().equalsIgnoreCase("de"))
-        list_local.setSelectedIndex(0);
-      if (opts.getLocal().getLanguage().equalsIgnoreCase("en"))
-        list_local.setSelectedIndex(1);
-    } else {
+      if (opts.getLocal().getLanguage().equalsIgnoreCase("de")) list_local.setSelectedIndex(0);
+      if (opts.getLocal().getLanguage().equalsIgnoreCase("en")) list_local.setSelectedIndex(1);
+    }
+    else
+    {
       t_output.setText(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath());
       t_maxw.setText("" + 1024);
       t_maxh.setText("" + 768);
@@ -271,7 +280,8 @@ public class OptionsEdit {
   }
 
   /**
-   * @param m a reference to the Main Class
+   * @param m
+   *          a reference to the Main Class
    */
   public OptionsEdit(Main m) {
     super();
@@ -279,131 +289,134 @@ public class OptionsEdit {
     main = m;
   }
 
-  ChangeListener cl = new ChangeListener() {
-    public void stateChanged(ChangeEvent arg0) {
-      if (arg0.getSource() == s_quality)
-        l_qual.setText(s_quality.getValue() + "%"); //$NON-NLS-1$
-    }
-  };
+  ChangeListener cl       = new ChangeListener()
+                          {
+                            public void stateChanged(ChangeEvent arg0)
+                            {
+                              if (arg0.getSource() == s_quality) l_qual.setText(s_quality.getValue() + "%"); //$NON-NLS-1$
+                            }
+                          };
 
-  ActionListener al_sizes = new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      String val = ((JComboBox) e.getSource()).getSelectedItem().toString();
-      if (val.substring(0, 2).equalsIgnoreCase("32")) {
-        t_maxw.setText("320");
-        t_maxh.setText("240");
-      } else if (val.substring(0, 2).equalsIgnoreCase("64")) {
-        t_maxw.setText("640");
-        t_maxh.setText("480");
-      } else if (val.substring(0, 2).equalsIgnoreCase("80")) {
-        t_maxw.setText("800");
-        t_maxh.setText("600");
-      } else if (val.substring(0, 2).equalsIgnoreCase("10")) {
-        t_maxw.setText("1024");
-        t_maxh.setText("768");
-      } else if (val.substring(0, 2).equalsIgnoreCase("12")) {
-        t_maxw.setText("1280");
-        t_maxh.setText("1024");
-      } else if (val.substring(0, 2).equalsIgnoreCase("16")) {
-        t_maxw.setText("1600");
-        t_maxh.setText("1200");
-      }
-    }
-  };
+  ActionListener al_sizes = new ActionListener()
+                          {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                              String val = ((JComboBox) e.getSource()).getSelectedItem().toString();
+                              if (val.substring(0, 2).equalsIgnoreCase("32"))
+                              {
+                                t_maxw.setText("320");
+                                t_maxh.setText("240");
+                              }
+                              else if (val.substring(0, 2).equalsIgnoreCase("64"))
+                              {
+                                t_maxw.setText("640");
+                                t_maxh.setText("480");
+                              }
+                              else if (val.substring(0, 2).equalsIgnoreCase("80"))
+                              {
+                                t_maxw.setText("800");
+                                t_maxh.setText("600");
+                              }
+                              else if (val.substring(0, 2).equalsIgnoreCase("10"))
+                              {
+                                t_maxw.setText("1024");
+                                t_maxh.setText("768");
+                              }
+                              else if (val.substring(0, 2).equalsIgnoreCase("12"))
+                              {
+                                t_maxw.setText("1280");
+                                t_maxh.setText("1024");
+                              }
+                              else if (val.substring(0, 2).equalsIgnoreCase("16"))
+                              {
+                                t_maxw.setText("1600");
+                                t_maxh.setText("1200");
+                              }
+                            }
+                          };
 
-  ActionListener al = new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == b_exit) {
-        f.dispose();
-        // f.setVisible(false);
-      } else if (e.getSource() == b_ok) {
-        boolean restart = false;
-        float fl = s_quality.getValue();
-        opts.setQuality(fl / 100.0F);
-        opts.setModus(s_rendermodus.getValue());
+  ActionListener al       = new ActionListener()
+                          {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                              if (e.getSource() == b_exit)
+                              {
+                                f.dispose();
+                                //f.setVisible(false);
+                              }
+                              else if (e.getSource() == b_ok)
+                              {
+                                boolean restart = false;
+                                float fl = s_quality.getValue();
+                                opts.setQuality(fl / 100.0F);
+                                opts.setModus(s_rendermodus.getValue());
 
-        if (opts.isTextbox() != c_textbox.isSelected())
-          restart = true;
+                                if (opts.isTextbox() != c_textbox.isSelected()) restart = true;
 
-        if (c_textbox.isSelected())
-          opts.setTextbox(true);
-        else
-          opts.setTextbox(false);
+                                if (c_textbox.isSelected()) opts.setTextbox(true);
+                                else opts.setTextbox(false);
 
-        if (c_antialiasing.isSelected())
-          opts.setAntialiasing(true);
-        else
-          opts.setAntialiasing(false);
+                                if (c_antialiasing.isSelected()) opts.setAntialiasing(true);
+                                else opts.setAntialiasing(false);
 
-        if (c_metadata.isSelected())
-          opts.setCopyMetadata(true);
-        else
-          opts.setCopyMetadata(false);
+                                if (c_metadata.isSelected()) opts.setCopyMetadata(true);
+                                else opts.setCopyMetadata(false);
 
-        if (c_copyright.isSelected())
-          opts.setCopyright(true);
-        else
-          opts.setCopyright(false);
+                                if (c_copyright.isSelected()) opts.setCopyright(true);
+                                else opts.setCopyright(false);
 
-        opts.setCopyrightText(t_copyright.getText());
-        opts.setCopyright_r(p_copyright.getBackground().getRed());
-        opts.setCopyright_g(p_copyright.getBackground().getGreen());
-        opts.setCopyright_b(p_copyright.getBackground().getBlue());
+                                opts.setCopyrightText(t_copyright.getText());
+                                opts.setCopyright_r(p_copyright.getBackground().getRed());
+                                opts.setCopyright_g(p_copyright.getBackground().getGreen());
+                                opts.setCopyright_b(p_copyright.getBackground().getBlue());
 
-        File fo = new File(t_output.getText());
-        if (fo.exists())
-          opts.setOutput_dir(fo.toString());
-        if (t_maxw.getText().equalsIgnoreCase("")) //$NON-NLS-1$
-          opts.setHmax(0);
-        else
-          opts.setHmax(Integer.valueOf(t_maxw.getText()).intValue());
+                                File fo = new File(t_output.getText());
+                                if (fo.exists()) opts.setOutput_dir(fo.toString());
+                                if (t_maxw.getText().equalsIgnoreCase("")) opts.setHmax(0); //$NON-NLS-1$
+                                else opts.setHmax(Integer.valueOf(t_maxw.getText()).intValue());
 
-        if (t_maxh.getText().equalsIgnoreCase("")) //$NON-NLS-1$
-          opts.setVmax(0);
-        else
-          opts.setVmax(Integer.valueOf(t_maxh.getText()).intValue());
+                                if (t_maxh.getText().equalsIgnoreCase("")) opts.setVmax(0); //$NON-NLS-1$
+                                else opts.setVmax(Integer.valueOf(t_maxh.getText()).intValue());
 
-        if (list_local.getSelectedItem().toString().equalsIgnoreCase("Deutsch")
-            && !(opts.getLocal().getLanguage().equalsIgnoreCase("de")))
-          restart = true;
-        if (list_local.getSelectedItem().toString().equalsIgnoreCase("English")
-            && !(opts.getLocal().getLanguage().equalsIgnoreCase("en")))
-          restart = true;
+                                if (list_local.getSelectedItem().toString().equalsIgnoreCase("Deutsch") && !(opts.getLocal().getLanguage().equalsIgnoreCase("de"))) restart = true;
+                                if (list_local.getSelectedItem().toString().equalsIgnoreCase("English") && !(opts.getLocal().getLanguage().equalsIgnoreCase("en"))) restart = true;
 
-        if (list_local.getSelectedItem().toString().equalsIgnoreCase("Deutsch"))
-          opts.setLocal(Locale.GERMAN);
-        else
-          opts.setLocal(Locale.ENGLISH);
+                                if (list_local.getSelectedItem().toString().equalsIgnoreCase("Deutsch")) opts.setLocal(Locale.GERMAN);
+                                else opts.setLocal(Locale.ENGLISH);
 
-        opts.saveOptions();
-        if (restart) {
-          main.restart();
-        }
-        f.dispose();
-        // f.setVisible(false);
-      } else if (e.getSource() == b_copyright) {
-        Color c = JColorChooser.showDialog(f, main.mes.getString("GallerieDialog.6"), Color.DARK_GRAY);
-        if (c != null) {
-          p_copyright.setOpaque(true);
-          p_copyright.setBackground(c);
-        }
-      } else if (e.getSource() == b_output) {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        File f = new File(opts.getOutput_dir());
-        if (f.exists())
-          fc.setCurrentDirectory(f);
-        else
-          fc.setCurrentDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
-        int returnVal = fc.showOpenDialog(null);
+                                opts.saveOptions();
+                                if (restart)
+                                {
+                                  main.restart();
+                                }
+                                f.dispose();
+                                // f.setVisible(false);
+                              }
+                              else if (e.getSource() == b_copyright)
+                              {
+                                Color c = JColorChooser.showDialog(f, main.mes.getString("GallerieDialog.6"), Color.DARK_GRAY);
+                                if (c != null)
+                                {
+                                  p_copyright.setOpaque(true);
+                                  p_copyright.setBackground(c);
+                                }
+                              }
+                              else if (e.getSource() == b_output)
+                              {
+                                JFileChooser fc = new JFileChooser();
+                                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                File f = new File(opts.getOutput_dir());
+                                if (f.exists()) fc.setCurrentDirectory(f);
+                                else fc.setCurrentDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
+                                int returnVal = fc.showOpenDialog(null);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-          if (file == null) {
-            file = fc.getSelectedFile();
-            t_output.setText(file.toString());
-            file = null;
-          }
-      }
-    }
-  };
+                                if (returnVal == JFileChooser.APPROVE_OPTION) if (file == null)
+                                {
+                                  file = fc.getSelectedFile();
+                                  t_output.setText(file.toString());
+                                  file = null;
+                                }
+                              }
+                            }
+                          };
 }
