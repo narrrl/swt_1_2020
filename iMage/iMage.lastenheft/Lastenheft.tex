@@ -1,0 +1,146 @@
+\documentclass[parskip=full]{scrartcl}
+\usepackage[utf8]{inputenc} % use utf8 file encoding for TeX sources
+\usepackage[T1]{fontenc}    % avoid garbled Unicode text in pdf
+\usepackage[german]{babel}  % german hyphenation, quotes, etc
+\usepackage{hyperref}       % detailed hyperlink/pdf configuration
+\usepackage{graphicx}       % provides commands for including figures
+\usepackage{csquotes}       % provides \enquote{} macro for "quotes"
+\usepackage[nonumberlist]{glossaries}     % provides glossary commands
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{tikzsymbols}
+
+\makenoidxglossaries
+%
+% % Glossareinträge
+%
+\newglossaryentry{Applikation}
+{
+	name=Applikation,
+	plural=Applikationen,
+	description={oder auch Anwendungssoftware werden Computerprogramme bezeichnet, die genutzt werden, um eine nützliche oder gewünschte nicht systemtechnische Funktionalität zu bearbeiten oder zu unterstützen. (Beispiele für Anwendungsgebiete sind: \enquote{Bildbearbeitung, E-Mail-Programme, Webbrowser, Textverarbeitung, Tabellenkalkulation oder Computerspiele})}
+}
+
+\newglossaryentry{iMage}
+{
+	name=iMage,
+	plural=-,
+	description={ist eine Anwendungssoftware der Firma Pear Corp und dient dem Anwenden von Kunstfiltern auf bestimmte Bilder}
+}
+
+\newglossaryentry{Komprimierung}
+{
+	name=Komprimierung,
+	plural=Komprimierungen,
+	description={ist ein Vorgang um Dateigrößen zu verringern}
+}
+
+\newglossaryentry{Domain}
+{
+    name=Domain,
+    description={ist vereinfacht gesagt ein Name für einen gewissen Netzwerkbereich (z.B. \enquote{führt google.com zur Google Suchmaschine})}
+}
+
+\title{SWT1: Lastenheftvorlage}
+\author{Nils Pukropp, 2301588}
+
+\begin{document}
+
+\maketitle
+
+%
+% % Hier beginnt die Gliederung des Lastenhefts
+%
+\section{Zielbestimmung}
+Die Firma Pear Corp soll durch das Produkt in die Lage versetzt werden, Bilder automatisiert aus dem Internet herunterzuladen.
+
+\section{Produkteinsatz}
+Das Produkt dient der Firma Pear Corp zum Beschaffen von frei verfügbaren Bildern übers Internet.
+
+Zielgruppe: Nutzer der \gls{Applikation} \gls{iMage}
+
+Plattform: Arch, React, Nintendo Switch, Playstation 4, xBox One X
+
+\section{Funktionale Anforderungen}
+\begin{itemize}[nosep]
+\item[FA10] Das Suchen von Bildern mit Kriterien(Anzahl, Nutzungsrechte, Dateiformat, Dateigröße)
+\item[FA20] Das Suchen von Bildern mit integrierter \gls{Komprimierung}
+\item[FA30] Das Suchen von Bildern in angegebenen (Sub-)\glspl{Domain}
+\item[FA40] Das Anzeigen der über die Sucher geladenen Bilder mit Kriterien(mittlerer Farbwert, Name, Herkunft)
+\item[FA50] Die Bilder können lokal oder auf den Pear Crop Zentralservern gespeichert werden.
+\end{itemize}
+
+\section{Produktdaten}
+\begin{itemize}[nosep]
+\item[PD10] Es sind relevante Daten über die Nutzer zu speichern.
+\item[PD20] Es sind relevante Daten über die geladenen Bilder zu speichern
+\item[PD30] Es sind Bilder lokal oder über den Zentralserver zu speichern
+\end{itemize}
+
+\section{Nichtfunktionale Anforderungen}
+\begin{itemize}[nosep]
+\item[NF10] Die Funktion /FA10/ soll für 500 Bilder maximal 10 Minuten benötigen und selbständig nach einer Suchdauer von einer Stunde abbrechen.
+\item[NF20] Die Funktion /FA20/ soll für 500 Bilder maximal 20 Minuten benötigen und selbständig nach einer Suchdauer von zwei Stunden abbrechen.
+\item[NF30] Der Zugriff auf den Zentralserver von Pear Corp soll von mindestens einhundert (100) Nutzern gleich-
+zeitig erfolgen können und die Dauer des Hochladens der Bilder maximal linear mit der Anzahl der Bilder
+wachsen.
+\end{itemize}
+
+\section{Systemmodelle}
+
+\subsection{Szenarien}
+\begin{flushleft}
+    Eine Firma möchte ihre Bildbearbeitungssoftware mit einer Bibliothek an frei verfügbaren Bildern anbieten.
+    Durch dieser Applikation könnte diese Firma nun beliebig viele Bilder aus dem Internet laden um diese dann später 
+    nach Verfügbarkeit gefiltert manuell auszuwählen und in ihre Software integrierter. \\
+    \vspace{1cm}
+    Ein anderes Szenario wäre eine Software die ein Bild automatisiert in ein Mosaik aus Bildern umwandelt. Wichtig dafür wäre eine Bibliothek aus nach Farbe sortierten Bildern.
+    Mit dieser Applikation würden dann einfach Bilder aus dem Internet geladen, anschließend nach Farbe sortiert und gespeichert werden. Damit wären dann die Bilder für das Mosaik verfügbar.
+\end{flushleft}
+
+\subsection{Anwendungsfälle}
+\subsubsection{Bilder suchen/anzeigen/speichern}
+\begin{tikzpicture}
+    \begin{umlpackage}{Applikation}
+        \umlsimpleclass[x=3,y=7]{Bilder suchen}
+        \umlsimpleclass[x=6,y=5]{Bilder anzeigen}
+        \umlsimpleclass[x=3,y=2]{Bilder lokal speichern}
+        \umlsimpleclass[x=9,y=2]{Bilder online speichern}
+
+        \umldep[geometry=|-,stereo=depend, pos stereo=0.5]{Bilder anzeigen} {Bilder  suchen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder lokal speichern} {Bilder  anzeigen}
+        \umldep[geometry=|-|,stereo=depend, pos stereo=0.5]{Bilder online speichern} {Bilder  anzeigen}
+    \end{umlpackage}
+    \umlactor[x=-0.5,y=5]{User}
+
+    \umlassoc[geometry=|-]{User} {Bilder suchen}
+    \umlassoc[]{User} {Bilder anzeigen}
+    \umlassoc[geometry=|-]{User} {Bilder lokal speichern}
+
+    \umlactor[x=12.5,y=5]{Server}
+    \path (12.5,5.25) node[above,inner sep=0pt] {\Ofen[2]};
+
+    \umlassoc[geometry=|-]{Server} {Bilder online speichern}
+\end{tikzpicture}
+
+Akteure: Nutzer, Server.
+
+Anwendungsfälle: Bildersuche, Bilder anzeigen, Bilder speichern.
+
+Textuelle Beschreibung: Der Nutzer hat die Möglichkeit Bilder aus dem Internet automatisiert zu laden und nach belieben auch direkt komprimiert. Diese geladenen Bilder können dann, nach Kriterien sortiert, vom User angezeigt werden.
+Die angezeigten Bilder können nach belieben ausgewählt und nun entweder lokal beim Nutzer oder auf dem Pearl Corp Server gespeichert werden.
+
+
+
+%
+% % Automatisch generiertes Glossar (Latex zwei mal ausführen um Glossar anzuzeigen)
+%
+%\glsaddall % das sorgt dafür, dass alles Glossareinträge gedruckt werden, nicht nur die verwendeten. Das sollte nicht nötig sein!
+\printnoidxglossaries
+Siehe \url{https://en.wikibooks.org/wiki/LaTeX/Glossary}.
+
+
+
+
+\end{document}
