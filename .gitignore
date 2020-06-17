@@ -84,3 +84,8 @@ Thumbs.db
 *.synctex(busy)
 *.tdo
 *.toc
+
+
+
+#meta inf service
+.factorypath
