@@ -33,20 +33,21 @@ import javax.swing.filechooser.FileSystemView;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- *         <p>
- *         list all jpegs of the selected directory
- *         </p>
+ * <p>
+ * list all jpegs of the selected directory
+ * </p>
  */
 public class List extends JScrollPane {
   private static final long serialVersionUID = 1949499539202488650L;
-  private Vector<File> v_file = new Vector<File>();
-  private Vector<String> v_names = new Vector<String>();
-  private JList entrys = new JList();
-  private Preview t = null;
-  private Object selected_values[];
+  private Vector<File>      v_file           = new Vector<File>();
+  private Vector<String>    v_names          = new Vector<String>();
+  private JList             entrys           = new JList();
+  private Preview           t                = null;
+  private Object            selected_values[];
 
   /**
-   * @param prev a reference to the preview panel
+   * @param prev
+   *          a reference to the preview panel
    */
   public List(Preview prev) {
     this.t = prev;
@@ -58,19 +59,27 @@ public class List extends JScrollPane {
     add(entrys);
     setViewportView(entrys);
 
-    entrys.addListSelectionListener(new ListSelectionListener() {
+    entrys.addListSelectionListener(new ListSelectionListener()
+    {
 
-      public void valueChanged(ListSelectionEvent arg0) {
+      public void valueChanged(ListSelectionEvent arg0)
+      {
         JList s = (JList) arg0.getSource();
         selected_values = s.getSelectedValues();
 
-        if (selected_values.length == 1) {
-          Thread x = new Thread(new Runnable() {
+        if (selected_values.length == 1)
+        {
+          Thread x = new Thread(new Runnable()
+          {
 
-            public void run() {
-              try {
-                t.setThumb(new Thumbnail((File) selected_values[0], 220, 165));
-              } catch (Exception ex) {
+            public void run()
+            {
+              try
+              {
+                t.setThumb(new Thumbnail((File)selected_values[0], 220,165));
+              }
+              catch (Exception ex)
+              {
                 System.out.println("Fehler beim erstellen der Vorschau!");
                 ex.printStackTrace();
               }
@@ -84,17 +93,22 @@ public class List extends JScrollPane {
     });
   }
 
-  public File getPicture() {
+  public File getPicture()
+  {
     return (File) entrys.getSelectedValue();
   }
 
-  public File[] getPictures() {
+  public File[] getPictures()
+  {
     File[] e = new File[0];
-    try {
+    try
+    {
       e = new File[v_file.size()];
       for (int k = 0; k < e.length; k++)
         e[k] = v_file.elementAt(k);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex)
+    {
       System.out.println(ex);
       System.out.println(ex.getMessage());
     }
@@ -102,7 +116,8 @@ public class List extends JScrollPane {
 
   }
 
-  public void removePictures() {
+  public void removePictures()
+  {
     entrys.removeAll();
     v_file.removeAllElements();
     v_names.removeAllElements();
@@ -110,7 +125,8 @@ public class List extends JScrollPane {
     entrys.getSelectedValues();
   }
 
-  public Vector<File> getSelectedValues() {
+  public Vector<File> getSelectedValues()
+  {
     Vector<File> files = new Vector<File>();
     Object e[] = entrys.getSelectedValues();
 
@@ -120,11 +136,13 @@ public class List extends JScrollPane {
     return files;
   }
 
-  public void setPictures(File[] e) {
+  public void setPictures(File[] e)
+  {
     entrys.removeAll();
     v_file.removeAllElements();
     v_names.removeAllElements();
-    for (int i = 0; i < e.length; i++) {
+    for (int i = 0; i < e.length; i++)
+    {
       File entry = e[i];
       v_file.add(entry);
       v_names.add(entry.getName());
@@ -135,21 +153,24 @@ public class List extends JScrollPane {
   /**
    * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
    * 
-   *         <p>
-   *         render the list elements
-   *         </p>
+   * <p>
+   * render the list elements
+   * </p>
    */
   class SpecialCellRenderer extends JLabel implements ListCellRenderer {
 
     private static final long serialVersionUID = 7047703534126835655L;
-    private FileSystemView fsv = FileSystemView.getFileSystemView();
+    private FileSystemView    fsv              = FileSystemView.getFileSystemView();
 
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-        boolean hasFocus) {
-      if (isSelected) {
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus)
+    {
+      if (isSelected)
+      {
         setBackground(SystemColor.textInactiveText);
         setForeground(SystemColor.textHighlight);
-      } else {
+      }
+      else
+      {
         setBackground(Color.WHITE);
         setForeground(SystemColor.textInactiveText);
       }

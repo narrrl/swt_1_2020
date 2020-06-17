@@ -69,35 +69,36 @@ import org.jis.view.Thumbnail;
  *         </p>
  */
 public class GallerieDialog extends JDialog {
-  JButton b_output = new JButton();
-  JButton b_color = new JButton();
-  JButton b_t_color = new JButton();
-  JButton b_ok = new JButton();
-  JButton b_exit = new JButton();
-  JPanel p_color = new JPanel();
-  JPanel p_t_color = new JPanel();
-  JPanel table = new JPanel();
-  JPanel layout = new JPanel();
-  JTextField t_output;
-  JComboBox c_tab_width;
-  JComboBox c_tab_heigth;
-  JComboBox c_types;
-  JComboBox c_layouts;
-  JList l_layouts;
-  JTextPane t_desc = new JTextPane();
-  JTextField t_titel;
-  JTextField t_sub_titel;
-  JDialog gallerieDialog;
-  Main m;
-  Options o;
+  JButton                   b_output         = new JButton();
+  JButton                   b_color          = new JButton();
+  JButton                   b_t_color        = new JButton();
+  JButton                   b_ok             = new JButton();
+  JButton                   b_exit           = new JButton();
+  JPanel                    p_color          = new JPanel();
+  JPanel                    p_t_color        = new JPanel();
+  JPanel                    table            = new JPanel();
+  JPanel                    layout           = new JPanel();
+  JTextField                t_output;
+  JComboBox                 c_tab_width;
+  JComboBox                 c_tab_heigth;
+  JComboBox                 c_types;
+  JComboBox                 c_layouts;
+  JList                     l_layouts;
+  JTextPane                 t_desc           = new JTextPane();
+  JTextField                t_titel;
+  JTextField                t_sub_titel;
+  JDialog                   gallerieDialog;
+  Main                      m;
+  Options                   o;
   private static final long serialVersionUID = -6983342868655569763L;
-  private Thumbnail preview;
-  private Layout selectedLayout;
-  private JPanel listPanel = new JPanel();
-  private JScrollPane jsp = new JScrollPane();
+  private Thumbnail         preview;
+  private Layout            selectedLayout;
+  private JPanel            listPanel        = new JPanel();
+  private JScrollPane       jsp              = new JScrollPane();
 
   /**
-   * @param m a reference to the Main Class.
+   * @param m
+   *          a reference to the Main Class.
    * @throws HeadlessException
    */
   public GallerieDialog(Main m) throws HeadlessException {
@@ -119,11 +120,13 @@ public class GallerieDialog extends JDialog {
     JLabel l_output = new JLabel(m.mes.getString("OptionsEdit.0"));
     JLabel l_type = new JLabel(m.mes.getString("GallerieDialog.9"));
     JLabel l_titel = new JLabel(m.mes.getString("GallerieDialog.0"));
-    // JLabel l_sub_titel = new JLabel(m.mes.getString("GallerieDialog.11"));
+    //    JLabel l_sub_titel = new JLabel(m.mes.getString("GallerieDialog.11"));
     JLabel l_width = new JLabel(m.mes.getString("GallerieDialog.1"));
     JLabel l_heigth = new JLabel(m.mes.getString("GallerieDialog.2"));
 
-    String types[] = { m.mes.getString("GallerieDialog.7"), m.mes.getString("GallerieDialog.8") };
+    String types[] = {
+        m.mes.getString("GallerieDialog.7"), m.mes.getString("GallerieDialog.8")
+    };
     c_types = new JComboBox(types);
     c_types.addActionListener(al);
 
@@ -132,9 +135,13 @@ public class GallerieDialog extends JDialog {
     t_sub_titel.setEditable(false);
     t_sub_titel.setMaximumSize(new Dimension(300, 20));
 
-    String width[] = { "2", "3", "4", "5" };
+    String width[] = {
+        "2", "3", "4", "5"
+    };
     c_tab_width = new JComboBox(width);
-    String heigth[] = { "3", "4", "5", "6" };
+    String heigth[] = {
+        "3", "4", "5", "6"
+    };
     c_tab_heigth = new JComboBox(heigth);
     c_tab_heigth.setSelectedItem("" + o.getGallerieHeigth());
     c_tab_width.setSelectedItem("" + o.getGallerieWidth());
@@ -172,24 +179,29 @@ public class GallerieDialog extends JDialog {
     t_output.setCaretPosition(0);
 
     b_ok.addActionListener(al);
-    l_layouts.addListSelectionListener(new ListSelectionListener() {
+    l_layouts.addListSelectionListener(new ListSelectionListener()
+    {
 
-      public void valueChanged(ListSelectionEvent e) {
+      public void valueChanged(ListSelectionEvent e)
+      {
         JList l = (JList) e.getSource();
         setSelectedLayout((Layout) l.getSelectedValue());
         t_desc.setText(getSelectedLayout().getDescription());
 
-        Thread x = new Thread(new Runnable() {
+        Thread x = new Thread(new Runnable()
+        {
 
-          public void run() {
-            try {
-              if (getSelectedLayout().getPreviewImage() != null)
-                setPreview(new Thumbnail(getSelectedLayout().getPreviewImage(), 300, 240));
-              else
-                setPreview(new Thumbnail(300, 240));
-              // getGallerieDialog().repaint();
-              // getGallerieDialog().validate();
-            } catch (Exception ex) {
+          public void run()
+          {
+            try
+            {
+              if (getSelectedLayout().getPreviewImage() != null) setPreview(new Thumbnail(getSelectedLayout().getPreviewImage(), 300, 240));
+              else setPreview(new Thumbnail(300, 240));
+              //        getGallerieDialog().repaint();
+              //        getGallerieDialog().validate();
+            }
+            catch (Exception ex)
+            {
               System.out.println("Fehler beim erstellen der Vorschau!");
               ex.printStackTrace();
             }
@@ -200,10 +212,8 @@ public class GallerieDialog extends JDialog {
         x.start();
 
         b_ok.setEnabled(true);
-        if (getSelectedLayout().isSubTitle())
-          t_sub_titel.setEditable(true);
-        else
-          t_sub_titel.setEditable(false);
+        if (getSelectedLayout().isSubTitle()) t_sub_titel.setEditable(true);
+        else t_sub_titel.setEditable(false);
       }
 
     });
@@ -290,44 +300,47 @@ public class GallerieDialog extends JDialog {
     table.add(p_t_color);
     table.add(b_t_color);
 
-    // layout = new JPanel();
-    // GridBagLayout gl3 = new GridBagLayout();
-    // layout.setLayout(gl3);
+    //    layout = new JPanel();
+    //    GridBagLayout gl3 = new GridBagLayout();
+    //    layout.setLayout(gl3);
     //
-    // GridBagConstraints gbc = new GridBagConstraints();
-    // gbc.fill = GridBagConstraints.BOTH;
-    // gbc.insets = new Insets(3, 3, 3, 3);
+    //    GridBagConstraints gbc = new GridBagConstraints();
+    //    gbc.fill = GridBagConstraints.BOTH;
+    //    gbc.insets = new Insets(3, 3, 3, 3);
     //
-    // setConstraints(gbc, 0, 0, 1, 1, 10, 10);
-    // gl3.setConstraints(l_sub_titel, gbc);
-    // layout.add(l_sub_titel);
+    //    setConstraints(gbc, 0, 0, 1, 1, 10, 10);
+    //    gl3.setConstraints(l_sub_titel, gbc);
+    //    layout.add(l_sub_titel);
     //
-    // setConstraints(gbc, 1, 0, 2, 1, 80, 10);
-    // gl3.setConstraints(t_sub_titel, gbc);
-    // layout.add(t_sub_titel);
-    // // layout.add(new JLabel());
+    //    setConstraints(gbc, 1, 0, 2, 1, 80, 10);
+    //    gl3.setConstraints(t_sub_titel, gbc);
+    //    layout.add(t_sub_titel);
+    //    // layout.add(new JLabel());
     //
-    // JLabel l_layout = new JLabel(m.mes.getString("GallerieDialog.10"));
-    // l_layout.setSize(100, 20);
+    //    JLabel l_layout = new JLabel(m.mes.getString("GallerieDialog.10"));
+    //    l_layout.setSize(100, 20);
     //
-    // setConstraints(gbc, 0, 1, 1, 1, 10, 90);
-    // gl3.setConstraints(l_layout, gbc);
-    // layout.add(l_layout);
+    //    setConstraints(gbc, 0, 1, 1, 1, 10, 90);
+    //    gl3.setConstraints(l_layout, gbc);
+    //    layout.add(l_layout);
     //
-    // setConstraints(gbc, 1, 1, 1, 1, 50, 90);
-    // jsp.setSize(100, 100);
-    // gl3.setConstraints(jsp, gbc);
-    // layout.add(jsp);
+    //    setConstraints(gbc, 1, 1, 1, 1, 50, 90);
+    //    jsp.setSize(100, 100);
+    //    gl3.setConstraints(jsp, gbc);
+    //    layout.add(jsp);
     //
-    // setConstraints(gbc, 2, 1, 1, 1, 40, 90);
-    //// gl3.setConstraints(t_desc, gbc);
-    //// layout.add(t_desc);
-    // gl3.setConstraints(preview, gbc);
-    // layout.add(preview);
+    //    setConstraints(gbc, 2, 1, 1, 1, 40, 90);
+    ////    gl3.setConstraints(t_desc, gbc);
+    ////    layout.add(t_desc);
+    //    gl3.setConstraints(preview, gbc);
+    //    layout.add(preview);
     GridBagConstraints gbc = new GridBagConstraints();
-    try {
+    try
+    {
       setPreview(new Thumbnail(300, 240));
-    } catch (IOException e1) {
+    }
+    catch (IOException e1)
+    {
     }
 
     gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -346,11 +359,15 @@ public class GallerieDialog extends JDialog {
     setVisible(true);
   }
 
-  private void swit(int s) {
-    if (s == 0) {
+  private void swit(int s)
+  {
+    if (s == 0)
+    {
       remove(table);
       add(layout, BorderLayout.CENTER);
-    } else {
+    }
+    else
+    {
       remove(layout);
       add(table, BorderLayout.CENTER);
       table.repaint();
@@ -359,21 +376,27 @@ public class GallerieDialog extends JDialog {
     m.repaint();
   }
 
-  private Object[] initLayouts() {
+  private Object[] initLayouts()
+  {
     File folder = new File(".");
     File templates = new File(folder, "templates");
 
     Vector<Layout> vl = new Vector<Layout>();
 
-    if (templates.exists() && templates.isDirectory()) {
+    if (templates.exists() && templates.isDirectory())
+    {
       File[] files = templates.listFiles();
 
-      for (int i = 0; i < files.length; i++) {
-        if (files[i].isDirectory()) {
+      for (int i = 0; i < files.length; i++)
+      {
+        if (files[i].isDirectory())
+        {
           File settings = new File(files[i], "settings.properties");
           File preview = new File(files[i], "preview.jpg");
-          if (settings.exists() && settings.isFile() && settings.canRead()) {
-            try {
+          if (settings.exists() && settings.isFile() && settings.canRead())
+          {
+            try
+            {
               Properties p = new Properties();
               p.load(new FileInputStream(settings));
               Layout x = new Layout();
@@ -388,9 +411,12 @@ public class GallerieDialog extends JDialog {
               x.setPreviewBack(p.getProperty("previewBack"));
               x.setPreviewNext(p.getProperty("previewNext"));
               x.setPreviewHome(p.getProperty("previewHome"));
-              try {
+              try
+              {
                 x.setAProperty(p.getProperty("aProperty"));
-              } catch (Exception e) {
+              }
+              catch (Exception e)
+              {
                 x.setAProperty(" ");
               }
 
@@ -401,30 +427,27 @@ public class GallerieDialog extends JDialog {
               x.setBigWidth(Integer.parseInt(p.getProperty("bigWidth")));
               x.setBigHeight(Integer.parseInt(p.getProperty("bigHeight")));
 
-              if (p.getProperty("mediumCreate").equalsIgnoreCase("true"))
-                x.setMediumCreate(true);
-              else
-                x.setMediumCreate(false);
+              if (p.getProperty("mediumCreate").equalsIgnoreCase("true")) x.setMediumCreate(true);
+              else x.setMediumCreate(false);
 
-              if (p.getProperty("bigCreate").equalsIgnoreCase("true"))
-                x.setBigCreate(true);
-              else
-                x.setBigCreate(false);
+              if (p.getProperty("bigCreate").equalsIgnoreCase("true")) x.setBigCreate(true);
+              else x.setBigCreate(false);
 
-              if (p.getProperty("subTitle").equalsIgnoreCase("true"))
-                x.setSubTitle(true);
-              else
-                x.setSubTitle(false);
+              if (p.getProperty("subTitle").equalsIgnoreCase("true")) x.setSubTitle(true);
+              else x.setSubTitle(false);
 
               x.setMax_pictures_on_site(Integer.parseInt(p.getProperty("max_pictures_on_site")));
               x.setFile(files[i]);
 
-              if (preview.exists() && preview.isFile()) {
+              if (preview.exists() && preview.isFile())
+              {
                 x.setPreviewImage(preview);
               }
 
               vl.addElement(x);
-            } catch (Exception e3) {
+            }
+            catch (Exception e3)
+            {
               System.out.println("Error while loading Layout " + files[i].getName());
               System.err.println(e3.getLocalizedMessage());
             }
@@ -435,7 +458,8 @@ public class GallerieDialog extends JDialog {
     return vl.toArray();
   }
 
-  private void setConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy) {
+  private void setConstraints(GridBagConstraints gbc, int gx, int gy, int gw, int gh, int wx, int wy)
+  {
     gbc.gridx = gx;
     gbc.gridy = gy;
     gbc.gridwidth = gw;
@@ -444,79 +468,96 @@ public class GallerieDialog extends JDialog {
     gbc.weighty = wy;
   }
 
-  ActionListener al = new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == b_exit)
-        gallerieDialog.setVisible(false);
-      else if (e.getSource() == b_color) {
-        Color c = JColorChooser.showDialog(gallerieDialog, m.mes.getString("GallerieDialog.5"), Color.DARK_GRAY);
-        if (c != null) {
-          p_color.setOpaque(true);
-          p_color.setBackground(c);
-        }
-      } else if (e.getSource() == b_t_color) {
-        Color c = JColorChooser.showDialog(gallerieDialog, m.mes.getString("GallerieDialog.6"), Color.DARK_GRAY);
-        if (c != null) {
-          p_t_color.setOpaque(true);
-          p_t_color.setBackground(c);
-        }
-      } else if (e.getSource() == b_ok) {
-        o.setBackground_r(p_color.getBackground().getRed());
-        o.setBackground_g(p_color.getBackground().getGreen());
-        o.setBackground_b(p_color.getBackground().getBlue());
-        o.setForeground_r(p_t_color.getBackground().getRed());
-        o.setForeground_g(p_t_color.getBackground().getGreen());
-        o.setForeground_b(p_t_color.getBackground().getBlue());
-        o.setGallerieWidth(Integer.parseInt(c_tab_width.getSelectedItem().toString()));
-        o.setGallerieHeigth(Integer.parseInt(c_tab_heigth.getSelectedItem().toString()));
-        o.setGallerieTitle(t_titel.getText());
-        o.setGallerieSubTitle(t_sub_titel.getText());
-        o.setOutput_dir_gallerie(t_output.getText());
+  ActionListener al = new ActionListener()
+                    {
+                      public void actionPerformed(ActionEvent e)
+                      {
+                        if (e.getSource() == b_exit) gallerieDialog.setVisible(false);
+                        else if (e.getSource() == b_color)
+                        {
+                          Color c = JColorChooser.showDialog(gallerieDialog, m.mes.getString("GallerieDialog.5"), Color.DARK_GRAY);
+                          if (c != null)
+                          {
+                            p_color.setOpaque(true);
+                            p_color.setBackground(c);
+                          }
+                        }
+                        else if (e.getSource() == b_t_color)
+                        {
+                          Color c = JColorChooser.showDialog(gallerieDialog, m.mes.getString("GallerieDialog.6"), Color.DARK_GRAY);
+                          if (c != null)
+                          {
+                            p_t_color.setOpaque(true);
+                            p_t_color.setBackground(c);
+                          }
+                        }
+                        else if (e.getSource() == b_ok)
+                        {
+                          o.setBackground_r(p_color.getBackground().getRed());
+                          o.setBackground_g(p_color.getBackground().getGreen());
+                          o.setBackground_b(p_color.getBackground().getBlue());
+                          o.setForeground_r(p_t_color.getBackground().getRed());
+                          o.setForeground_g(p_t_color.getBackground().getGreen());
+                          o.setForeground_b(p_t_color.getBackground().getBlue());
+                          o.setGallerieWidth(Integer.parseInt(c_tab_width.getSelectedItem().toString()));
+                          o.setGallerieHeigth(Integer.parseInt(c_tab_heigth.getSelectedItem().toString()));
+                          o.setGallerieTitle(t_titel.getText());
+                          o.setGallerieSubTitle(t_sub_titel.getText());
+                          o.setOutput_dir_gallerie(t_output.getText());
 
-        if (c_types.getSelectedIndex() == 0) {
-          Layout l = (Layout) l_layouts.getSelectedValue();
-          new LayoutGalerie(m, l);
-        } else {
-          new TableGalerie(m);
-        }
+                          if (c_types.getSelectedIndex() == 0)
+                          {
+                            Layout l = (Layout) l_layouts.getSelectedValue();
+                            new LayoutGalerie(m, l);
+                          }
+                          else
+                          {
+                            new TableGalerie(m);
+                          }
 
-        gallerieDialog.setVisible(false);
-      } else if (e.getSource() == b_output) {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        File f = new File(o.getOutput_dir_gallerie());
-        if (f.exists())
-          fc.setCurrentDirectory(f);
-        else
-          fc.setCurrentDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
-        int returnVal = fc.showOpenDialog(null);
+                          gallerieDialog.setVisible(false);
+                        }
+                        else if (e.getSource() == b_output)
+                        {
+                          JFileChooser fc = new JFileChooser();
+                          fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                          File f = new File(o.getOutput_dir_gallerie());
+                          if (f.exists()) fc.setCurrentDirectory(f);
+                          else fc.setCurrentDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
+                          int returnVal = fc.showOpenDialog(null);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-          t_output.setText(fc.getSelectedFile().toString());
-        }
-      } else if (e.getSource() == c_types) {
-        if (c_types.getSelectedIndex() == 0) {
-          if (l_layouts.isSelectionEmpty())
-            b_ok.setEnabled(false);
-          else
-            b_ok.setEnabled(true);
+                          if (returnVal == JFileChooser.APPROVE_OPTION)
+                          {
+                            t_output.setText(fc.getSelectedFile().toString());
+                          }
+                        }
+                        else if (e.getSource() == c_types)
+                        {
+                          if (c_types.getSelectedIndex() == 0)
+                          {
+                            if (l_layouts.isSelectionEmpty()) b_ok.setEnabled(false);
+                            else b_ok.setEnabled(true);
 
-          swit(0);
-        } else {
-          b_ok.setEnabled(true);
-          swit(1);
-        }
-        repaint();
-        validate();
-      }
-    }
-  };
+                            swit(0);
+                          }
+                          else
+                          {
+                            b_ok.setEnabled(true);
+                            swit(1);
+                          }
+                          repaint();
+                          validate();
+                        }
+                      }
+                    };
 
-  public Thumbnail getPreview() {
+  public Thumbnail getPreview()
+  {
     return preview;
   }
 
-  public void setPreview(Thumbnail preview) {
+  public void setPreview(Thumbnail preview)
+  {
     this.preview = preview;
     this.remove(layout);
 
@@ -565,12 +606,12 @@ public class GallerieDialog extends JDialog {
     gl3.setConstraints(listPanel, gbc);
     layout.add(listPanel);
 
-    // preview.setSize(previewDimension);
-    // preview.setPreferredSize(previewDimension);
-    // preview.setMaximumSize(previewDimension);
+    //    preview.setSize(previewDimension);
+    //    preview.setPreferredSize(previewDimension);
+    //    preview.setMaximumSize(previewDimension);
     setConstraints(gbc, 2, 1, 1, 1, 40, 90);
-    // gl3.setConstraints(t_desc, gbc);
-    // layout.add(t_desc);
+    //    gl3.setConstraints(t_desc, gbc);
+    //    layout.add(t_desc);
     gl3.setConstraints(preview, gbc);
     layout.add(preview);
 
@@ -580,15 +621,18 @@ public class GallerieDialog extends JDialog {
     this.validate();
   }
 
-  public JDialog getGallerieDialog() {
+  public JDialog getGallerieDialog()
+  {
     return gallerieDialog;
   }
 
-  public Layout getSelectedLayout() {
+  public Layout getSelectedLayout()
+  {
     return selectedLayout;
   }
 
-  public void setSelectedLayout(Layout selectedLayout) {
+  public void setSelectedLayout(Layout selectedLayout)
+  {
     this.selectedLayout = selectedLayout;
   }
 

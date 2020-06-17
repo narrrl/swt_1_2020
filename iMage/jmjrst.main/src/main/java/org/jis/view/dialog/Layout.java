@@ -25,225 +25,274 @@ import java.io.File;
  *         </p>
  */
 public class Layout {
-  private String name;
-  private String type;
+  private String  name;
+  private String  type;
   private boolean mediumCreate;
   private boolean bigCreate;
   private boolean subTitle;
-  private int smallWidth;
-  private int smallHeight;
-  private int mediumWidth;
-  private int mediumHeight;
-  private int bigWidth;
-  private int bigHeight;
-  private int max_pictures_on_site;
-  private String footer;
-  private String listType;
-  private String onclickSmall;
-  private String onclickMedium;
-  private File file;
-  private String description;
-  private String prefix;
-  private String previewNext;
-  private String previewBack;
-  private String previewHome;
-  private String aProperty;
-  private File previewImage;
+  private int     smallWidth;
+  private int     smallHeight;
+  private int     mediumWidth;
+  private int     mediumHeight;
+  private int     bigWidth;
+  private int     bigHeight;
+  private int     max_pictures_on_site;
+  private String  footer;
+  private String  listType;
+  private String  onclickSmall;
+  private String  onclickMedium;
+  private File    file;
+  private String  description;
+  private String  prefix;
+  private String  previewNext;
+  private String  previewBack;
+  private String  previewHome;
+  private String  aProperty;
+  private File    previewImage;
 
-  public String getFooter() {
+  public String getFooter()
+  {
     return footer;
   }
 
-  public void setFooter(String footer) {
+  public void setFooter(String footer)
+  {
     this.footer = footer;
   }
 
-  public int getMax_pictures_on_site() {
+  public int getMax_pictures_on_site()
+  {
     return max_pictures_on_site;
   }
 
-  public void setMax_pictures_on_site(int max_pictures_on_site) {
+  public void setMax_pictures_on_site(int max_pictures_on_site)
+  {
     this.max_pictures_on_site = max_pictures_on_site;
   }
 
-  public String getName() {
+  public String getName()
+  {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(String name)
+  {
     this.name = name;
   }
 
-  public String getType() {
+  public String getType()
+  {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(String type)
+  {
     this.type = type;
   }
 
   @Override
-  public String toString() {
+  public String toString()
+  {
     return getName();
   }
 
-  public File getFile() {
+  public File getFile()
+  {
     return file;
   }
 
-  public void setFile(File file) {
+  public void setFile(File file)
+  {
     this.file = file;
   }
 
-  public boolean isBigCreate() {
+  public boolean isBigCreate()
+  {
     return bigCreate;
   }
 
-  public void setBigCreate(boolean bigCreate) {
+  public void setBigCreate(boolean bigCreate)
+  {
     this.bigCreate = bigCreate;
   }
 
-  public int getBigHeight() {
+  public int getBigHeight()
+  {
     return bigHeight;
   }
 
-  public void setBigHeight(int bigHeight) {
+  public void setBigHeight(int bigHeight)
+  {
     this.bigHeight = bigHeight;
   }
 
-  public int getBigWidth() {
+  public int getBigWidth()
+  {
     return bigWidth;
   }
 
-  public void setBigWidth(int bigWidth) {
+  public void setBigWidth(int bigWidth)
+  {
     this.bigWidth = bigWidth;
   }
 
-  public boolean isMediumCreate() {
+  public boolean isMediumCreate()
+  {
     return mediumCreate;
   }
 
-  public void setMediumCreate(boolean mediumCreate) {
+  public void setMediumCreate(boolean mediumCreate)
+  {
     this.mediumCreate = mediumCreate;
   }
 
-  public int getMediumHeight() {
+  public int getMediumHeight()
+  {
     return mediumHeight;
   }
 
-  public void setMediumHeight(int mediumHeight) {
+  public void setMediumHeight(int mediumHeight)
+  {
     this.mediumHeight = mediumHeight;
   }
 
-  public int getMediumWidth() {
+  public int getMediumWidth()
+  {
     return mediumWidth;
   }
 
-  public void setMediumWidth(int mediumWidth) {
+  public void setMediumWidth(int mediumWidth)
+  {
     this.mediumWidth = mediumWidth;
   }
 
-  public String getOnclickMedium() {
+  public String getOnclickMedium()
+  {
     return onclickMedium;
   }
 
-  public void setOnclickMedium(String onclickMedium) {
+  public void setOnclickMedium(String onclickMedium)
+  {
     this.onclickMedium = onclickMedium;
   }
 
-  public String getOnclickSmall() {
+  public String getOnclickSmall()
+  {
     return onclickSmall;
   }
 
-  public void setOnclickSmall(String onclickSmall) {
+  public void setOnclickSmall(String onclickSmall)
+  {
     this.onclickSmall = onclickSmall;
   }
 
-  public int getSmallHeight() {
+  public int getSmallHeight()
+  {
     return smallHeight;
   }
 
-  public void setSmallHeight(int smallHeight) {
+  public void setSmallHeight(int smallHeight)
+  {
     this.smallHeight = smallHeight;
   }
 
-  public int getSmallWidth() {
+  public int getSmallWidth()
+  {
     return smallWidth;
   }
 
-  public void setSmallWidth(int smallWidth) {
+  public void setSmallWidth(int smallWidth)
+  {
     this.smallWidth = smallWidth;
   }
 
-  public String getDescription() {
+  public String getDescription()
+  {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void setDescription(String description)
+  {
     this.description = description;
   }
 
-  public String getPrefix() {
+  public String getPrefix()
+  {
     return prefix;
   }
 
-  public void setPrefix(String prefix) {
+  public void setPrefix(String prefix)
+  {
     this.prefix = prefix;
   }
 
-  public boolean isSubTitle() {
+  public boolean isSubTitle()
+  {
     return subTitle;
   }
 
-  public void setSubTitle(boolean subTitle) {
+  public void setSubTitle(boolean subTitle)
+  {
     this.subTitle = subTitle;
   }
 
-  public String getPreviewBack() {
+  public String getPreviewBack()
+  {
     return previewBack;
   }
 
-  public void setPreviewBack(String previewBack) {
+  public void setPreviewBack(String previewBack)
+  {
     this.previewBack = previewBack;
   }
 
-  public String getPreviewHome() {
+  public String getPreviewHome()
+  {
     return previewHome;
   }
 
-  public void setPreviewHome(String previewHome) {
+  public void setPreviewHome(String previewHome)
+  {
     this.previewHome = previewHome;
   }
 
-  public String getPreviewNext() {
+  public String getPreviewNext()
+  {
     return previewNext;
   }
 
-  public void setPreviewNext(String previewNext) {
+  public void setPreviewNext(String previewNext)
+  {
     this.previewNext = previewNext;
   }
 
-  public String getAProperty() {
+  public String getAProperty()
+  {
     return aProperty;
   }
 
-  public void setAProperty(String property) {
+  public void setAProperty(String property)
+  {
     aProperty = property;
   }
 
-  public File getPreviewImage() {
+  public File getPreviewImage()
+  {
     return previewImage;
   }
 
-  public void setPreviewImage(File previewImage) {
+  public void setPreviewImage(File previewImage)
+  {
     this.previewImage = previewImage;
   }
 
-  public String getListType() {
+  public String getListType()
+  {
     return listType;
   }
 
-  public void setListType(String listType) {
+  public void setListType(String listType)
+  {
     this.listType = listType;
   }
 }

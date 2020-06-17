@@ -33,17 +33,19 @@ import org.jis.generator.Generator;
 public class Preview extends JPanel {
   private static final long serialVersionUID = 5219232341968203639L;
 
-  Thumbnail thumb;
-  Main main;
-  JButton generieren = new JButton();
-  JButton rotate_rechts = new JButton();
-  JButton rotate_links = new JButton();
+  Thumbnail                 thumb;
+  Main                      main;
+  JButton                   generieren       = new JButton();
+  JButton                   rotate_rechts       = new JButton();
+  JButton                   rotate_links       = new JButton();
 
-  public Thumbnail getThumb() {
+  public Thumbnail getThumb()
+  {
     return thumb;
   }
 
-  public void setThumb(Thumbnail thumb) {
+  public void setThumb(Thumbnail thumb)
+  {
     this.thumb = thumb;
 
     removeAll();
@@ -68,9 +70,11 @@ public class Preview extends JPanel {
     URL url = ClassLoader.getSystemResource("icons/image-x-generic.png");
     generieren.setIcon(new ImageIcon(url));
 
-    generieren.addActionListener(new ActionListener() {
+    generieren.addActionListener(new ActionListener()
+    {
 
-      public void actionPerformed(ActionEvent arg0) {
+      public void actionPerformed(ActionEvent arg0)
+      {
         main.generator.generateSingle(thumb.getFile(), thumb.getImage());
       }
     });
@@ -79,27 +83,31 @@ public class Preview extends JPanel {
     URL urll = ClassLoader.getSystemResource("icons/go-jump-mirror.png");
     rotate_links.setIcon(new ImageIcon(urll));
 
-    rotate_links.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
+    rotate_links.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent arg0)
+      {
         thumb.setImage(main.generator.rotateImage(thumb.getImage(), Generator.ROTATE_270));
         thumb.repaint();
       }
     });
 
+    
     rotate_rechts = new JButton("");
     URL urlr = ClassLoader.getSystemResource("icons/go-jump.png");
     rotate_rechts.setIcon(new ImageIcon(urlr));
 
-    rotate_rechts.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
+    rotate_rechts.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent arg0)
+      {
         thumb.setImage(main.generator.rotateImage(thumb.getImage(), Generator.ROTATE_90));
         thumb.repaint();
       }
     });
-    setLayout(new BorderLayout());
+   setLayout(new BorderLayout());
 
-    if (thumb != null)
-      add(thumb);
+    if (thumb != null) add(thumb);
 
     JLabel no_image = new JLabel("", SwingConstants.CENTER);
     url = ClassLoader.getSystemResource("icons/image-missing.png");

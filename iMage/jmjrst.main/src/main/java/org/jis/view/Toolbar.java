@@ -27,20 +27,21 @@ import org.jis.listner.MenuListner;
 /**
  * @author <a href="http://www.jgeppert.com">Johannes Geppert</a>
  * 
- *         <p>
- *         This is Toolbar of the GUI
- *         </p>
+ * <p>
+ * This is Toolbar of the GUI
+ * </p>
  */
 public class Toolbar extends JToolBar {
   private static final long serialVersionUID = 1232107393895691717L;
 
-  public JButton gener;
-  public JButton zippen;
-  public JButton gallerie;
-  public JButton preferences;
+  public JButton          gener;
+  public JButton          zippen;
+  public JButton          gallerie;
+  public JButton          preferences;
 
   /**
-   * @param m a reference to the Main class
+   * @param m
+   *          a reference to the Main class
    */
   public Toolbar(Main m) {
     super();
@@ -69,7 +70,7 @@ public class Toolbar extends JToolBar {
     this.add(zippen);
     this.add(gallerie);
     this.add(preferences);
-
+    
     MenuListner al = new MenuListner(m, m.menu);
     gener.addActionListener(al);
     zippen.addActionListener(al);
