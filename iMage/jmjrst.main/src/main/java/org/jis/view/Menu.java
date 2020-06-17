@@ -64,7 +64,7 @@ public class Menu extends JMenuBar {
     JMenu about = new JMenu(m.mes.getString("Menu.3"));
 
     // Add Plugins to JMJRST
-    JMenu plugins = new JMenu("Load plug-ins");
+    JMenu plugins = new JMenu(m.mes.getString("Menu.17"));
     this.createPluginMenu(m, plugins);
 
     gener = new JMenuItem(m.mes.getString("Menu.4"));
@@ -183,18 +183,27 @@ public class Menu extends JMenuBar {
    *          the menu for plugin buttons
    */
   private void createPluginMenu(Main m, JMenu plugins) {
+    final URL pluginUrl = ClassLoader.getSystemResource("icons/plugin-icon.gif");
+    final URL runURL = ClassLoader.getSystemResource("icons/plugin-run.gif");
+    final URL configURL = ClassLoader.getSystemResource("icons/plugin-config.gif");
+    final URL noPluginsURL = ClassLoader.getSystemResource("icons/no-plugins-icon.png");
     for (PluginForJmjrst plugin : PluginManagement.getPlugins()) {
       plugin.init(m);
-
-      JMenuItem start = new JMenuItem("Start " + plugin.getName());
+      JMenu pluginItem = new JMenu(plugin.getName());
+      pluginItem.setIcon(new ImageIcon(pluginUrl));
+      JMenuItem start = new JMenuItem(m.mes.getString("LoadPlugins.RUN") + plugin.getName());
       start.addActionListener(e -> plugin.run());
-      plugins.add(start);
+      start.setIcon(new ImageIcon(runURL));
+      pluginItem.add(start);
 
       if (plugin.isConfigurable()) {
-        JMenuItem configure = new JMenuItem("Configure " + plugin.getName());
+        JMenuItem configure = new JMenuItem(m.mes.getString("LoadPlugins.Configure") + plugin.getName());
         configure.addActionListener(e -> plugin.configure());
-        plugins.add(configure);
+        configure.setIcon(new ImageIcon(configURL));
+        pluginItem.add(configure);
       }
+
+      plugins.add(pluginItem);
 
       plugins.addSeparator();
 
@@ -204,7 +213,8 @@ public class Menu extends JMenuBar {
       plugins.remove(plugins.getItemCount() - 1);
     } else {
       // Add indicator for no plugins
-      JMenuItem none = new JMenuItem("(No plug-ins available!)");
+      JMenuItem none = new JMenuItem(m.mes.getString("Menu.18"));
+      none.setIcon(new ImageIcon(noPluginsURL));
       none.setEnabled(false);
       plugins.add(none);
     }
