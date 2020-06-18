@@ -36,9 +36,9 @@
 			<outputDirectory>docs</outputDirectory>
 		</fileSet>
 	</fileSets>
-	<!-- including the workspace .gitignore: <files>
+	<files>
 		<file>
 			<source>../../.gitignore</source>
 		</file>
-	</files> -->
+	</files>
 </assembly>
