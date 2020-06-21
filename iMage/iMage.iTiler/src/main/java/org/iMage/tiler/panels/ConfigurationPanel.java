@@ -1,15 +1,16 @@
-package org.iMage.tiler;
+package org.iMage.tiler.panels;
 
+import org.iMage.tiler.Tiler;
 import org.iMage.tiler.listeners.SaveAction;
 import org.iMage.tiler.listeners.SelectAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 
 public class ConfigurationPanel extends JPanel {
     private final Tiler tiler;
     private static final Dimension DIM_BUTTON = new Dimension(200, 32);
+    private JButton save;
 
 
 
@@ -23,10 +24,8 @@ public class ConfigurationPanel extends JPanel {
     }
 
     private void createButtons() {
-        URL url = ClassLoader.getSystemResource("icons/load.gif");
-        JButton load = new JButton("Load Input", new ImageIcon(url));
-        url = ClassLoader.getSystemResource("icons/save.png");
-        JButton save = new JButton("Save Result", new ImageIcon(url));
+        JButton load = new JButton("Load Input");
+        save = new JButton("Save Result");
 
         load.addActionListener(new SelectAction(tiler));
         load.setPreferredSize(DIM_BUTTON);
@@ -41,8 +40,13 @@ public class ConfigurationPanel extends JPanel {
         save.setSize(DIM_BUTTON);
         save.setBackground(Color.LIGHT_GRAY);
         save.setLocation(500, 15);
+        save.setEnabled(false);
 
         add(load);
         add(save);
+    }
+
+    public void setButtonEnabled(final boolean b) {
+        save.setEnabled(b);
     }
 }

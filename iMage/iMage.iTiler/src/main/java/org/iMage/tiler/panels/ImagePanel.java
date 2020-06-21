@@ -1,4 +1,4 @@
-package org.iMage.tiler;
+package org.iMage.tiler.panels;
 
 import javax.swing.*;
 
@@ -22,17 +22,19 @@ public class ImagePanel extends JPanel {
     private final JLabel right;
 
 
-    ImagePanel() {
+    public ImagePanel() {
         setPreferredSize(DIM);
         setBackground(new Color(65, 65, 65));
         setLayout(new BorderLayout());
 
         left = new JLabel(new ImageIcon(new BufferedImage(PIC_DIM.width, PIC_DIM.height, 1)), JLabel.CENTER);
         left.setPreferredSize(PIC_DIM);
+        left.setBackground(Color.BLACK);
         left.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
 
         right =  new JLabel(new ImageIcon(new BufferedImage(PIC_DIM.width, PIC_DIM.height, 1)), JLabel.CENTER);
         right.setPreferredSize(PIC_DIM);
+        left.setBackground(Color.BLACK);
         right.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
 
         createPanel();
@@ -78,7 +80,7 @@ public class ImagePanel extends JPanel {
         right.setIcon(new ImageIcon(scaleImage(img)));
     }
 
-    private BufferedImage scaleImage(final BufferedArtImage img) {
+    public static BufferedImage scaleImage(final BufferedArtImage img) {
         int width = img.getWidth();
         int height = img.getHeight();
         float scale = width > height ? (float) MAX_WIDTH / width : (float) MAX_HEIGHT / height;
