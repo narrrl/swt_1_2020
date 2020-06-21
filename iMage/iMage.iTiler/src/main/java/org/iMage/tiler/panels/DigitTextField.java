@@ -7,7 +7,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
+/**
+ * Creates a JTextField that only accepts digits and marks invalid input red
+ */
 public class DigitTextField extends JTextField {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 5299329621575736056L;
+
     private final Tiler tiler;
     // xD
     private static final Pattern VALID_NUMBER = Pattern.compile("([1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|"

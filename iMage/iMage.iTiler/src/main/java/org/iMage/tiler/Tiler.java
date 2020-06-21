@@ -4,6 +4,7 @@ import org.iMage.mosaique.MosaiqueEasel;
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.rectangle.RectangleArtist;
 import org.iMage.mosaique.rectangle.RectangleShape;
+import org.iMage.mosaique.triangle.TriangleArtist;
 import org.iMage.tiler.panels.ArtisticPanel;
 import org.iMage.tiler.panels.ConfigurationPanel;
 import org.iMage.tiler.panels.ImagePanel;
@@ -19,6 +20,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+/**
+ * This program is the main class for iMage.iTiler. It stores all the needed data to create the mosaique.
+ */
 public class Tiler extends JFrame {
     private static final Dimension DIM = new Dimension(800, 450);
     private final Container pane;
@@ -34,6 +38,10 @@ public class Tiler extends JFrame {
      */
     private static final long serialVersionUID = 1337L;
 
+
+    /**
+     * Creates the Frame with all the compomnents
+     */
     Tiler() {
         preview = new ImagePanel();
         artisticPanel = new ArtisticPanel(this);
@@ -65,19 +73,23 @@ public class Tiler extends JFrame {
        JPanel box = new JPanel();
 
        box.setLayout(new BorderLayout());
-       box.setPreferredSize(new Dimension(800, 160));
+       box.setPreferredSize(new Dimension(800, 120));
        box.setBackground(new Color(30, 30, 30));
 
        box.add(configurationPanel, BorderLayout.NORTH);
        box.add(artisticPanel, BorderLayout.SOUTH);
 
+       pane.add(box, BorderLayout.SOUTH);
+
        box.setBorder(BorderFactory.createTitledBorder(
                BorderFactory.createLineBorder(Color.LIGHT_GRAY), "Configuration",
                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.LIGHT_GRAY));
-
-       pane.add(box, BorderLayout.SOUTH);
     }
 
+    /**
+     * Creates a new iTiler and starts the program
+     * @param args -
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             Tiler tiler;
@@ -86,6 +98,11 @@ public class Tiler extends JFrame {
         });
     }
 
+
+    /**
+     * Creates a new BufferedImage from file {@link Tiler#selectedImage}
+     * @param file the new image
+     */
     public void setImage(File file) {
         if (file == null) {
             return;
@@ -94,36 +111,51 @@ public class Tiler extends JFrame {
             BufferedArtImage tmp = new BufferedArtImage(ImageIO.read(file));
             preview.setLeftImage(tmp);
             selectedImage = tmp;
-        } catch (IOException e) {
+        } catch (IOException e){
             JOptionPane.showMessageDialog(this,
                     "Couldn't find image!", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    /**
+     * checks if mosaique was created
+     * @return true if a mosaique was created
+     */
     public boolean hasMosaique() {
         return mosaique != null;
     }
 
+    /**
+     * creates a new mosaique from the {@link Tiler#tiles} and the {@link Tiler#selectedImage}
+     */
     public void createMosaique() {
+        // checks if tiles were selected and a image has been choosen
         if (isImageSelected() && tiles != null) {
             MosaiqueEasel easel = new MosaiqueEasel();
-            RectangleArtist artist;
+            
             int h;
             int w;
+            // tries to get the tile height and width or else sets to default value
             try {
                 h = artisticPanel.getH() > 0 ? artisticPanel.getH() : 42;
                 w = artisticPanel.getW() > 0 ? artisticPanel.getW() : 42;
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Invalid width/height",
-                        "Info", JOptionPane.INFORMATION_MESSAGE);
-                return;
+                h = 42;
+                w = 42;
             }
-            artist = new RectangleArtist(tiles, w, h);
-            mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), artist));
+            // checks if the rectangle or triangle
+            if (artisticPanel.artistIsRectangle()) {
+                mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), new RectangleArtist(tiles, w, h)));
+            } else {
+                mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), new TriangleArtist(tiles, w, h)));
+            }
+            // sets the right image of the image preview
             preview.setRightImage(mosaique);
+            // enables button to save
             configurationPanel.setButtonEnabled(true);
             return;
         }
+        // error messages
         if (!isImageSelected() && tiles == null) {
             JOptionPane.showMessageDialog(this, "Select a image and load tiles first!",
                     "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -136,40 +168,62 @@ public class Tiler extends JFrame {
         }
     }
 
+    /**
+     * checks if image was selected
+     * @return
+     */
     public boolean isImageSelected() {
         return selectedImage != null;
     }
 
+    /**
+     * gets the mosaique as buffered image
+     * @return {@link Tiler#mosaique}
+     */
     public BufferedImage getImg() {
         return this.mosaique.toBufferedImage();
     }
 
-    public void loadTiles(final File f) {
-        tiles = new ArrayList<>();
 
-        if (f != null && f.isDirectory()) {
+    /**
+     * Loads all {@link Tiler#tiles} from a folder f
+     * @param f the folder
+     */
+    public void loadTiles(final File f) {
+        tiles = new ArrayList<>(); // new list of tiles
+
+        if (f != null && f.isDirectory()) { // checks if f is directory
+
+            // New FileFilter to make sure that only images get loaded
             File[] files = f.listFiles(file -> {
                 if (file == null) {
                     return false;
                 }
                 return isImage(file);
             });
+
             if (files == null) {
                 JOptionPane.showMessageDialog(this, "No images found!", "Info",
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
+
             JProgressBar bar = new JProgressBar(0, files.length);
+            JDialog dialog = new JDialog(this, "Progress");
+
             bar.setValue(0);
             bar.setStringPainted(true);
             bar.setBackground(new Color(30, 30, 30));
-            JDialog dialog = new JDialog(this, "Progress");
+
             dialog.add(bar);
             dialog.pack();
             dialog.setVisible(true);
             dialog.setLocationRelativeTo(null);
+
+            // creates new thread that progressbar gets updated parallel
             Thread t = new Thread(() -> {
                 for (File tmp : files) {
+
                     if (isImage(tmp)) {
                         try {
                             tiles.add(new BufferedArtImage(ImageIO.read(tmp)));
@@ -177,17 +231,25 @@ public class Tiler extends JFrame {
                             e.printStackTrace();
                         }
                     }
+                    
+                    // updates the progressbar
                     bar.setValue(bar.getValue() + 1);
+
+                    // close on finish
                     if (bar.getValue() == files.length) {
                         dialog.dispose();
                     }
                 }
             });
-            t.start();
 
+            t.start();
         }
     }
 
+    /**
+     * checks if f is image
+     * @param f the file that gets checked
+     */
     private boolean isImage(final File f) {
         for (String type : ImageIO.getReaderFileSuffixes()) {
             if (f.getName().endsWith(type)) {
@@ -197,12 +259,18 @@ public class Tiler extends JFrame {
         return false;
     }
 
+
+    /**
+     *  Creates a new window with all loaded tiles
+     */
     public void showTiles() {
+
         if (tiles == null) {
             JOptionPane.showMessageDialog(this, "Load tiles first!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+
         JDialog dialog = new JDialog(this, "Tiles");
         JScrollPane scrollPane = new JScrollPane();
         GridBagLayout l = new GridBagLayout();
@@ -223,23 +291,26 @@ public class Tiler extends JFrame {
         int w;
         int h;
 
+        // set try to get the resolution of the tiles
         try {
-            w = artisticPanel.getW() > 0 ? artisticPanel.getW() : 42;
-            h = artisticPanel.getH() > 0 ? artisticPanel.getH() : 42;
+            w = artisticPanel.getW() > 0 && artisticPanel.getW() >= 70 ? artisticPanel.getW() : 70;
+            h = artisticPanel.getH() > 0 && artisticPanel.getH() >= 70 ? artisticPanel.getH() : 42;
         } catch (NumberFormatException e) {
             w = 70;
             h = 70;
         }
 
+        // Adds all images as JLabels to the dialog
         for (BufferedArtImage img : tiles) {
             JLabel label = new JLabel(new ImageIcon());
 
+            label.setIcon(new ImageIcon(new RectangleShape(img, w, h).getThumbnail()));
             label.setSize(new Dimension(70, 70));
             label.setMaximumSize(new Dimension(70, 70));
             label.setMinimumSize(new Dimension(70, 70));
             label.setPreferredSize(new Dimension(70, 70));
-            label.setIcon(new ImageIcon(new RectangleShape(img, w, h).getThumbnail()));
 
+            // new row after 7 images
             if (counter == 7) {
                 counter = 0;
                 c.gridy++;
@@ -253,6 +324,8 @@ public class Tiler extends JFrame {
         scrollPane.setViewportView(p);
 
         dialog.add(scrollPane, BorderLayout.CENTER);
+
+        dialog.pack();
 
         dialog.setVisible(true);
     }

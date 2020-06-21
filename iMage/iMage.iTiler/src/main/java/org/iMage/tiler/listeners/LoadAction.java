@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * creates a action to load tiles for the mosaique
+ */
 public class LoadAction implements ActionListener {
     private final Tiler tiler;
 
@@ -16,12 +19,15 @@ public class LoadAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
         JFileChooser chooser = new JFileChooser();
+
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.setMultiSelectionEnabled(false);
         chooser.setDialogTitle("Load Tiles");
         chooser.showDialog(tiler, "Load");
+
         tiler.loadTiles(chooser.getSelectedFile());
     }
 }

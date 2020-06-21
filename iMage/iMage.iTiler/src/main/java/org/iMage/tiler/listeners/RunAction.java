@@ -5,6 +5,9 @@ import org.iMage.tiler.Tiler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Creates action to create the mosaique
+ */
 public class RunAction implements ActionListener {
     private final Tiler tiler;
 
@@ -14,6 +17,7 @@ public class RunAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        // Tiler handels everything
         tiler.createMosaique();
     }
 }

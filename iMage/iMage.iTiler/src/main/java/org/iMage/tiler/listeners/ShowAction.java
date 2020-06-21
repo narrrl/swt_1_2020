@@ -5,6 +5,9 @@ import org.iMage.tiler.Tiler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Creates a action to show all loaded tiles
+ */
 public class ShowAction implements ActionListener {
     private final Tiler tiler;
 

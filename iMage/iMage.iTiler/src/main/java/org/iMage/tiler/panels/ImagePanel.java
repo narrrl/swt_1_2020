@@ -8,7 +8,15 @@ import org.iMage.mosaique.rectangle.RectangleShape;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Creates a panel for the image previews
+ */
 public class ImagePanel extends JPanel {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3798207680102045925L;
+
     private static final int MAX_HEIGHT = 250;
     private static final int MAX_WIDTH = 350;
     private static final int TOTAL_WIDTH = 800;
@@ -72,14 +80,28 @@ public class ImagePanel extends JPanel {
         add(top2, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sets the left image
+     * @param img the new image
+     */
     public void setLeftImage(BufferedArtImage img) {
         left.setIcon(new ImageIcon(scaleImage(img)));
     }
 
+    /**
+     * Sets the right image
+     * @param img the new image
+     */
     public void setRightImage(BufferedArtImage img) {
         right.setIcon(new ImageIcon(scaleImage(img)));
     }
 
+
+    /**
+     * Scales a given image to the right width/heiht of the preview panels
+     * @param img the image that gets scaled
+     * @return the scaled version of the image
+     */
     public static BufferedImage scaleImage(final BufferedArtImage img) {
         int width = img.getWidth();
         int height = img.getHeight();

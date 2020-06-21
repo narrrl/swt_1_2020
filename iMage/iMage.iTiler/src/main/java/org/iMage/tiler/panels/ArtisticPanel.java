@@ -9,15 +9,25 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * creates the artistic panel for the {@link Tiler} with the width and height text field,
+ * load and show buttons for the tiles, a artist mode drop box and a run button.
+ */
 public class ArtisticPanel extends JPanel {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2090643071309374592L;
+    
     private final Tiler tiler;
     private DigitTextField width;
     private DigitTextField height;
+    private JComboBox<String> artistMenu; 
 
     public ArtisticPanel(final Tiler tiler) {
         this.tiler = tiler;
         setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(800, 80));
+        setPreferredSize(new Dimension(800, 60));
         setLayout(new GridLayout(1, 2));
         setOpaque(false);
 
@@ -61,8 +71,10 @@ public class ArtisticPanel extends JPanel {
         tileSize.setOpaque(false);
 
         load.setBackground(Color.LIGHT_GRAY);
+        // action to load tiles
         load.addActionListener(new LoadAction(tiler));
         show.setBackground(Color.LIGHT_GRAY);
+        // action to show tiles
         show.addActionListener(new ShowAction(tiler));
 
         tilesOptions.setOpaque(false);
@@ -81,7 +93,7 @@ public class ArtisticPanel extends JPanel {
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints l = new GridBagConstraints();
         JLabel artist = new JLabel("Artist");
-        JComboBox<String> artistMenu = new JComboBox<>(new String[]{ "Rectangle", "Triangle" });
+        artistMenu = new JComboBox<>(new String[]{ "Rectangle", "Triangle" });
         JButton run = new JButton("Run");
 
         l.insets = new Insets(0, 5, 0, 5);
@@ -93,6 +105,7 @@ public class ArtisticPanel extends JPanel {
         artistMenu.setBackground(Color.LIGHT_GRAY);
 
         run.setBackground(Color.LIGHT_GRAY);
+        // action to create the mosaique
         run.addActionListener(new RunAction(tiler));
 
         artistsOptions.add(artist, l);
@@ -102,11 +115,30 @@ public class ArtisticPanel extends JPanel {
         add(artistsOptions);
     }
 
+
+    /**
+     * get the user inputted tile width
+     * @return tile width
+     * @throws NumberFormatException if input is invalid
+     */
     public int getW() throws NumberFormatException {
         return width.getNumber();
     }
 
+    /**
+     * get the user inputted tile height
+     * @return tile height
+     * @throws NumberFormatException if input is invalid
+     */
     public int getH() throws NumberFormatException {
         return height.getNumber();
     }
+
+    /**
+     * checks if rectangle should be used by comparing the selected string in {@link ArtisticPanel#artistMenu} with "Rectangle"
+     * @return true if rectangle should be used
+     */
+	public boolean artistIsRectangle() {
+		return artistMenu.getActionCommand().equals("Rectangle");
+	}
 }
