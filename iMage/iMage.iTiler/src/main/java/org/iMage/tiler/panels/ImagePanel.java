@@ -20,63 +20,62 @@ public class ImagePanel extends JPanel {
     private static final Dimension TOP_DIM = new Dimension(MAX_WIDTH, 20);
     private final JLabel left;
     private final JLabel right;
-    private JPanel center;
 
 
     ImagePanel() {
         setPreferredSize(DIM);
         setBackground(new Color(65, 65, 65));
         setLayout(new BorderLayout());
+
         left = new JLabel(new ImageIcon(new BufferedImage(PIC_DIM.width, PIC_DIM.height, 1)), JLabel.CENTER);
         left.setPreferredSize(PIC_DIM);
         left.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+
         right =  new JLabel(new ImageIcon(new BufferedImage(PIC_DIM.width, PIC_DIM.height, 1)), JLabel.CENTER);
         right.setPreferredSize(PIC_DIM);
         right.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+
         createPanel();
     }
 
     private void createPanel() {
-        center = new JPanel();
+        JPanel top = new JPanel();
+        JPanel top2 = new JPanel();
+        JPanel spacer = new JPanel();
+        JPanel spacer2 = new JPanel();
+        JPanel center = new JPanel();
+
         center.setBackground(new Color(30, 30, 30));
         center.setLayout(new BorderLayout());
         center.setPreferredSize(CENTER_DIM);
         center.add(left, BorderLayout.WEST);
         center.add(right, BorderLayout.EAST);
-        // add center with the two Panels for the images
-        add(center, BorderLayout.CENTER);
-        JPanel top = new JPanel();
+
         top.setBackground(new Color(30, 30, 30));
         top.setPreferredSize(TOP_DIM);
-        JPanel top2 = new JPanel();
-        top2.setPreferredSize(TOP_DIM);
+
         top2.setBackground(new Color(30, 30, 30));
-        // add top spacer
-        add(top, BorderLayout.NORTH);
-        add(top2, BorderLayout.SOUTH);
-        JPanel spacer = new JPanel();
+        top2.setPreferredSize(TOP_DIM);
+
         spacer.setBackground(new Color(30, 30, 30));
         spacer.setPreferredSize(SPACER_DIM);
-        JPanel spacer2 = new JPanel();
+
         spacer2.setBackground(new Color(30, 30, 30));
         spacer2.setPreferredSize(SPACER_DIM);
-        // add spacer to left and right side
-        add(spacer2, BorderLayout.EAST);
+
         add(spacer, BorderLayout.WEST);
+        add(spacer2, BorderLayout.EAST);
+        add(center, BorderLayout.CENTER);
+        add(top, BorderLayout.NORTH);
+        add(top2, BorderLayout.SOUTH);
     }
 
     public void setLeftImage(BufferedArtImage img) {
         left.setIcon(new ImageIcon(scaleImage(img)));
-        left.setPreferredSize(PIC_DIM);
-        left.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        center.add(left, BorderLayout.WEST);
     }
 
     public void setRightImage(BufferedArtImage img) {
         right.setIcon(new ImageIcon(scaleImage(img)));
-        right.setPreferredSize(PIC_DIM);
-        right.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        center.add(right, BorderLayout.EAST);
     }
 
     private BufferedImage scaleImage(final BufferedArtImage img) {

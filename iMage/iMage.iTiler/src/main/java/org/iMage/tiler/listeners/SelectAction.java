@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class SelectAction implements ActionListener {
-    final Tiler tiler;
+    private final Tiler tiler;
 
     public SelectAction(final Tiler tiler) {
         super();

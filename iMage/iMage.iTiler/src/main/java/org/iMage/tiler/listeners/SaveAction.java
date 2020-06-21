@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SaveAction implements ActionListener {
-    final Tiler tiler;
+    private final Tiler tiler;
 
     public SaveAction(final Tiler tiler) {
         super();
