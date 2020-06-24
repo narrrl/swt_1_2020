@@ -132,7 +132,7 @@ public class Tiler extends JFrame {
         // checks if tiles were selected and a image has been choosen
         if (isImageSelected() && tiles != null) {
             MosaiqueEasel easel = new MosaiqueEasel();
-            
+
             int h;
             int w;
             // tries to get the tile height and width or else sets to default value
@@ -231,7 +231,7 @@ public class Tiler extends JFrame {
                             e.printStackTrace();
                         }
                     }
-                    
+
                     // updates the progressbar
                     bar.setValue(bar.getValue() + 1);
 
@@ -294,7 +294,7 @@ public class Tiler extends JFrame {
         // set try to get the resolution of the tiles
         try {
             w = artisticPanel.getW() > 0 && artisticPanel.getW() >= 70 ? artisticPanel.getW() : 70;
-            h = artisticPanel.getH() > 0 && artisticPanel.getH() >= 70 ? artisticPanel.getH() : 42;
+            h = artisticPanel.getH() > 0 && artisticPanel.getH() >= 70 ? artisticPanel.getH() : 70;
         } catch (NumberFormatException e) {
             w = 70;
             h = 70;
