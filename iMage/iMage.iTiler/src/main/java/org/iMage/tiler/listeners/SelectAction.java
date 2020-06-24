@@ -21,7 +21,7 @@ public class SelectAction implements ActionListener {
         this.tiler = tiler;
     }
 
-    
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         JFileChooser chooser = new JFileChooser();
@@ -31,7 +31,7 @@ public class SelectAction implements ActionListener {
         chooser.setFileFilter(imageFilter);
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.setMultiSelectionEnabled(false);
-        chooser.showDialog(null, "Gimme that juicy anime tiddies");
+        chooser.showDialog(tiler, "Select image");
 
         File file = chooser.getSelectedFile();
 

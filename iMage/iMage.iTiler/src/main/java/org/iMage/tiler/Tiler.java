@@ -291,7 +291,8 @@ public class Tiler extends JFrame {
         int w;
         int h;
 
-        // set try to get the resolution of the tiles
+        // tries to get the resolution of the tiles
+        // if the user input is invalid, the default of 70 get set
         try {
             w = artisticPanel.getW() > 0 && artisticPanel.getW() >= 70 ? artisticPanel.getW() : 70;
             h = artisticPanel.getH() > 0 && artisticPanel.getH() >= 70 ? artisticPanel.getH() : 70;
