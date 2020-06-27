@@ -10,9 +10,17 @@ import java.awt.image.BufferedImage;
  *
  */
 public final class RectangleCalculator {
-  private RectangleCalculator() {
-    throw new IllegalAccessError();
+  private static RectangleCalculator calc = null;
+
+  private RectangleCalculator() {}
+
+  public static RectangleCalculator getCalculator() {
+      if (calc == null) {
+          calc = new RectangleCalculator();
+      }
+      return calc;
   }
+
 
   /**
    * Calculate the average color for an rectangle region.
@@ -21,7 +29,7 @@ public final class RectangleCalculator {
    *          the region
    * @return the color as ARGB
    */
-  public static int averageColor(BufferedImage region) {
+  public int averageColor(BufferedImage region) {
     long r = 0;
     long g = 0;
     long b = 0;

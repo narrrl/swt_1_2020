@@ -35,7 +35,7 @@ public class RectangleShape extends AbstractShape implements IMosaiqueShape<Buff
 
   @Override
   protected int calcAverage() {
-    return RectangleCalculator.averageColor(image);
+    return RectangleCalculator.getCalculator().averageColor(image);
   }
 
   @Override

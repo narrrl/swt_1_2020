@@ -52,7 +52,7 @@ public class RectangleArtist extends AbstractArtist implements IMosaiqueArtist<B
 
   @Override
   protected void drawTileForRegion(BufferedImage region, BufferedArtImage target) {
-    int average = RectangleCalculator.averageColor(region);
+    int average = RectangleCalculator.getCalculator().averageColor(region);
     IMosaiqueShape<BufferedArtImage> tile = findNearest(average, shapes);
     tile.drawMe(target);
   }
