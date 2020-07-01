@@ -12,7 +12,7 @@ import org.iMage.mosaique.base.IMosaiqueShape;
  * @author Dominik Fuchss
  *
  */
-public class RectangleShape extends AbstractShape implements IMosaiqueShape<BufferedArtImage> {
+public class RectangleShape extends AbstractShape {
 
   /**
    * Create a new {@link IMosaiqueShape}.

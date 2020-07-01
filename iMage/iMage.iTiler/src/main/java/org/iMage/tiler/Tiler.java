@@ -147,6 +147,13 @@ public class Tiler extends JFrame {
             if (artisticPanel.artistIsRectangle()) {
                 mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), new RectangleArtist(tiles, w, h)));
             } else {
+                if ( h == 1 || w == 1) {
+                    JOptionPane.showMessageDialog(this, "Das geht nicht, danke Uebungsleitung, "
+                           + "stell Tiles groesser als 1x1 ein fuer Triangle",
+                            "Info", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+
+                }
                 mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), new TriangleArtist(tiles, w, h)));
             }
             // sets the right image of the image preview

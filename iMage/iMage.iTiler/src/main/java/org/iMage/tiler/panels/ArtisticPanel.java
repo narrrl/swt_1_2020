@@ -139,6 +139,7 @@ public class ArtisticPanel extends JPanel {
      * @return true if rectangle should be used
      */
 	public boolean artistIsRectangle() {
-		return artistMenu.getActionCommand().equals("Rectangle");
+        String current = artistMenu.getSelectedItem().toString();
+		return current.equals("Rectangle");
 	}
 }

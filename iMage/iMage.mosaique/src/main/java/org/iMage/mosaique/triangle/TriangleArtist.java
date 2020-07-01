@@ -17,7 +17,7 @@ import org.iMage.mosaique.base.IMosaiqueArtist;
  * @author Dominik Fuchss
  *
  */
-public class TriangleArtist extends AbstractArtist implements IMosaiqueArtist<BufferedArtImage> {
+public class TriangleArtist extends AbstractArtist {
 
   private List<AbstractShape> upper;
   private List<AbstractShape> lower;
@@ -59,9 +59,10 @@ public class TriangleArtist extends AbstractArtist implements IMosaiqueArtist<Bu
 
   @Override
   public void drawTileForRegion(BufferedImage region, BufferedArtImage target) {
-    TriangleCalculator calc = TriangleCalculator.getCalculator();
-    int averageUpper = calc.averageUpperColor(region);
-    int averageLower = calc.averageLowerColor(region);
+    UpperTriangleCalculator uCalc = UpperTriangleCalculator.gCalculator();
+    LowerTriangleCalculator lCalc = LowerTriangleCalculator.getCalculator();
+    int averageUpper = uCalc.averageColor(region);
+    int averageLower = lCalc.averageColor(region);
 
     var upperImage = findNearest(averageUpper, upper);
     var lowerImage = findNearest(averageLower, lower);

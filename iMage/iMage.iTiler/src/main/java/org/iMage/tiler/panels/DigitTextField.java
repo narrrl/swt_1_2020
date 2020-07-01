@@ -9,8 +9,11 @@ import java.util.regex.Pattern;
 
 /**
  * Creates a JTextField that only accepts digits and marks invalid input red
+ *
+ * @autor Nils Pukropp
  */
 public class DigitTextField extends JTextField {
+
     /**
      *
      */
