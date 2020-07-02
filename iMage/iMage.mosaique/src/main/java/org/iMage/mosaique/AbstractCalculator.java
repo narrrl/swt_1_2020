@@ -76,9 +76,12 @@ public abstract class AbstractCalculator {
                 a += c.getAlpha();
                 ctr++;
                 y++;
+                i++;
             }
 
         }
+
+        if (ctr == 0) return Color.BLACK.getRGB();
 
         return new Color((int) (r / ctr), (int) (g / ctr), (int) (b / ctr),
                 (int) (a / ctr)).getRGB();
