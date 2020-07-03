@@ -2,8 +2,6 @@ package org.iMage.mosaique;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import org.iMage.mosaique.triangle.UpperTriangleCalculator;
-import org.iMage.mosaique.triangle.LowerTriangleCalculator;
 import org.iMage.mosaique.rectangle.RectangleCalculator;
 import java.util.Iterator;
 

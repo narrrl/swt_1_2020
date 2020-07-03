@@ -17,7 +17,7 @@ import org.iMage.mosaique.base.IMosaiqueShape;
  * @author Dominik Fuchss
  *
  */
-public class RectangleArtist extends AbstractArtist implements IMosaiqueArtist<BufferedArtImage> {
+public class RectangleArtist extends AbstractArtist  {
 
   private List<RectangleShape> shapes;
 
