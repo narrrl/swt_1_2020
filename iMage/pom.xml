@@ -22,6 +22,7 @@
 	    <module>jmjrst.main</module>
         <module>iMage.mosaique</module>
         <module>iMage.mosaique.cli</module>
+        <module>iMage.mosaique.parallel</module>
         <module>iMage.bundle</module>
         <module>iMage.JavaCrashCourse-plugin</module>
         <module>iMage.iTiler</module>
