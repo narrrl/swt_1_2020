@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.awt.image.BufferedImage;
 import org.iMage.mosaique.base.BufferedArtImage;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class handles the parallel execution of {@link MosaiqueEasel}.
@@ -63,6 +64,12 @@ public final class ParallelMosaiqueEasel {
         }
 
         exec.shutdown();
+
+        try {
+            exec.awaitTermination(60, TimeUnit.DAYS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return result.toBufferedImage();
     }
