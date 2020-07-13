@@ -1,5 +1,6 @@
 package org.iMage.mosaique.triangle;
 
+import org.iMage.mosaique.AbstractCalculator;
 import org.iMage.mosaique.AbstractShape;
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueShape;
@@ -48,19 +49,8 @@ public class LowerTriangleShape extends AbstractShape {
   }
 
   @Override
-  protected void drawShape(BufferedArtImage targetRect, int w, int h) {
-    float m = (1F * h) / w;
-    for (int x = 0; x < w; x++) {
-      float yBound = Math.max((x + 1) * m, 0);
-      for (int y = h - 1; y >= yBound; y--) {
-        targetRect.setRGB(x, y, image.getRGB(x, y));
-      }
-    }
-  }
-
-  @Override
-  protected int calcAverage() {
-    return TriangleCalculator.getCalculator().averageLowerColor(this.image);
+  protected AbstractCalculator getCalculator() {
+    return LowerTriangleCalculator.getInstance();
   }
 
 }

@@ -1,50 +1,48 @@
 package org.iMage.mosaique;
 
+import java.awt.image.BufferedImage;
+import java.util.Objects;
+
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueShape;
 import org.iMage.mosaique.base.ImageUtils;
 
-import java.awt.image.BufferedImage;
-import java.util.Objects;
-
-/**
- * This class represents an abstract {@link IMosaiqueShape} based on an {@link BufferedArtImage}.
- *
- * @author Dominik Fuchss
- */
 public abstract class AbstractShape implements IMosaiqueShape<BufferedArtImage> {
   protected final BufferedImage image;
+  private AbstractCalculator calc;
+
   private int average;
 
   /**
    * Create a new {@link IMosaiqueShape} by image.
    *
    * @param image
-   *     the image to use
+   *          the image to use
    * @param w
-   *     the width
+   *          the width
    * @param h
-   *     the height
+   *          the height
    */
   protected AbstractShape(BufferedArtImage image, int w, int h) {
     this.image = ImageUtils.scaleAndCrop(Objects.requireNonNull(image.toBufferedImage()), w, h);
-    this.average = this.calcAverage();
+    this.calc = getCalculator();
+    this.average = this.calc.averageColor(this.image);
   }
 
   /**
-   * Calculate the average color of {@link #image}.
+   * Get the calculator for the shape.
    *
-   * @return the average color
+   * @return the calculator
    */
-  protected abstract int calcAverage();
+  protected abstract AbstractCalculator getCalculator();
 
   @Override
-  public int getAverageColor() {
+  public final int getAverageColor() {
     return average;
   }
 
   @Override
-  public BufferedImage getThumbnail() {
+  public final BufferedImage getThumbnail() {
     BufferedArtImage res = new BufferedArtImage(image.getWidth(), image.getHeight());
     this.drawMe(res);
     return res.toBufferedImage();
@@ -59,21 +57,8 @@ public abstract class AbstractShape implements IMosaiqueShape<BufferedArtImage> 
     int w = Math.min(this.getWidth(), targetRect.getWidth());
     int h = Math.min(this.getHeight(), targetRect.getHeight());
 
-    drawShape(targetRect, w, h);
-
+    this.calc.applyTiling(image, targetRect, w, h);
   }
-
-  /**
-   * Draw the shape of the specific rectangle based on the target region and the scaled instance.
-   *
-   * @param targetRect
-   *     the target region
-   * @param w
-   *     the width to be drawn
-   * @param h
-   *     the height to be drawn
-   */
-  protected abstract void drawShape(BufferedArtImage targetRect, int w, int h);
 
   @Override
   public final int getWidth() {

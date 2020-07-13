@@ -1,9 +1,9 @@
 package org.iMage.mosaique.rectangle;
 
-import org.iMage.mosaique.AbstractCalculator;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.image.BufferedImage;
+import java.util.stream.IntStream;
+
+import org.iMage.mosaique.AbstractCalculator;
 
 /**
  * Helper class for the {@link RectangleArtist} and {@link RectangleShape}.
@@ -12,28 +12,26 @@ import java.awt.image.BufferedImage;
  *
  */
 public final class RectangleCalculator extends AbstractCalculator {
-  private static RectangleCalculator calc = null;
+  private static RectangleCalculator instance;
 
-  private RectangleCalculator() {}
-
-  @Override
-  public Iterator<Integer> getPixelIterator(BufferedImage region) {
-      ArrayList<Integer> pixels = new ArrayList<>();
-
-      for (int x = 0; x < region.getWidth(); x++) {
-          for (int y = 0; y < region.getHeight(); y++) {
-            pixels.add(region.getRGB(x, y));
-          }
-      }
-
-      return pixels.iterator();
+  /**
+   * Get the one and only instance of the calculator.
+   *
+   * @return the instance
+   */
+  public static RectangleCalculator getInstance() {
+    if (instance == null) {
+      instance = new RectangleCalculator();
+    }
+    return instance;
   }
 
-  public static RectangleCalculator getCalculator() {
-      if (calc == null) {
-          calc = new RectangleCalculator();
-      }
-      return calc;
+  private RectangleCalculator() {
+  }
+
+  @Override
+  protected Iterator<Integer> getIteratorForColumn(int w, int h, int x) {
+    return IntStream.range(0, h).iterator();
   }
 
 }

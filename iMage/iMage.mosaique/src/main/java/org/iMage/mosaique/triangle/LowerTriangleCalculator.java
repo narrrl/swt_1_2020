@@ -1,37 +1,37 @@
 package org.iMage.mosaique.triangle;
 
-
 import org.iMage.mosaique.AbstractCalculator;
+
 import java.util.Iterator;
-import java.util.ArrayList;
-import java.awt.image.BufferedImage;
+import java.util.stream.IntStream;
 
+/**
+ * Helper class for the {@link TriangleArtist} and {@link LowerTriangleShape}.
+ *
+ * @author Dominik Fuchss
+ */
 public final class LowerTriangleCalculator extends AbstractCalculator {
-    private static LowerTriangleCalculator calc;
+  private static LowerTriangleCalculator instance;
 
-    private LowerTriangleCalculator() {}
-
-    @Override
-    public Iterator<Integer> getPixelIterator(BufferedImage region) {
-        ArrayList<Integer> pixels = new ArrayList<>();
-
-        float m = (1F * region.getHeight()) / region.getWidth();
-
-        for (int x = 0; x < region.getWidth(); x++) {
-            float yCond = Math.min((x + 1) * m, 0);
-            for (int y = region.getHeight() - 1; y >= yCond; y--) {
-                pixels.add(region.getRGB(x, y));
-            }
-        }
-
-        return pixels.iterator();
+  /**
+   * Get the one and only instance of the calculator.
+   *
+   * @return the instance
+   */
+  public static LowerTriangleCalculator getInstance() {
+    if (instance == null) {
+      instance = new LowerTriangleCalculator();
     }
+    return instance;
+  }
 
-    public static LowerTriangleCalculator getCalculator() {
-        if (calc == null) {
-            calc = new LowerTriangleCalculator();
-        }
-        return calc;
-    }
+  private LowerTriangleCalculator() {
+  }
 
+  @Override
+  protected Iterator<Integer> getIteratorForColumn(int w, int h, int x) {
+    float m = (1F * h) / w;
+    float yBound = Math.max((x + 1) * m, 0);
+    return IntStream.range((int) Math.ceil(yBound), h).iterator();
+  }
 }

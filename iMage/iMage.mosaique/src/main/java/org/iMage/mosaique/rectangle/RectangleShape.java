@@ -1,7 +1,6 @@
 package org.iMage.mosaique.rectangle;
 
-import java.awt.image.BufferedImage;
-
+import org.iMage.mosaique.AbstractCalculator;
 import org.iMage.mosaique.AbstractShape;
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueShape;
@@ -12,7 +11,7 @@ import org.iMage.mosaique.base.IMosaiqueShape;
  * @author Dominik Fuchss
  *
  */
-public class RectangleShape extends AbstractShape {
+public class RectangleShape extends AbstractShape implements IMosaiqueShape<BufferedArtImage> {
 
   /**
    * Create a new {@link IMosaiqueShape}.
@@ -29,21 +28,8 @@ public class RectangleShape extends AbstractShape {
   }
 
   @Override
-  public BufferedImage getThumbnail() {
-    return image;
+  protected AbstractCalculator getCalculator() {
+    return RectangleCalculator.getInstance();
   }
 
-  @Override
-  protected int calcAverage() {
-    return RectangleCalculator.getCalculator().averageColor(image);
-  }
-
-  @Override
-  protected void drawShape(BufferedArtImage targetRect, int w, int h) {
-    for (int x = 0; x < w; x++) {
-      for (int y = 0; y < h; y++) {
-        targetRect.setRGB(x, y, image.getRGB(x, y));
-      }
-    }
-  }
 }

@@ -17,7 +17,7 @@ import org.iMage.mosaique.base.IMosaiqueShape;
  * @author Dominik Fuchss
  *
  */
-public class RectangleArtist extends AbstractArtist  {
+public class RectangleArtist extends AbstractArtist implements IMosaiqueArtist<BufferedArtImage> {
 
   private List<RectangleShape> shapes;
 
@@ -52,7 +52,7 @@ public class RectangleArtist extends AbstractArtist  {
 
   @Override
   protected void drawTileForRegion(BufferedImage region, BufferedArtImage target) {
-    int average = RectangleCalculator.getCalculator().averageColor(region);
+    int average = RectangleCalculator.getInstance().averageColor(region);
     IMosaiqueShape<BufferedArtImage> tile = findNearest(average, shapes);
     tile.drawMe(target);
   }

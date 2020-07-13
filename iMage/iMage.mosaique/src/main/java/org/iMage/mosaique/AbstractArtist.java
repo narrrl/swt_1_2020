@@ -1,21 +1,16 @@
 package org.iMage.mosaique;
 
-import org.iMage.mosaique.base.BufferedArtImage;
-import org.iMage.mosaique.base.IMosaiqueArtist;
-import org.iMage.mosaique.base.IMosaiqueShape;
-
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * This class is an abstract version of an {@link IMosaiqueArtist}.
- *
- * @author Dominik Fuchss
- */
+import org.iMage.mosaique.base.BufferedArtImage;
+import org.iMage.mosaique.base.IMosaiqueArtist;
+import org.iMage.mosaique.base.IMosaiqueShape;
+
 public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage> {
 
   private static final double EPS = 1E-8;
@@ -23,16 +18,6 @@ public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage
   protected final int tileWidth;
   protected final int tileHeight;
 
-  /**
-   * Create an artist who works with tiles of specified width and height
-   *
-   * @param tileWidth
-   *     the desired width of the tiles
-   * @param tileHeight
-   *     the desired height of the tiles
-   * @throws IllegalArgumentException
-   *     iff tileWidth or tileHeight &lt;= 0, or images is empty.
-   */
   protected AbstractArtist(int tileWidth, int tileHeight) {
     if (tileWidth <= 0 || tileHeight <= 0) {
       throw new IllegalArgumentException("tileWidth and tileHeight have to be > 0");
@@ -66,13 +51,14 @@ public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage
    * The artist works on a small region and chooses the most fitting tile for the given region.<br>
    * Iff the region is smaller than {@link #getTileWidth()} and/or {@link #getTileHeight()} the
    * artist will choose the matching tiles anyway. However, the respective dimensions are cut
-   * off.<br> The super caller of the method ensures that the dimensions of the region are &lt;= the
-   * size of the tiles.
+   * off.<br>
+   * The super caller of the method ensures that the dimensions of the region are &lt;= the size of
+   * the tiles.
    *
    * @param region
-   *     the region which needs a tiling
+   *          the region which needs a tiling
    * @param target
-   *     the target image on which the tiles shall be drawn
+   *          the target image on which the tiles shall be drawn
    */
   protected abstract void drawTileForRegion(BufferedImage region, BufferedArtImage target);
 
@@ -80,11 +66,11 @@ public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage
    * Find the shape with the best matching color from a list of shapes.
    *
    * @param target
-   *     the target color as argb.
+   *          the target color as argb.
    * @param shapes
-   *     the available shapes (cannot be empty)
+   *          the available shapes (cannot be empty)
    * @param <S>
-   *     the type of shapes
+   *          the type of shapes
    * @return the best matching shape
    */
   protected final <S extends IMosaiqueShape<BufferedArtImage>> S findNearest(int target,
@@ -116,13 +102,13 @@ public abstract class AbstractArtist implements IMosaiqueArtist<BufferedArtImage
   }
 
   /**
-   * Calculate the difference between two argb colors as euclidean distance.<br> Range: [0, sqrt(4 *
-   * pow(255, 2))]
+   * Calculate the difference between two argb colors as euclidean distance.<br>
+   * Range: [0, sqrt(4 * pow(255, 2))]
    *
    * @param colorA
-   *     the first color
+   *          the first color
    * @param colorB
-   *     the second color
+   *          the second color
    * @return the difference of the colors
    */
   private static double colorError(int colorA, int colorB) {
