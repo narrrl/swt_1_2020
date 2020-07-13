@@ -15,22 +15,8 @@ public final class ParallelRectangleShape extends AbstractShape {
     }
 
     @Override
-    public BufferedImage getThumbnail() {
-        return image;
-    }
-
-    @Override
-    protected int calcAverage() {
-        return RectangleCalculator.getCalculator().averageColor(image);
-    }
-
-    @Override
-    protected void drawShape(BufferedArtImage targetRect, int w, int h) {
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                targetRect.setRGB(x, y, image.getRGB(x, y));
-            }
-        }
+    public RectangleCalculator getCalculator() {
+        return RectangleCalculator.getInstance();
     }
 
 }

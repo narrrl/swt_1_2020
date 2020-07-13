@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.iMage.mosaique.rectangle.RectangleCalculator;
 import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.base.IMosaiqueArtist;
+import org.iMage.mosaique.base.IMosaiqueShape;
 
 
 public final class ParallelRectangleArtist extends AbstractArtist
@@ -76,10 +77,9 @@ public final class ParallelRectangleArtist extends AbstractArtist
     }
 
     @Override
-    protected void drawTileForRegion(BufferedImage region,
-            BufferedArtImage target) {
-        int average = RectangleCalculator.getCalculator().averageColor(region);
-        ParallelRectangleShape tile = findNearest(average, shapes);
+    protected void drawTileForRegion(BufferedImage region, BufferedArtImage target) {
+        int average = RectangleCalculator.getInstance().averageColor(region);
+        IMosaiqueShape<BufferedArtImage> tile = findNearest(average, shapes);
         tile.drawMe(target);
     }
 
