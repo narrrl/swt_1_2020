@@ -5,11 +5,13 @@ import org.iMage.mosaique.base.BufferedArtImage;
 import org.iMage.mosaique.rectangle.RectangleArtist;
 import org.iMage.mosaique.rectangle.RectangleShape;
 import org.iMage.mosaique.triangle.TriangleArtist;
+import org.iMage.mosaique.parallel.*;
 import org.iMage.tiler.panels.ArtisticPanel;
 import org.iMage.tiler.panels.ConfigurationPanel;
 import org.iMage.tiler.panels.ImagePanel;
 
 import java.awt.*;
+import java.util.stream.Collectors;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -145,7 +147,11 @@ public class Tiler extends JFrame {
             }
             // checks if the rectangle or triangle
             if (artisticPanel.artistIsRectangle()) {
-                mosaique = new BufferedArtImage(easel.createMosaique(selectedImage.toBufferedImage(), new RectangleArtist(tiles, w, h)));
+                mosaique = new BufferedArtImage(new ParallelMosaiqueEasel()
+                        .createMosaique(selectedImage.toBufferedImage(),
+                            new ParallelRectangleArtist(
+                                tiles.stream().map(BufferedArtImage::toBufferedImage).collect(Collectors.toList()),
+                                    w, h)));
             } else {
                 if ( h == 1 || w == 1) {
                     JOptionPane.showMessageDialog(this, "Das geht nicht, danke Uebungsleitung, "
