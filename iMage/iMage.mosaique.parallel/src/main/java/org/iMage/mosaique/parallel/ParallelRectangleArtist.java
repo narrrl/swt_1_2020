@@ -11,11 +11,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.iMage.mosaique.rectangle.RectangleCalculator;
 import org.iMage.mosaique.base.BufferedArtImage;
-import org.iMage.mosaique.base.IMosaiqueArtist;
 
 
-public final class ParallelRectangleArtist extends AbstractArtist
-    implements IMosaiqueArtist<BufferedArtImage> {
+public final class ParallelRectangleArtist extends AbstractArtist {
 
     private List<ParallelRectangleShape> shapes;
 

@@ -2,7 +2,6 @@ package org.iMage.tiler;
 
 import org.iMage.mosaique.MosaiqueEasel;
 import org.iMage.mosaique.base.BufferedArtImage;
-import org.iMage.mosaique.rectangle.RectangleArtist;
 import org.iMage.mosaique.rectangle.RectangleShape;
 import org.iMage.mosaique.triangle.TriangleArtist;
 import org.iMage.mosaique.parallel.*;
